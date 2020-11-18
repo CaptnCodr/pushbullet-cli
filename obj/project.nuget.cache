@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "rO82C8J4eQCEQnxNW2yZ0TWudbKuzEgB2HLt2ym3jBYeRptXwhLMZxD3IwzjiFFJeeibWSppjUfifokIwPg8Ew==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\const\\github\\repos\\pushbullet-cli\\pushbullet-cli.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\const\\.nuget\\packages\\fsharp.core\\5.0.0\\fsharp.core.5.0.0.nupkg.sha512",
+    "C:\\Users\\const\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\5.0.0\\microsoft.netcore.app.runtime.win-x64.5.0.0.nupkg.sha512",
+    "C:\\Users\\const\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\5.0.0\\microsoft.windowsdesktop.app.runtime.win-x64.5.0.0.nupkg.sha512",
+    "C:\\Users\\const\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\5.0.0\\microsoft.aspnetcore.app.runtime.win-x64.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,6 @@
+C:\Users\const\github\repos\pushbullet-cli\bin\Debug\net5.0\win-x64\publish\pushbullet-cli.pdb
+C:\Users\const\github\repos\pushbullet-cli\bin\Debug\net5.0\win-x64\publish\clrcompression.dll
+C:\Users\const\github\repos\pushbullet-cli\bin\Debug\net5.0\win-x64\publish\clrjit.dll
+C:\Users\const\github\repos\pushbullet-cli\bin\Debug\net5.0\win-x64\publish\coreclr.dll
+C:\Users\const\github\repos\pushbullet-cli\bin\Debug\net5.0\win-x64\publish\mscordaccore.dll
+C:\Users\const\github\repos\pushbullet-cli\bin\Debug\net5.0\win-x64\publish\pushbullet-cli.exe
