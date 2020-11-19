@@ -1,43 +1,62 @@
+namespace Pusbullet
+
 open System
 open FSharp.Data
+open Newtonsoft.Json
+open Newtonsoft.Json.Serialization
 
-let setKey key =
-    Environment.SetEnvironmentVariable("PUSHBULLET_KEY", key, EnvironmentVariableTarget.User)
+type LowercaseContractResolver () =
+    inherit DefaultContractResolver ()
+        override _.ResolvePropertyName (propertyName: string) =
+            propertyName.ToLower()
 
-let getKey =
-    Environment.GetEnvironmentVariable("PUSHBULLET_KEY", EnvironmentVariableTarget.User)
+module Program =
 
+    [<Literal>]
+    let PushbulletKey = "PUSHBULLET_KEY"
 
-let push (a: string) =
-    let pushUri = "https://api.pushbullet.com/v2/pushes"
-    let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]
+    let toJson a =
+        let settings = JsonSerializerSettings()
+        settings.ContractResolver <- (LowercaseContractResolver() :> IContractResolver)
+        JsonConvert.SerializeObject(a, settings)
 
-    Http.RequestString(pushUri, httpMethod = "POST", headers = header, body = TextRequest a ) |> ignore
+    let setKey key =
+        Environment.SetEnvironmentVariable(PushbulletKey, key, EnvironmentVariableTarget.User)
 
-let pushText body =
-    (sprintf "{ \"type\": \"note\", \"title\": \" \", \"body\": \"%s\" }" body) |> push
+    let getKey =
+        Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User)
 
-let pushNote (title: string option) (body: string option) =
-    let title = defaultArg title ""
-    let body = defaultArg body ""
-    (sprintf "{ \"type\": \"note\", \"title\": \"%s\", \"body\": \"%s\" }" title body) |> push
+    let push (a: string) =
+        let pushUri = "https://api.pushbullet.com/v2/pushes"
+        let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]
+        Http.RequestString(pushUri, httpMethod = "POST", headers = header, body = TextRequest a ) |> ignore
 
-let pushLink (url: string) (title: string option) (body: string option) =
-    let title = defaultArg title ""
-    let body = defaultArg body ""
-    (sprintf "{ \"type\": \"link\", \"url\": \"%s\", \"title\": \"%s\", \"body\": \"%s\" }" url title body) |> push
+    let pushText body =
+        {| Type = "note"; Body = body |} |> toJson |> push
 
-[<EntryPoint>]
-let main ([<ParamArray>] argv: string[]): int =
-    let command = argv.[0]
+    let pushNote (title: string option) (body: string option) =
+        let title = defaultArg title ""
+        let body = defaultArg body ""
+        {| Type = "note"; Title = title; Body = body |} |> toJson |> push
 
-    let breakup = getKey = "" && command <> "--set-key"
+    let pushLink (url: string) (title: string option) (body: string option) =
+        let title = defaultArg title ""
+        let body = defaultArg body ""
+        {| Type = "link"; Url = url; Title = title; Body = body |} |> toJson |> push
 
-    if not breakup then
-        match command with
-        | "--set-key" -> setKey argv.[1]
-        | "-t" | "--text" -> pushText argv.[1]
-    else
-        Console.WriteLine("You have to set your API key with: \"--set-key o.Abc12345xyz\" ")
+    [<EntryPoint>]
+    let main ([<ParamArray>] argv: string[]): int =
+        let command = argv.[0]
 
-    0 // return an integer exit code
+        let breakup = getKey = "" && command <> "--set-key"
+
+        if not breakup then
+            match command with
+            | "-k" | "--set-key" -> setKey argv.[1]
+            | "-t" | "--text" -> pushText argv.[1]
+            /// Add more commands.
+            | _ -> Console.WriteLine("Command not found!")
+        else
+            Console.WriteLine("You have to set your API key with: \"--set-key o.Abc12345xyz\" ")
+
+        0
