@@ -8,7 +8,7 @@ Set application's path in system's environment "Path" variables.
 
 ## Utilization
 
-First of all, creat your API key from [Pushbullet](http://pushbullet.com) and set it using: <br />
+First of all, create your API key from [Pushbullet](http://pushbullet.com) and set it using: <br />
 `> pb --set-key <YOUR API KEY>`
 
 <br />
@@ -19,7 +19,7 @@ Then you're able to push text to your devices:
 
 <br />
 
-All commands are available at the moment:
+These commands are available at the moment:
 
 Command    | Alias | Description              |
 -----------|-------|--------------------------|
