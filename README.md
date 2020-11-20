@@ -1,14 +1,13 @@
 # Pushbullet CLI
 
-### Setup
----------
+## Setup
 
 Set application's path in system's environment "Path" variables.
 
 <br />
 
-### Utilization
--------
+## Utilization
+
 First of all, creat your API key from [Pushbullet](http://pushbullet.com) and set it using: <br />
 `> pb --set-key <YOUR API KEY>`
 
