@@ -17,6 +17,7 @@ module Commands =
 
     let toJson a =
         let settings = JsonSerializerSettings()
+        settings.NullValueHandling <- NullValueHandling.Ignore
         settings.ContractResolver <- (LowercaseContractResolver() :> IContractResolver)
         JsonConvert.SerializeObject(a, settings)
 
@@ -35,11 +36,15 @@ module Commands =
         {| Type = "note"; Body = body |} |> toJson |> push
 
     let pushNote (title: string option) (body: string option) =
-        let title = defaultArg title ""
-        let body = defaultArg body ""
+        let title = if title.IsNone
+                    then null else title.Value
+        let body = if body.IsNone
+                    then null else body.Value
         {| Type = "note"; Title = title; Body = body |} |> toJson |> push
 
     let pushLink (url: string) (title: string option) (body: string option) =
-        let title = defaultArg title ""
-        let body = defaultArg body ""
+        let title = if title.IsNone
+                    then null else title.Value
+        let body = if body.IsNone
+                    then null else body.Value
         {| Type = "link"; Url = url; Title = title; Body = body |} |> toJson |> push
