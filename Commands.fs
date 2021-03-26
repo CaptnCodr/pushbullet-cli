@@ -15,6 +15,9 @@ module Commands =
     [<Literal>]
     let PushbulletKey = "PUSHBULLET_KEY"
 
+    [<Literal>]
+    let PushUrl = "https://api.pushbullet.com/v2/pushes"
+
     let toJson a =
         let settings = JsonSerializerSettings()
         settings.NullValueHandling <- NullValueHandling.Ignore
@@ -27,10 +30,13 @@ module Commands =
     let getKey =
         Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User)
 
-    let push (a: string) =
-        let pushUri = "https://api.pushbullet.com/v2/pushes"
+    let get (parameters: list<string * string>) =
         let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]
-        Http.RequestString(pushUri, httpMethod = "POST", headers = header, body = TextRequest a ) |> ignore
+        Http.RequestString(PushUrl, headers = header, query = parameters)
+
+    let push (a: string) =
+        let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]
+        Http.RequestString(PushUrl, httpMethod = "POST", headers = header, body = TextRequest a ) |> ignore
 
     let pushText body =
         {| Type = "note"; Body = body |} |> toJson |> push
@@ -48,3 +54,7 @@ module Commands =
         let body = if body.IsNone
                     then null else body.Value
         {| Type = "link"; Url = url; Title = title; Body = body |} |> toJson |> push
+
+    let listPushes (limit: int) =
+        let limit = if limit <= 0 then "1" else $"{limit}"
+        [("limit", limit)] |> get

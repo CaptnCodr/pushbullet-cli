@@ -21,6 +21,7 @@ module Program =
         | PushText of string
         | PushNote of string option * string option
         | PushLink of string * string option * string option
+        | GetPushes of int
         | Error of Errors
         | None
 
@@ -39,16 +40,19 @@ module Program =
             | "-k" | "--set-key" ->
                 if args.Length > 1 then
                     SetKey args.[1] else Error NotEnoughArguments
-            | "-t" | "--text" | "push" | "-p" | "--push" ->
+            | "push" | "-t" | "--text" | "-p" | "--push" ->
                 if args.Length = 2 then
                     PushText args.[1]
                 else if args.Length = 3 then
                     PushNote (args.[1].ToOption(), args.[2].ToOption())
                 else Error NotEnoughArguments
-            | "-u" | "--url" | "--link" | "-l" ->
+            | "link" | "-u" | "--url" | "--link" ->
                 if args.Length > 1 then
                     PushLink (args.[1..] |> getLinkParams)
                 else Error NotEnoughArguments
+            | "list" | "-l" | "--list" ->
+                if args.Length > 1
+                then GetPushes (args.[1] |> int) else GetPushes 0
             /// Add more commands.
             | _ -> None
         else
@@ -61,6 +65,7 @@ module Program =
         | PushText t -> Commands.pushText t
         | PushNote (t, b) -> Commands.pushNote t b
         | PushLink (u, t, b) -> Commands.pushLink u t b
+        | GetPushes (l) -> Commands.listPushes l |> Console.WriteLine
         | Error e -> e.GetMessage() |> Console.WriteLine
         | _ -> Console.WriteLine("Command not found!")
 

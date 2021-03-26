@@ -21,6 +21,11 @@ You can drop arguments by pass an empty string like:
 
 `> pb -u http://pushbullet.com "" "Description of Link"`
 
+View your last 3 pushes (returns as json):
+
+`> pb list 3` or <br />
+`> pb list` (retuns last push)
+
 <br />
 
 These commands are available at the moment:
@@ -30,4 +35,5 @@ Command                    | Arguments                             | Alias | Des
 `--set-key`                | `<API-KEY>` <br/> e.g.: o.Abc12345xyz | `-k`  | Set API key.             |
 `--api-key`                | /                                     | `-a`  | Get configured API key.  |
 `--text`, `--push`, `push` | `<TEXT>` or `<TITLE> <TEXT>` <br /> `"Hello"` or `"Hello" "World!"` | `-t`, `-p` | Push text to all devices.|
-`--url`, `--link`          | `<URL>` or `<URL> <TITLE>` or `<URL> <TITLE> <TEXT>` <br/> `http://pushbullet.com "Title of link" "Description of Link"` | `-u`, `-l` | Push a link to all devices.|
+`--url`, `--link`, `link`  | `<URL>` or `<URL> <TITLE>` or `<URL> <TITLE> <TEXT>` <br/> `http://pushbullet.com "Title of link" "Description of Link"` | `-u` | Push a link to all devices.|
+`list`, `--list`           | `<LIMIT>` <br /> `5`                  | `-l`  | List last e.g. 5 pushes  |
