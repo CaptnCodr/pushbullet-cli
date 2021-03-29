@@ -24,11 +24,14 @@ module Commands =
         settings.ContractResolver <- (LowercaseContractResolver() :> IContractResolver)
         JsonConvert.SerializeObject(a, settings)
 
+    let getKey =
+        Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User)
+
     let setKey key =
         Environment.SetEnvironmentVariable(PushbulletKey, key, EnvironmentVariableTarget.User)
 
-    let getKey =
-        Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User)
+    let removeKey () =
+        Environment.SetEnvironmentVariable(PushbulletKey, String.Empty, EnvironmentVariableTarget.User)
 
     let get (parameters: list<string * string>) =
         let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]

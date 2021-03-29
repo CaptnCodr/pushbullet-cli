@@ -30,10 +30,11 @@ View your last 3 pushes (returns as json):
 
 These commands are available at the moment:
 
-Command                    | Arguments                             | Alias | Description              |
----------------------------|---------------------------------------|-------|--------------------------|
-`--set-key`                | `<API-KEY>` <br/> e.g.: o.Abc12345xyz | `-k`  | Set API key.             |
-`--api-key`                | /                                     | `-a`  | Get configured API key.  |
+Command                    | Arguments                             | Alias | Description               |
+---------------------------|---------------------------------------|-------|---------------------------|
+`--set-key`                | `<API-KEY>` <br/> e.g.: o.Abc12345xyz | `-k`  | Set API key.              |
+`--api-key`                | /                                     | `-a`  | Get configured API key.   |
+`--remove-key`             | /                                     | `-r`  | Remove configured API key.|
 `--text`, `--push`, `push` | `<TEXT>` or `<TITLE> <TEXT>` <br /> `"Hello"` or `"Hello" "World!"` | `-t`, `-p` | Push text to all devices.|
 `--url`, `--link`, `link`  | `<URL>` or `<URL> <TITLE>` or `<URL> <TITLE> <TEXT>` <br/> `http://pushbullet.com "Title of link" "Description of Link"` | `-u` | Push a link to all devices.|
-`list`, `--list`           | `<LIMIT>` <br /> `5`                  | `-l`  | List last e.g. 5 pushes  |
+`list`, `--list`           | `<LIMIT>` <br /> `5`                  | `-l`  | List last e.g. 5 pushes.  |

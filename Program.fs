@@ -16,8 +16,9 @@ module Program =
             | NotEnoughArguments -> "Not enough arguments!"
 
     type Command =
-        | SetKey of string
         | GetKey
+        | SetKey of string
+        | RemoveKey
         | PushText of string
         | PushNote of string option * string option
         | PushLink of string * string option * string option
@@ -38,8 +39,10 @@ module Program =
             match args.[0] with
             | "-a" | "--api-key" -> GetKey
             | "-k" | "--set-key" ->
-                if args.Length > 1 then
-                    SetKey args.[1] else Error NotEnoughArguments
+                if args.Length > 1
+                then SetKey args.[1]
+                else Error NotEnoughArguments
+            | "-r" | "--remove-key" -> RemoveKey
             | "push" | "-t" | "--text" | "-p" | "--push" ->
                 if args.Length = 2 then
                     PushText args.[1]
@@ -60,8 +63,9 @@ module Program =
 
     let followCommands command =
         match command with
-        | SetKey k -> Commands.setKey k
         | GetKey -> Commands.getKey |> Console.WriteLine
+        | SetKey k -> Commands.setKey k
+        | RemoveKey -> Commands.removeKey ()
         | PushText t -> Commands.pushText t
         | PushNote (t, b) -> Commands.pushNote t b
         | PushLink (u, t, b) -> Commands.pushLink u t b
