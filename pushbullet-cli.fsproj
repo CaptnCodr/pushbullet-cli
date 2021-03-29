@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Commands.fs" />
+    <Compile Include="SystemCommands.fs" />
+    <Compile Include="PushCommands.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

@@ -10,10 +10,7 @@ type LowercaseContractResolver () =
         override _.ResolvePropertyName (propertyName: string) =
             propertyName.ToLower()
 
-module Commands =
-
-    [<Literal>]
-    let PushbulletKey = "PUSHBULLET_KEY"
+module PushCommands =
 
     [<Literal>]
     let PushUrl = "https://api.pushbullet.com/v2/pushes"
@@ -24,21 +21,12 @@ module Commands =
         settings.ContractResolver <- (LowercaseContractResolver() :> IContractResolver)
         JsonConvert.SerializeObject(a, settings)
 
-    let getKey =
-        Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User)
-
-    let setKey key =
-        Environment.SetEnvironmentVariable(PushbulletKey, key, EnvironmentVariableTarget.User)
-
-    let removeKey () =
-        Environment.SetEnvironmentVariable(PushbulletKey, String.Empty, EnvironmentVariableTarget.User)
-
     let get (parameters: list<string * string>) =
-        let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]
+        let header = [("Access-Token", SystemCommands.getKey); (HttpRequestHeaders.ContentType "application/json")]
         Http.RequestString(PushUrl, headers = header, query = parameters)
 
     let push (a: string) =
-        let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]
+        let header = [("Access-Token", SystemCommands.getKey); (HttpRequestHeaders.ContentType "application/json")]
         Http.RequestString(PushUrl, httpMethod = "POST", headers = header, body = TextRequest a ) |> ignore
 
     let pushText body =
