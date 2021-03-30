@@ -18,6 +18,7 @@ module Program =
     type Command =
         | GetKey
         | SetKey of string
+        | GetMe
         | PushText of string
         | PushNote of string option * string option
         | PushLink of string * string option * string option
@@ -40,7 +41,8 @@ module Program =
                 if args.Length > 1
                 then SetKey args.[1]
                 else GetKey
-            | "push" | "-t" | "--text" | "-p" ->
+            | "me" | "i" -> GetMe
+            | "push" | "-p" | "-t" | "--text" ->
                 if args.Length = 2 then
                     PushText args.[1]
                 else if args.Length = 3 then
@@ -62,6 +64,8 @@ module Program =
         match command with
         | GetKey -> SystemCommands.getKey |> Console.WriteLine
         | SetKey k -> SystemCommands.setKey k
+        | GetMe -> SystemCommands.getMe |> Console.WriteLine
+
         | PushText t -> PushCommands.pushText t
         | PushNote (t, b) -> PushCommands.pushNote t b
         | PushLink (u, t, b) -> PushCommands.pushLink u t b
