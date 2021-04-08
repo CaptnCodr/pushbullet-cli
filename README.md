@@ -26,6 +26,10 @@ View your last 3 pushes (returns as json):
 `> pb list 3` or <br />
 `> pb list` (retuns last push)
 
+Delete specific push:
+
+`> pb --del push ujyLNXNNKHAsjxrgo17lyF`
+
 <br />
 
 These commands are available at the moment:
@@ -37,3 +41,4 @@ Command                    | Arguments                                          
 `push`, `--text`           | `<TEXT>` or `<TITLE> <TEXT>` <br /> `"Hello"` or `"Hello" "World!"`                                                      | `-p`, `-t` | Push text to all devices.  |
 `link`, `--url`, `--link`  | `<URL>` or `<URL> <TITLE>` or `<URL> <TITLE> <TEXT>` <br/> `http://pushbullet.com "Title of link" "Description of Link"` | `-u`       | Push a link to all devices.|
 `list`, `--list`           | `<LIMIT>` <br /> `5`                                                                                                     | `-l`       | List last e.g. 5 pushes.   |
+`delete`, `--del`          | Delete push (`push`, `-p`) and iden <br /> e.g.: `ujyLNXNNKHAsjxrgo17lyF`                                                | `-d`       | Delete object with iden.   |

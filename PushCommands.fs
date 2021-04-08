@@ -25,9 +25,13 @@ module PushCommands =
         let header = [("Access-Token", SystemCommands.getKey); (HttpRequestHeaders.ContentType "application/json")]
         Http.RequestString(PushUrl, headers = header, query = parameters)
 
-    let push (a: string) =
+    let push (json: string) =
         let header = [("Access-Token", SystemCommands.getKey); (HttpRequestHeaders.ContentType "application/json")]
-        Http.RequestString(PushUrl, httpMethod = "POST", headers = header, body = TextRequest a ) |> ignore
+        Http.RequestString(PushUrl, httpMethod = "POST", headers = header, body = TextRequest json ) |> ignore
+
+    let delete (id: string) =
+        let header = [("Access-Token", SystemCommands.getKey); (HttpRequestHeaders.ContentType "application/json")]
+        Http.RequestString($"{PushUrl}/{id}", httpMethod = "DELETE", headers = header) |> ignore
 
     let pushText body =
         {| Type = "note"; Body = body |} |> toJson |> push
@@ -49,3 +53,6 @@ module PushCommands =
     let listPushes (limit: int) =
         let limit = if limit <= 0 then "1" else $"{limit}"
         [("limit", limit)] |> get
+
+    let deletePush (pushId: string) =
+        pushId |> delete

@@ -23,6 +23,7 @@ module Program =
         | PushNote of string option * string option
         | PushLink of string * string option * string option
         | ListPushes of int
+        | DeletePush of string
         | Error of Errors
         | None
 
@@ -33,6 +34,14 @@ module Program =
         let title = args |> Array.tryItem 1
         let body = args |> Array.tryItem 2
         (url.Value, title, body)
+
+    let delArgument (args: string[]) =
+        match args.[1] with
+        | "push" | "-p" ->
+            if args.Length > 2
+            then DeletePush (args.[2])
+            else Error NotEnoughArguments
+        | _ -> None
 
     let findBaseCommand (args: string[]) : Command =
         if args.Length > 0 then
@@ -55,6 +64,8 @@ module Program =
             | "list" | "-l" | "--list" ->
                 if args.Length > 1
                 then ListPushes (args.[1] |> int) else ListPushes 0
+            | "delete" | "-d" | "--del" ->
+                delArgument args
             /// Add more commands.
             | _ -> None
         else
@@ -69,7 +80,8 @@ module Program =
         | PushText t -> PushCommands.pushText t
         | PushNote (t, b) -> PushCommands.pushNote t b
         | PushLink (u, t, b) -> PushCommands.pushLink u t b
-        | ListPushes (l) -> PushCommands.listPushes l |> Console.WriteLine
+        | ListPushes l -> PushCommands.listPushes l |> Console.WriteLine
+        | DeletePush p -> PushCommands.deletePush p
         | Error e -> e.GetMessage() |> Console.WriteLine
         | _ -> Console.WriteLine("Command not found!")
 
