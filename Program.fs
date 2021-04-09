@@ -77,11 +77,11 @@ module Program =
         | SetKey k -> SystemCommands.setKey k
         | GetMe -> SystemCommands.getMe |> Console.WriteLine
 
-        | PushText t -> PushCommands.pushText t
-        | PushNote (t, b) -> PushCommands.pushNote t b
-        | PushLink (u, t, b) -> PushCommands.pushLink u t b
+        | PushText t -> PushCommands.pushText t |> Console.WriteLine
+        | PushNote (t, b) -> PushCommands.pushNote t b |> Console.WriteLine
+        | PushLink (u, t, b) -> PushCommands.pushLink u t b |> Console.WriteLine
         | ListPushes l -> PushCommands.listPushes l |> Console.WriteLine
-        | DeletePush p -> PushCommands.deletePush p
+        | DeletePush p -> PushCommands.deletePush p |> Console.WriteLine
         | Error e -> e.GetMessage() |> Console.WriteLine
         | _ -> Console.WriteLine("Command not found!")
 

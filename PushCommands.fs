@@ -1,6 +1,7 @@
 namespace Pushbullet
 
 open System
+open System.Net
 open FSharp.Data
 open Newtonsoft.Json
 open Newtonsoft.Json.Serialization
@@ -15,6 +16,8 @@ module PushCommands =
     [<Literal>]
     let PushUrl = "https://api.pushbullet.com/v2/pushes"
 
+    let header = [("Access-Token", SystemCommands.getKey); (HttpRequestHeaders.ContentType "application/json")]
+
     let toJson a =
         let settings = JsonSerializerSettings()
         settings.NullValueHandling <- NullValueHandling.Ignore
@@ -22,16 +25,25 @@ module PushCommands =
         JsonConvert.SerializeObject(a, settings)
 
     let get (parameters: list<string * string>) =
-        let header = [("Access-Token", SystemCommands.getKey); (HttpRequestHeaders.ContentType "application/json")]
-        Http.RequestString(PushUrl, headers = header, query = parameters)
+        try
+            Http.RequestString(PushUrl, headers = header, query = parameters)
+        with
+        | :? WebException as ex -> $"{ex.Message}"
+
 
     let push (json: string) =
-        let header = [("Access-Token", SystemCommands.getKey); (HttpRequestHeaders.ContentType "application/json")]
-        Http.RequestString(PushUrl, httpMethod = "POST", headers = header, body = TextRequest json ) |> ignore
+        try
+            Http.RequestString(PushUrl, httpMethod = "POST", headers = header, body = TextRequest json) |> ignore
+            "Push sent."
+        with
+        | :? WebException as ex -> $"{ex.Message}"
 
-    let delete (id: string) =
-        let header = [("Access-Token", SystemCommands.getKey); (HttpRequestHeaders.ContentType "application/json")]
-        Http.RequestString($"{PushUrl}/{id}", httpMethod = "DELETE", headers = header) |> ignore
+    let delete (id: string, message: string) =
+        try
+            Http.RequestString($"{PushUrl}/{id}", httpMethod = "DELETE", headers = header) |> ignore
+            message
+        with
+        | :? WebException as ex -> $"{ex.Message}"
 
     let pushText body =
         {| Type = "note"; Body = body |} |> toJson |> push
@@ -55,4 +67,4 @@ module PushCommands =
         [("limit", limit)] |> get
 
     let deletePush (pushId: string) =
-        pushId |> delete
+        (pushId, "Push deleted!") |> delete
