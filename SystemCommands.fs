@@ -14,6 +14,6 @@ module SystemCommands =
     let setKey key =
         Environment.SetEnvironmentVariable(PushbulletKey, key, EnvironmentVariableTarget.User)
 
-    let getMe =
+    let getMe () =
         let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]
         Http.RequestString("https://api.pushbullet.com/v2/users/me", httpMethod = "GET", headers = header)

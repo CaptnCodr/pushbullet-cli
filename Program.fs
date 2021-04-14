@@ -41,6 +41,8 @@ module Program =
             if args.Length > 2
             then DeletePush (args.[2])
             else Error NotEnoughArguments
+        | "key" | "-k" ->
+            String.Empty |> SetKey
         | _ -> None
 
     let findBaseCommand (args: string[]) : Command =
@@ -50,18 +52,18 @@ module Program =
                 if args.Length > 1
                 then SetKey args.[1]
                 else GetKey
-            | "me" | "i" -> GetMe
-            | "push" | "-p" | "-t" | "--text" ->
+            | "me" | "-i" -> GetMe
+            | "push" | "-p" | "-t" | "text" ->
                 if args.Length = 2 then
                     PushText args.[1]
                 else if args.Length = 3 then
                     PushNote (args.[1].ToOption(), args.[2].ToOption())
                 else Error NotEnoughArguments
-            | "link" | "-u" | "--url" | "--link" ->
+            | "link" | "-u" | "url" | "link" ->
                 if args.Length > 1 then
                     PushLink (args.[1..] |> getLinkParams)
                 else Error NotEnoughArguments
-            | "list" | "-l" | "--list" ->
+            | "list" | "-l" ->
                 if args.Length > 1
                 then ListPushes (args.[1] |> int) else ListPushes 0
             | "delete" | "-d" | "--del" ->
@@ -75,7 +77,7 @@ module Program =
         match command with
         | GetKey -> SystemCommands.getKey |> Console.WriteLine
         | SetKey k -> SystemCommands.setKey k
-        | GetMe -> SystemCommands.getMe |> Console.WriteLine
+        | GetMe -> SystemCommands.getMe() |> Console.WriteLine
 
         | PushText t -> PushCommands.pushText t |> Console.WriteLine
         | PushNote (t, b) -> PushCommands.pushNote t b |> Console.WriteLine
@@ -95,6 +97,6 @@ module Program =
         if not breakup then
             followCommands command
         else
-            Console.WriteLine("You have to set your API key with: \"--set-key o.Abc12345xyz\" ")
+            Console.WriteLine("You have to set your API key with: \"key o.Abc12345xyz\" ")
 
         0
