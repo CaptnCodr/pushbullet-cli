@@ -46,4 +46,4 @@ Command                   | Arguments                                           
 `link` or `url` or `link` | `<URL>` or `<URL> <TITLE>` or `<URL> <TITLE> <TEXT>` <br/> `http://pushbullet.com "Title of link" "Description of link"` | `-u`       | Push a link to all devices.  |
 `pushes` or `list` or `-l`| `<LIMIT>` <br /> `5`                                                                                                     | `-l`       | List last e.g. 5 pushes.     |
 `delete` or `--del`       | Delete push (`push`, `-p`) and iden <br /> e.g.: `ujyLNXNNKHAsjxrgo17lyF` <br />                                         | `-d`       | Delete push object with iden.|
-`devices`                 | List devices associated to the PB account.                                                                               | `-ds`      | List devies.                 |
+`devices`                 | List devices associated to the PB account.                                                                               | `-ds`      | List devices.                |
