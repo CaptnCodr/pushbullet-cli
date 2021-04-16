@@ -24,6 +24,7 @@ module Program =
         | PushLink of string * string option * string option
         | ListPushes of int
         | DeletePush of string
+        | ListDevices
         | Error of Errors
         | None
 
@@ -63,11 +64,13 @@ module Program =
                 if args.Length > 1 then
                     PushLink (args.[1..] |> getLinkParams)
                 else Error NotEnoughArguments
-            | "list" | "-l" ->
+            | "pushes" | "list" | "-l" ->
                 if args.Length > 1
                 then ListPushes (args.[1] |> int) else ListPushes 0
             | "delete" | "-d" | "--del" ->
                 delArgument args
+            | "devices" | "-ds" ->
+                ListDevices
             /// Add more commands.
             | _ -> None
         else
@@ -84,6 +87,9 @@ module Program =
         | PushLink (u, t, b) -> PushCommands.pushLink u t b |> Console.WriteLine
         | ListPushes l -> PushCommands.listPushes l |> Console.WriteLine
         | DeletePush p -> PushCommands.deletePush p |> Console.WriteLine
+
+        | ListDevices -> DeviceCommands.listDevices |> Console.WriteLine
+
         | Error e -> e.GetMessage() |> Console.WriteLine
         | _ -> Console.WriteLine("Command not found!")
 
