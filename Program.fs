@@ -19,6 +19,7 @@ module Program =
         | GetKey
         | SetKey of string
         | GetMe
+        | GetLimits
         | PushText of string
         | PushNote of string option * string option
         | PushLink of string * string option * string option
@@ -54,6 +55,7 @@ module Program =
                 then SetKey args.[1]
                 else GetKey
             | "me" | "-i" -> GetMe
+            | "limits" | "-x" -> GetLimits
             | "push" | "-p" | "-t" | "text" ->
                 if args.Length = 2 then
                     PushText args.[1]
@@ -81,6 +83,7 @@ module Program =
         | GetKey -> SystemCommands.getKey |> Console.WriteLine
         | SetKey k -> SystemCommands.setKey k
         | GetMe -> SystemCommands.getMe() |> Console.WriteLine
+        | GetLimits -> SystemCommands.getLimits() |> Console.WriteLine
 
         | PushText t -> PushCommands.pushText t |> Console.WriteLine
         | PushNote (t, b) -> PushCommands.pushNote t b |> Console.WriteLine

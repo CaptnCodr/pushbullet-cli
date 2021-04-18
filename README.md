@@ -42,6 +42,7 @@ Command                   | Arguments                                           
 --------------------------|--------------------------------------------------------------------------------------------------------------------------|------------|------------------------------|
 `key`                     | `<API-KEY>` for set empty for get <br /> remove key with `""` or with `delete` command                                   | `-k`       | Set or get API key.          |
 `me`                      | /                                                                                                                        | `-i`       | Gets the current user.       |
+`limits`                  | /                                                                                                                        | `-x`       | Gets the API rate limits.    |
 `push` or `text`          | `<TEXT>` or `<TITLE> <TEXT>` <br /> `"Hello"` or `"Hello" "World!"`                                                      | `-p`, `-t` | Push text to all devices.    |
 `link` or `url` or `link` | `<URL>` or `<URL> <TITLE>` or `<URL> <TITLE> <TEXT>` <br/> `http://pushbullet.com "Title of link" "Description of link"` | `-u`       | Push a link to all devices.  |
 `pushes` or `list` or `-l`| `<LIMIT>` <br /> `5`                                                                                                     | `-l`       | List last e.g. 5 pushes.     |
