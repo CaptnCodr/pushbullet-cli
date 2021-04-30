@@ -26,6 +26,11 @@ module Program =
         | ListPushes of int
         | DeletePush of string
         | ListDevices
+        | DeleteDevice of string
+        | ListChats
+        | DeleteChat of string
+        | ListSubscriptions
+        | DeleteSubscription of string
         | Error of Errors
         | None
 
@@ -42,6 +47,18 @@ module Program =
         | "push" | "-p" ->
             if args.Length > 2
             then DeletePush (args.[2])
+            else Error NotEnoughArguments
+        | "chat" | "-c" ->
+            if args.Length > 2
+            then DeleteChat (args.[2])
+            else Error NotEnoughArguments
+        | "device" | "-d" ->
+            if args.Length > 2
+            then DeleteDevice (args.[2])
+            else Error NotEnoughArguments
+        | "subscription" | "-s" ->
+            if args.Length > 2
+            then DeleteSubscription (args.[2])
             else Error NotEnoughArguments
         | "key" | "-k" ->
             String.Empty |> SetKey
@@ -66,13 +83,17 @@ module Program =
                 if args.Length > 1 then
                     PushLink (args.[1..] |> getLinkParams)
                 else Error NotEnoughArguments
-            | "pushes" | "list" | "-l" ->
+            | "pushes" | "-ps" ->
                 if args.Length > 1
                 then ListPushes (args.[1] |> int) else ListPushes 0
             | "delete" | "-d" | "--del" ->
                 delArgument args
             | "devices" | "-ds" ->
                 ListDevices
+            | "chats" | "-cs" ->
+                ListChats
+            | "subscriptions" | "subs" | "-s" ->
+                ListSubscriptions
             /// Add more commands.
             | _ -> None
         else
@@ -80,21 +101,28 @@ module Program =
 
     let followCommands command =
         match command with
-        | GetKey -> SystemCommands.getKey |> Console.WriteLine
-        | SetKey k -> SystemCommands.setKey k
-        | GetMe -> SystemCommands.getMe() |> Console.WriteLine
-        | GetLimits -> SystemCommands.getLimits() |> Console.WriteLine
+        | GetKey -> SystemCommands.getKey
+        | SetKey k -> SystemCommands.setKey k; "Key set!"
+        | GetMe -> SystemCommands.getMe()
+        | GetLimits -> SystemCommands.getLimits()
 
-        | PushText t -> PushCommands.pushText t |> Console.WriteLine
-        | PushNote (t, b) -> PushCommands.pushNote t b |> Console.WriteLine
-        | PushLink (u, t, b) -> PushCommands.pushLink u t b |> Console.WriteLine
-        | ListPushes l -> PushCommands.listPushes l |> Console.WriteLine
-        | DeletePush p -> PushCommands.deletePush p |> Console.WriteLine
+        | PushText t -> PushCommands.pushText t
+        | PushNote (t, b) -> PushCommands.pushNote t b
+        | PushLink (u, t, b) -> PushCommands.pushLink u t b
+        | ListPushes l -> PushCommands.list l
+        | DeletePush p -> PushCommands.delete p
 
-        | ListDevices -> DeviceCommands.listDevices |> Console.WriteLine
+        | ListDevices -> DeviceCommands.list
+        | DeleteDevice d -> DeviceCommands.delete d
 
-        | Error e -> e.GetMessage() |> Console.WriteLine
-        | _ -> Console.WriteLine("Command not found!")
+        | ListChats -> ChatCommands.list
+        | DeleteChat c -> ChatCommands.delete c
+
+        | ListSubscriptions -> SubscriptionCommands.list
+        | DeleteSubscription -> SubscriptionCommands.delete
+
+        | Error e -> e.GetMessage()
+        | _ -> "Command not found!"
 
     [<EntryPoint>]
     let main ([<ParamArray>] argv: string[]): int =
@@ -104,7 +132,7 @@ module Program =
         let breakup = SystemCommands.getKey = "" && not(command.IsSetKeyCommand)
 
         if not breakup then
-            followCommands command
+            followCommands command |> Console.WriteLine
         else
             Console.WriteLine("You have to set your API key with: \"key o.Abc12345xyz\" ")
 

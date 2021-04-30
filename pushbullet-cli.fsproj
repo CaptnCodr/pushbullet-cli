@@ -14,6 +14,8 @@
     <Compile Include="SystemCommands.fs" />
     <Compile Include="PushCommands.fs" />
     <Compile Include="DeviceCommands.fs" />
+    <Compile Include="ChatCommands.fs" />
+    <Compile Include="SubscriptionCommands.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

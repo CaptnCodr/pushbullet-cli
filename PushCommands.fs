@@ -21,10 +21,10 @@ module PushCommands =
         with
         | :? WebException as ex -> $"{ex.Message}"
 
-    let delete (id: string, message: string) =
+    let delete (id: string) =
         try
             Http.RequestString($"{PushUrl}/{id}", httpMethod = "DELETE", headers = SystemCommands.header) |> ignore
-            message
+            "Push deleted!"
         with
         | :? WebException as ex -> $"{ex.Message}"
 
@@ -41,9 +41,6 @@ module PushCommands =
         let body = if body.IsNone then null else body.Value
         {| Type = "link"; Url = url; Title = title; Body = body |} |> CommandHelper.toJson |> fun j -> push (j, "Link sent.")
 
-    let listPushes (limit: int) =
+    let list (limit: int) =
         let limit = if limit <= 0 then "1" else $"{limit}"
         [("limit", limit)] |> get
-
-    let deletePush (pushId: string) =
-        (pushId, "Push deleted!") |> delete
