@@ -119,7 +119,7 @@ module Program =
         | DeleteChat c -> ChatCommands.delete c
 
         | ListSubscriptions -> SubscriptionCommands.list
-        | DeleteSubscription -> SubscriptionCommands.delete
+        | DeleteSubscription d -> SubscriptionCommands.delete d
 
         | Error e -> e.GetMessage()
         | _ -> "Command not found!"

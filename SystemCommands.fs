@@ -3,6 +3,7 @@ namespace Pushbullet
 open System
 open System.Net
 open FSharp.Data
+open System.Net
 
 module SystemCommands =
 
