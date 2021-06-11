@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <Content Include="Data\Error.json" />
-    <Content Include="Data\ListData.json" />
+    <Content Include="Data\DataLists.json" />
   </ItemGroup>
   
   <ItemGroup>
