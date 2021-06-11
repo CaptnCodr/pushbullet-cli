@@ -19,14 +19,17 @@ module SystemCommands =
     let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]
 
     let getMe () =
-        Http.RequestString("https://api.pushbullet.com/v2/users/me", httpMethod = "GET", headers = header) |> CommandHelper.prettifyJson
+        try
+            Http.RequestString($"{CommandHelper.BaseUrl}/users/me", httpMethod = "GET", headers = header) |> CommandHelper.prettifyJson
+        with
+        | :? WebException as ex -> ex.Response.GetResponseStream() |> CommandHelper.formatException
 
     let getLimits () =
         try
-            let response = Http.Request("https://api.pushbullet.com/v2/users/me", httpMethod = "GET", headers = header)
+            let response = Http.Request($"{CommandHelper.BaseUrl}/users/me", httpMethod = "GET", headers = header)
             let limit = response.Headers.["X-Ratelimit-Limit"]
             let remaining = response.Headers.["X-Ratelimit-Remaining"]
             let dt = response.Headers.["X-Ratelimit-Reset"] |> int64 |> DateTimeOffset.FromUnixTimeSeconds |> fun d -> d.ToString("dd.MM.yyyy HH:mm")
             $"API-Limit: {limit},\nRemaining: {remaining},\nReset at:  {dt}"
         with
-        | :? WebException as ex -> $"{ex.Message}"
+        | :? WebException as ex -> ex.Response.GetResponseStream() |> CommandHelper.formatException

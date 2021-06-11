@@ -1,0 +1,9 @@
+{
+    "error": {
+      "code": "invalid_request",
+      "type": "invalid_request",
+      "message": "The resource could not be found.",
+      "cat": "~(=^‥^)"
+    },
+    "error_code": "invalid_request"
+}

@@ -10,17 +10,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Data\Error.json" />
+    <Content Include="Data\ListData.json" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Compile Include="CommandHelper.fs" />
-    <Compile Include="SystemCommands.fs" />
-    <Compile Include="PushCommands.fs" />
-    <Compile Include="DeviceCommands.fs" />
-    <Compile Include="ChatCommands.fs" />
-    <Compile Include="SubscriptionCommands.fs" />
+    <Compile Include="Commands/SystemCommands.fs" />
+    <Compile Include="Commands/PushCommands.fs" />
+    <Compile Include="Commands/DeviceCommands.fs" />
+    <Compile Include="Commands/ChatCommands.fs" />
+    <Compile Include="Commands/SubscriptionCommands.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FSharp.Data" Version="4.1.0" />
+    <PackageReference Include="FSharp.Data" Version="4.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
