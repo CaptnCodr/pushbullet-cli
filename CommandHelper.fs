@@ -11,9 +11,14 @@ type LowercaseContractResolver () =
         override _.ResolvePropertyName (propertyName: string) =
             propertyName.ToLower()
 
-type DataResponse = JsonProvider<"./Data/ListData.json", ResolutionFolder=__SOURCE_DIRECTORY__>
+//Remove when fixed in dotnet-sdk
+module Workaround =
+    [<Literal>]
+    let refDir = __SOURCE_DIRECTORY__
 
-type ErrorResponse = JsonProvider<"./Data/Error.json", ResolutionFolder=__SOURCE_DIRECTORY__>
+type DataResponse = JsonProvider<"./Data/DataLists.json", ResolutionFolder=Workaround.refDir>
+
+type ErrorResponse = JsonProvider<"./Data/Error.json", ResolutionFolder=Workaround.refDir>
 
 module CommandHelper =
 

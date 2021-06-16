@@ -1,5 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>pb</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -8,12 +8,10 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
-
   <ItemGroup>
     <Content Include="Data\Error.json" />
     <Content Include="Data\DataLists.json" />
   </ItemGroup>
-  
   <ItemGroup>
     <Compile Include="CommandHelper.fs" />
     <Compile Include="Commands/SystemCommands.fs" />
@@ -23,10 +21,5 @@
     <Compile Include="Commands/SubscriptionCommands.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FSharp.Data" Version="4.1.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
+  <Import Project=".paket\Paket.Restore.targets" />
 </Project>
