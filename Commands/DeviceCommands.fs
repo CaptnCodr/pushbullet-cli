@@ -2,12 +2,21 @@ namespace Pushbullet
 
 open System.Net
 open FSharp.Data
+open System
 
 module DeviceCommands =
 
     let list =
+
+        let formatDevice (d: DataResponse.Devicis) =
+            $"{d.Nickname}, ID: {d.Iden}"
+
         try
-            Http.RequestString($"{CommandHelper.BaseUrl}/devices", headers = SystemCommands.header, query = [("active", "true")]) |> CommandHelper.prettifyJson
+            Http.RequestString($"{CommandHelper.BaseUrl}/devices", headers = SystemCommands.header, query = [("active", "true")]) 
+            |> DataResponse.Parse
+            |> fun r -> r.Devices
+            |> Array.map formatDevice
+            |> String.concat Environment.NewLine
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> CommandHelper.formatException
 

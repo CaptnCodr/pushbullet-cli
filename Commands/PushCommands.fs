@@ -2,13 +2,25 @@ namespace Pushbullet
 
 open System.Net
 open FSharp.Data
+open System
 
 module PushCommands =
 
     let list (limit: int) =
+        
+        let formatPush (p: DataResponse.Push) =
+            if p.Type.Equals "link" then
+                $"URL: {p.Url}{Environment.NewLine}{p.Body}"
+            else
+                $"{p.Body}"
+
         let limit = if limit <= 0 then "1" else $"{limit}"
         try
-            Http.RequestString($"{CommandHelper.BaseUrl}/pushes", headers = SystemCommands.header, query = [("limit", limit)]) |> CommandHelper.prettifyJson
+            Http.RequestString($"{CommandHelper.BaseUrl}/pushes", headers = SystemCommands.header, query = [("limit", limit)]) 
+            |> DataResponse.Parse
+            |> fun r -> r.Pushes
+            |> Array.map formatPush
+            |> String.concat Environment.NewLine
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> CommandHelper.formatException
         

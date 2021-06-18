@@ -18,6 +18,7 @@ module Program =
     type Command =
         | GetKey
         | SetKey of string
+        | DeleteKey
         | GetMe
         | GetLimits
         | PushText of string
@@ -61,7 +62,7 @@ module Program =
             then DeleteSubscription (args.[2])
             else Error NotEnoughArguments
         | "key" | "-k" ->
-            String.Empty |> SetKey
+            DeleteKey
         | _ -> None
 
     let findBaseCommand (args: string[]) : Command =
@@ -103,6 +104,7 @@ module Program =
         match command with
         | GetKey -> SystemCommands.getKey
         | SetKey k -> SystemCommands.setKey k; "Key set!"
+        | DeleteKey -> SystemCommands.deleteKey; "Key deleted!"
         | GetMe -> SystemCommands.getMe()
         | GetLimits -> SystemCommands.getLimits()
 

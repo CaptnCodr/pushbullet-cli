@@ -3,7 +3,6 @@ namespace Pushbullet
 open System
 open System.Net
 open FSharp.Data
-open System.Net
 
 module SystemCommands =
 
@@ -15,6 +14,9 @@ module SystemCommands =
 
     let setKey key =
         Environment.SetEnvironmentVariable(PushbulletKey, key, EnvironmentVariableTarget.User)
+
+    let deleteKey =
+        Environment.SetEnvironmentVariable(PushbulletKey, "", EnvironmentVariableTarget.User)
 
     let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]
 
