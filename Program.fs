@@ -80,7 +80,7 @@ module Program =
                 else if args.Length = 3 then
                     PushNote (args.[1].ToOption(), args.[2].ToOption())
                 else Error NotEnoughArguments
-            | "link" | "-u" | "url" | "link" ->
+            | "link" | "-u" | "url" ->
                 if args.Length > 1 then
                     PushLink (args.[1..] |> getLinkParams)
                 else Error NotEnoughArguments

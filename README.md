@@ -4,48 +4,85 @@
 
 Set application's path in system's environment "Path" variables.
 
-## Utilization
+## Usings
 
-First of all, create your API key from [Pushbullet](http://pushbullet.com) and set it using: <br />
+### `key`
+
+First of all, create your API key from [Pushbullet](http://pushbullet.com) and set it using:
 `> pb key <API-KEY>`
 
-Then you're able to push text to your devices:
+Get API-Key:
+`> pb key`
 
+### Meta data
+
+Get your push limits:
+`> pb limits` or
+`> pb -x`
+
+Get your profile data:
+`> pb me` or
+`> pb -i`
+
+### `push` / `text` / `link` / `url`
+
+Then you're able to push text to your devices (different writing styles):
+
+`> pb push "Hello world!"`
+`> pb -p "Hello world!"`
 `> pb text "Hello world!"`
+`> pb -t "Hello world!"`
 
 or
 
 `> pb link http://pushbullet.com "Title of link" "Description of Link"`
+`> pb url http://pushbullet.com "Title of link" "Description of Link"`
 
 You can drop arguments by pass an empty string like:
 
 `> pb url http://pushbullet.com "" "Description of Link"`
+`> pb -u http://pushbullet.com "" "Description of Link"`
 
-View your last 3 pushes (returns as json):
+### List things (changes in some time)
 
-`> pb list 3` or <br />
-`> pb list` (retuns last push)
+Show your last 3 pushes:
+`> pb pushes 3` or
+`> pb -ps` (retuns last push)
 
-Delete specific push:
+Show all your devices:
+`> pb devices` or
+`> pb -ds`
 
-`> pb --del push ujyLNXNNKHAsjxrgo17lyF`
+Show all your chats:
+`> pb chats` or
+`> pb -cs`
+
+Show all your subscriptions:
+`> pb subscriptions` or
+`> pb subs` or
+`> pb -s`
+
+### `delete`
 
 Delete configured api key:
+`> pb delete key` or
+`> pb -d -k`
 
-`> pb delete key`
+Delete specific push with different writing styles:
+`> pb --del push <PUSH-ID>` or
+`> pb delete -p <PUSH-ID>`
+`> pb -d -p <PUSH-ID>`
 
-<br />
+Delete device:
+`> pb delete device <DEVICE-ID>` or
+`> pb -d -d <DEVICE-ID>` or
 
-These commands are available at the moment:
+Delete chat:
+`> pb delete chat <CHAT-ID>` or
+`> pb -d -c <CHAT-ID>` or
 
-Command                         | Arguments                                                                                                                | Alias             | Description                          |
---------------------------------|--------------------------------------------------------------------------------------------------------------------------|-------------------|--------------------------------------|
-`key`                           | `<API-KEY>` for set empty for get <br /> remove key with `""` or with `delete` command                                   | `-k`              | Set or get API key.                  |
-`me`                            | /                                                                                                                        | `-i`              | Gets the current user.               |
-`limits`                        | /                                                                                                                        | `-x`              | Gets the API rate limits.            |
-`push` or `text`                | `<TEXT>` or `<TITLE> <TEXT>` <br /> `"Hello"` or `"Hello" "World!"`                                                      | `-p`, `-t`        | Push text to all devices.            |
-`link` or `url` or `link`       | `<URL>` or `<URL> <TITLE>` or `<URL> <TITLE> <TEXT>` <br/> `http://pushbullet.com "Title of link" "Description of link"` | `-u`              | Push a link to all devices.          |
-`pushes`                        | `<LIMIT>` <br /> `5`                                                                                                     | `-ps`             | List last e.g. 5 pushes.             |
-`delete` or `--del`             | Delete push (`push`, `-p`) and iden <br /> e.g.: `ujyLNXNNKHAsjxrgo17lyF` <br />                                         | `-d`              | Delete push object with iden.        |
-`chat`, `subscription`, `device`| Delete (`delete`) chat / subscription `chat` / `subscription` / `device` with iden `ujyLNXNNKHAsjxrgo17lyF`              | `-c` / `-s` / `-d`| Delete chat / subscription with iden.|
-`devices`                       | List devices associated to the PB account.                                                                               | `-ds`             | List devices.                        |
+Delete subscription:
+`> pb delete subscription <SUBSCRIPTION-ID>` or
+`> pb -d -s <SUBSCRIPTION-ID>` or
+
+
