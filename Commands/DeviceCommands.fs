@@ -9,10 +9,10 @@ module DeviceCommands =
     let list =
 
         let formatDevice (d: DataResponse.Devicis) =
-            $"{d.Nickname}, ID: {d.Iden}"
+            $"({d.Iden}) {d.Nickname}"
 
         try
-            Http.RequestString($"{CommandHelper.BaseUrl}/devices", headers = SystemCommands.header, query = [("active", "true")]) 
+            Http.RequestString($"{CommandHelper.BaseUrl}/devices", headers = SystemCommands.getHeader(), query = [("active", "true")]) 
             |> DataResponse.Parse
             |> fun r -> r.Devices
             |> Array.map formatDevice
@@ -22,7 +22,7 @@ module DeviceCommands =
 
     let delete id =
         try
-            Http.RequestString($"{CommandHelper.BaseUrl}/devices/{id}", httpMethod = "DELETE", headers = SystemCommands.header) |> ignore
+            Http.RequestString($"{CommandHelper.BaseUrl}/devices/{id}", httpMethod = "DELETE", headers = SystemCommands.getHeader()) |> ignore
             "Device deleted!"
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> CommandHelper.formatException

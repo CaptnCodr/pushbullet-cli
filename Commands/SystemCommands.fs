@@ -8,27 +8,28 @@ module SystemCommands =
 
     [<Literal>]
     let PushbulletKey = "PUSHBULLET_KEY"
-
-    let getKey =
+    
+    let getKey() =
         Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User)
-
+        
     let setKey key =
         Environment.SetEnvironmentVariable(PushbulletKey, key, EnvironmentVariableTarget.User)
 
-    let deleteKey =
+    let deleteKey() =
         Environment.SetEnvironmentVariable(PushbulletKey, "", EnvironmentVariableTarget.User)
 
-    let header = [("Access-Token", getKey); (HttpRequestHeaders.ContentType "application/json")]
+    let getHeader() = 
+        [("Access-Token", getKey()); (HttpRequestHeaders.ContentType "application/json")]
 
     let getMe () =
         try
-            Http.RequestString($"{CommandHelper.BaseUrl}/users/me", httpMethod = "GET", headers = header) |> CommandHelper.prettifyJson
+            Http.RequestString($"{CommandHelper.BaseUrl}/users/me", httpMethod = "GET", headers = getHeader()) |> CommandHelper.prettifyJson
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> CommandHelper.formatException
 
     let getLimits () =
         try
-            let response = Http.Request($"{CommandHelper.BaseUrl}/users/me", httpMethod = "GET", headers = header)
+            let response = Http.Request($"{CommandHelper.BaseUrl}/users/me", httpMethod = "GET", headers = getHeader())
             let limit = response.Headers.["X-Ratelimit-Limit"]
             let remaining = response.Headers.["X-Ratelimit-Remaining"]
             let dt = response.Headers.["X-Ratelimit-Reset"] |> int64 |> DateTimeOffset.FromUnixTimeSeconds |> fun d -> d.ToString("dd.MM.yyyy HH:mm")

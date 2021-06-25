@@ -12,7 +12,7 @@ module ChatCommands =
             $"With: {c.With.Email}"
 
         try
-            Http.RequestString($"{CommandHelper.BaseUrl}/chats", headers = SystemCommands.header, query = [("active", "true")])
+            Http.RequestString($"{CommandHelper.BaseUrl}/chats", headers = SystemCommands.getHeader(), query = [("active", "true")])
             |> DataResponse.Parse
             |> fun r -> r.Chats
             |> Array.map formatChat
@@ -22,7 +22,7 @@ module ChatCommands =
 
     let delete id =
         try
-            Http.RequestString($"{CommandHelper.BaseUrl}/chats/{id}", httpMethod = "DELETE", headers = SystemCommands.header) |> ignore
+            Http.RequestString($"{CommandHelper.BaseUrl}/chats/{id}", httpMethod = "DELETE", headers = SystemCommands.getHeader()) |> ignore
             "Chat deleted!"
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> CommandHelper.formatException

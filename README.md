@@ -1,12 +1,12 @@
 # Pushbullet CLI
 
-## Setup
+## 1. Setup
 
 Set application's path in system's environment "Path" variables.
 
-## Usings
+## 2. Usings
 
-### `key`
+### 2.1 `key`
 
 First of all, create your API key from [Pushbullet](http://pushbullet.com) and set it using:
 
@@ -18,7 +18,7 @@ Get API-Key:
 
 <br />
 
-### Meta data
+### 2.2 Meta data
 
 Get your push limits:
 
@@ -35,7 +35,7 @@ Get your profile data:
 
 <br />
 
-### `push` / `text` / `link` / `url`
+### 2.3 `push` / `text` / `link` / `url`
 
 Then you're able to push text to your devices (different writing styles):
 
@@ -62,7 +62,7 @@ You can drop arguments by pass an empty string like:
 
 <br />
 
-### List things (changes in some time)
+### 2.4 List things (changes in some time)
 
 Show your last 3 pushes:
 
@@ -95,7 +95,38 @@ Show all your subscriptions:
 
 <br />
 
-### `delete`
+### 2.5 `list` (as in 2.4)
+
+Show your last 3 pushes:
+
+`> pb list pushes 3` or
+
+`> pb list -p` (retuns last push)
+
+<br />
+Show all your devices:
+
+`> pb list devices` or
+
+`> pb list -d`
+
+<br />
+Show all your chats:
+
+`> pb list chats` or
+
+`> pb list -c`
+
+<br />
+Show all your subscriptions:
+
+`> pb list subscriptions` or
+
+`> pb list -s`
+
+<br />
+
+### 2.6 `delete`
 
 Delete configured api key:
 
@@ -108,7 +139,7 @@ Delete specific push with different writing styles:
 
 `> pb --del push <PUSH-ID>` or
 
-`> pb delete -p <PUSH-ID>`
+`> pb delete -p <PUSH-ID>` or
 
 `> pb -d -p <PUSH-ID>`
 
@@ -117,20 +148,18 @@ Delete device:
 
 `> pb delete device <DEVICE-ID>` or
 
-`> pb -d -d <DEVICE-ID>` or
+`> pb -d -d <DEVICE-ID>`
 
 <br />
 Delete chat:
 
 `> pb delete chat <CHAT-ID>` or
 
-`> pb -d -c <CHAT-ID>` or
+`> pb -d -c <CHAT-ID>`
 
 <br />
 Delete subscription:
 
 `> pb delete subscription <SUBSCRIPTION-ID>` or
 
-`> pb -d -s <SUBSCRIPTION-ID>` or
-
-
+`> pb -d -s <SUBSCRIPTION-ID>`

@@ -31,6 +31,7 @@ module Program =
         | ListChats
         | DeleteChat of string
         | ListSubscriptions
+        | ChannelInfo of string
         | DeleteSubscription of string
         | Error of Errors
         | None
@@ -65,6 +66,19 @@ module Program =
             DeleteKey
         | _ -> None
 
+    let listArgument (args: string[]) =
+        match args.[1] with
+        | "pushes" | "-p" ->
+            if args.Length > 1
+            then ListPushes (args.[2] |> int) else ListPushes 0
+        | "devices" | "-d" ->
+            ListDevices
+        | "chats" | "-c" ->
+            ListChats
+        | "subscriptions" | "-s" ->
+            ListSubscriptions
+        | _ -> None
+
     let findBaseCommand (args: string[]) : Command =
         if args.Length > 0 then
             match args.[0] with
@@ -95,6 +109,10 @@ module Program =
                 ListChats
             | "subscriptions" | "subs" | "-s" ->
                 ListSubscriptions
+            | "channelinfo" | "-ci" ->
+                ChannelInfo args.[1]
+            | "list" | "-l" ->
+                listArgument args
             /// Add more commands.
             | _ -> None
         else
@@ -102,9 +120,9 @@ module Program =
 
     let followCommands command =
         match command with
-        | GetKey -> SystemCommands.getKey
+        | GetKey -> SystemCommands.getKey()
         | SetKey k -> SystemCommands.setKey k; "Key set!"
-        | DeleteKey -> SystemCommands.deleteKey; "Key deleted!"
+        | DeleteKey -> SystemCommands.deleteKey(); "Key deleted!"
         | GetMe -> SystemCommands.getMe()
         | GetLimits -> SystemCommands.getLimits()
 
@@ -121,6 +139,7 @@ module Program =
         | DeleteChat c -> ChatCommands.delete c
 
         | ListSubscriptions -> SubscriptionCommands.list
+        | ChannelInfo t -> SubscriptionCommands.channelInfo t
         | DeleteSubscription d -> SubscriptionCommands.delete d
 
         | Error e -> e.GetMessage()
@@ -131,7 +150,7 @@ module Program =
 
         let command = findBaseCommand argv
 
-        let breakup = SystemCommands.getKey = "" && not(command.IsSetKeyCommand)
+        let breakup = not(command.IsSetKeyCommand) && SystemCommands.getKey() = ""
 
         if not breakup then
             followCommands command |> Console.WriteLine

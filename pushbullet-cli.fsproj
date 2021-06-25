@@ -11,6 +11,7 @@
   <ItemGroup>
     <Content Include="Data\Error.json" />
     <Content Include="Data\DataLists.json" />
+    <Content Include="Data\ChannelInfoData.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHelper.fs" />

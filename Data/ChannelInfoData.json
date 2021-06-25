@@ -1,0 +1,24 @@
+﻿{
+  "iden": "ujxPklLhvyKsjAsYUxjwho",
+  "name": "Pushbullet Updates",
+  "tag": "pushbullet",
+  "description": "Keep up with Pushbullet news and updates.",
+  "image_url": "https://static.pushbullet.com/channel/a39582ea55cc4d192a11fdd35cb93e2ca57a8373bed356d39248710018542826",
+  "website_url": "https://www.pushbullet.com",
+  "subscriber_count": 68841,
+  "recent_pushes": [
+    {
+      "active": true,
+      "created": 1589559448.111837,
+      "modified": 1589559448.111837,
+      "type": "link",
+      "dismissed": false,
+      "direction": "incoming",
+      "sender_name": "Pushbullet Updates",
+      "channel_iden": "ujxPklLhvyKsjAsYUxjwho",
+      "title": "Our Chrome Extension Is Safe",
+      "body": "Let’s get the good news out there right away. Our extension has been approved!",
+      "url": "https://blog.pushbullet.com/2020/05/15/our-extension-is-safe/"
+    }
+  ]
+}
