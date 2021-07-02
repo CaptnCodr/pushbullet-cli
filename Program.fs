@@ -10,10 +10,12 @@ module Program =
 
     type Errors =
         | NotEnoughArguments
+        | ArrayIndexNotFound
 
         member this.GetMessage () =
             match this with
             | NotEnoughArguments -> "Not enough arguments!"
+            | ArrayIndexNotFound -> "Index of array not found!"
 
     type Command =
         | GetKey
@@ -21,12 +23,13 @@ module Program =
         | DeleteKey
         | GetMe
         | GetLimits
-        | PushText of string
-        | PushNote of string option * string option
-        | PushLink of string * string option * string option
+        | PushText of string * string option
+        | PushNote of string option * string option * string option
+        | PushLink of string * string option * string option * string option
         | ListPushes of int
         | DeletePush of string
         | ListDevices
+        | GetDevice of int
         | DeleteDevice of string
         | ListChats
         | DeleteChat of string
@@ -37,6 +40,35 @@ module Program =
         | None
 
         member this.IsSetKeyCommand = match this with | SetKey _ -> true | _ -> false
+
+    
+    let followCommands command =
+        match command with
+        | GetKey -> SystemCommands.getKey()
+        | SetKey k -> SystemCommands.setKey k; "Key set!"
+        | DeleteKey -> SystemCommands.deleteKey(); "Key deleted!"
+        | GetMe -> SystemCommands.getMe()
+        | GetLimits -> SystemCommands.getLimits()
+
+        | PushText (t, d) -> PushCommands.pushText t d
+        | PushNote (t, b, d) -> PushCommands.pushNote t b d
+        | PushLink (u, t, b, d) -> PushCommands.pushLink u t b d
+        | ListPushes l -> PushCommands.list l
+        | DeletePush p -> PushCommands.delete p
+
+        | ListDevices -> DeviceCommands.list
+        | GetDevice i -> DeviceCommands.getDeviceId i
+        | DeleteDevice d -> DeviceCommands.delete d
+
+        | ListChats -> ChatCommands.list
+        | DeleteChat c -> ChatCommands.delete c
+
+        | ListSubscriptions -> SubscriptionCommands.list
+        | ChannelInfo t -> SubscriptionCommands.channelInfo t
+        | DeleteSubscription d -> SubscriptionCommands.delete d
+
+        | Error e -> e.GetMessage()
+        | _ -> "Command not found!"
 
     let getLinkParams (args: string[]) =
         let url = args |> Array.tryItem 0
@@ -89,15 +121,29 @@ module Program =
             | "me" | "-i" -> GetMe
             | "limits" | "-x" -> GetLimits
             | "push" | "-p" | "-t" | "text" ->
-                if args.Length = 2 then
-                    PushText args.[1]
-                else if args.Length = 3 then
-                    PushNote (args.[1].ToOption(), args.[2].ToOption())
-                else Error NotEnoughArguments
+                if args.[1] = "-d" || args.[1] = "device" then
+                    let id = GetDevice (args.[2] |> int) |> followCommands
+                    if args.Length = 4 then
+                        PushText (args.[3], id.ToOption())
+                    else if args.Length = 5 then
+                        PushNote (args.[3].ToOption(), args.[4].ToOption(), id.ToOption())
+                    else Error NotEnoughArguments
+                else
+                    if args.Length = 2 then
+                        PushText (args.[1], Option.None)
+                    else if args.Length = 3 then
+                        PushNote (args.[1].ToOption(), args.[2].ToOption(), Option.None)
+                    else Error NotEnoughArguments
             | "link" | "-u" | "url" ->
-                if args.Length > 1 then
-                    PushLink (args.[1..] |> getLinkParams)
-                else Error NotEnoughArguments
+                if args.[1] = "-d" || args.[1] = "device" then
+                    let id = GetDevice (args.[2] |> int) |> followCommands
+                    let (a, b, c) = (args.[3..] |> getLinkParams)
+                    PushLink (a, b, c, id.ToOption())
+                else
+                    if args.Length > 1 then
+                        let (a, b, c) = (args.[1..] |> getLinkParams)
+                        PushLink (a, b, c, Option.None)
+                    else Error NotEnoughArguments
             | "pushes" | "-ps" ->
                 if args.Length > 1
                 then ListPushes (args.[1] |> int) else ListPushes 0
@@ -118,32 +164,6 @@ module Program =
         else
             None
 
-    let followCommands command =
-        match command with
-        | GetKey -> SystemCommands.getKey()
-        | SetKey k -> SystemCommands.setKey k; "Key set!"
-        | DeleteKey -> SystemCommands.deleteKey(); "Key deleted!"
-        | GetMe -> SystemCommands.getMe()
-        | GetLimits -> SystemCommands.getLimits()
-
-        | PushText t -> PushCommands.pushText t
-        | PushNote (t, b) -> PushCommands.pushNote t b
-        | PushLink (u, t, b) -> PushCommands.pushLink u t b
-        | ListPushes l -> PushCommands.list l
-        | DeletePush p -> PushCommands.delete p
-
-        | ListDevices -> DeviceCommands.list
-        | DeleteDevice d -> DeviceCommands.delete d
-
-        | ListChats -> ChatCommands.list
-        | DeleteChat c -> ChatCommands.delete c
-
-        | ListSubscriptions -> SubscriptionCommands.list
-        | ChannelInfo t -> SubscriptionCommands.channelInfo t
-        | DeleteSubscription d -> SubscriptionCommands.delete d
-
-        | Error e -> e.GetMessage()
-        | _ -> "Command not found!"
 
     [<EntryPoint>]
     let main ([<ParamArray>] argv: string[]): int =

@@ -20,14 +20,15 @@ Get API-Key:
 
 ### 2.2 Meta data
 
-Get your push limits:
+#### 2.2.1 Get your push limits:
 
 `> pb limits` or
 
 `> pb -x`
 
 <br />
-Get your profile data:
+
+#### 2.2.2 Get your profile data:
 
 `> pb me` or
 
@@ -37,11 +38,11 @@ Get your profile data:
 
 ### 2.3 `push` / `text` / `link` / `url`
 
-Then you're able to push text to your devices (different writing styles):
+#### 2.3.1 Then you're able to push text to your devices (different writing styles):
 
 `> pb push "Hello world!"`
 
-`> pb -p "Hello world!"`
+`> pb -p http://pushbullet.com`
 
 `> pb text "Hello world!"`
 
@@ -54,7 +55,8 @@ or
 `> pb url http://pushbullet.com "Title of link" "Description of Link"`
 
 <br />
-You can drop arguments by pass an empty string like:
+
+#### 2.3.2 You can drop arguments by pass an empty string like:
 
 `> pb url http://pushbullet.com "" "Description of Link"`
 
@@ -62,30 +64,54 @@ You can drop arguments by pass an empty string like:
 
 <br />
 
+#### 2.3.3 Push to specific device (`-d` / `device`):
+(2.4.2 / 2.5.2 return devices with indexes)
+
+`> pb push device 0 "Hello world!"`
+
+`> pb -p -d 1 http://pushbullet.com`
+
+`> pb text device 0 "Hello world!"`
+
+`> pb -t -d 1 "Hello world!"`
+
+or
+
+`> pb link -d 0 http://pushbullet.com "Title of link" "Description of Link"`
+
+`> pb url device 1 http://pushbullet.com "Title of link" "Description of Link"`
+
+( ... etc.)
+
+<br />
+
 ### 2.4 List things (changes in some time)
 
-Show your last 3 pushes:
+#### 2.4.1 Show your last 3 pushes:
 
 `> pb pushes 3` or
 
 `> pb -ps` (retuns last push)
 
 <br />
-Show all your devices:
+
+#### 2.4.2 Show all your devices:
 
 `> pb devices` or
 
 `> pb -ds`
 
 <br />
-Show all your chats:
+
+#### 2.4.3 Show all your chats:
 
 `> pb chats` or
 
 `> pb -cs`
 
 <br />
-Show all your subscriptions:
+
+#### 2.4.4 Show all your subscriptions:
 
 `> pb subscriptions` or
 
@@ -97,28 +123,31 @@ Show all your subscriptions:
 
 ### 2.5 `list` (as in 2.4)
 
-Show your last 3 pushes:
+#### 2.5.1 Show your last 3 pushes:
 
 `> pb list pushes 3` or
 
 `> pb list -p` (retuns last push)
 
 <br />
-Show all your devices:
+
+#### 2.5.2 Show all your devices:
 
 `> pb list devices` or
 
 `> pb list -d`
 
 <br />
-Show all your chats:
+
+#### 2.5.3 Show all your chats:
 
 `> pb list chats` or
 
 `> pb list -c`
 
 <br />
-Show all your subscriptions:
+
+#### 2.5.4 Show all your subscriptions:
 
 `> pb list subscriptions` or
 
@@ -128,14 +157,15 @@ Show all your subscriptions:
 
 ### 2.6 `delete`
 
-Delete configured api key:
+#### 2.6.1 Delete configured api key:
 
 `> pb delete key` or
 
 `> pb -d -k`
 
 <br />
-Delete specific push with different writing styles:
+
+#### 2.6.2 Delete specific push with different writing styles:
 
 `> pb --del push <PUSH-ID>` or
 
@@ -144,21 +174,24 @@ Delete specific push with different writing styles:
 `> pb -d -p <PUSH-ID>`
 
 <br />
-Delete device:
+
+#### 2.6.3 Delete device:
 
 `> pb delete device <DEVICE-ID>` or
 
 `> pb -d -d <DEVICE-ID>`
 
 <br />
-Delete chat:
+
+#### 2.6.4 Delete chat:
 
 `> pb delete chat <CHAT-ID>` or
 
 `> pb -d -c <CHAT-ID>`
 
 <br />
-Delete subscription:
+
+#### 2.6.5 Delete subscription:
 
 `> pb delete subscription <SUBSCRIPTION-ID>` or
 

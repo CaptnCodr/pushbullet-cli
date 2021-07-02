@@ -10,9 +10,9 @@ module PushCommands =
         
         let formatPush (p: DataResponse.Push) =
             if p.Type.Equals "link" then
-                $"URL: {p.Url.Value}{Environment.NewLine}{p.Body}"
+                $"URL: {p.Url.Value}{Environment.NewLine}    {p.Body}"
             else
-                $"{p.Body}"
+                $"({p.Type}) {p.Body}"
 
         let limit = if limit <= 0 then "1" else $"{limit}"
         try
@@ -38,15 +38,18 @@ module PushCommands =
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> CommandHelper.formatException
 
-    let pushText body =
-        {| Type = "note"; Body = body |} |> CommandHelper.toJson |> fun j -> push (j, "Push sent.")
+    let pushText body (device: string option) =
+        let device = if device.IsNone then null else device.Value
+        {| Type = "note"; Body = body; Device_iden = device |} |> CommandHelper.toJson |> fun j -> push (j, "Push sent.")
 
-    let pushNote (title: string option) (body: string option) =
+    let pushNote (title: string option) (body: string option) (device: string option) =
         let title = if title.IsNone then null else title.Value
         let body = if body.IsNone then null else body.Value
-        {| Type = "note"; Title = title; Body = body |} |> CommandHelper.toJson |> fun j -> push (j, "Push sent.")
+        let device = if device.IsNone then null else device.Value
+        {| Type = "note"; Title = title; Body = body; Device_iden = device |} |> CommandHelper.toJson |> fun j -> push (j, "Push sent.")
 
-    let pushLink (url: string) (title: string option) (body: string option) =
+    let pushLink (url: string) (title: string option) (body: string option) (device: string option) =
         let title = if title.IsNone then null else title.Value
         let body = if body.IsNone then null else body.Value
-        {| Type = "link"; Url = url; Title = title; Body = body |} |> CommandHelper.toJson |> fun j -> push (j, "Link sent.")
+        let device = if device.IsNone then null else device.Value
+        {| Type = "link"; Url = url; Title = title; Body = body; Device_iden = device |} |> CommandHelper.toJson |> fun j -> push (j, "Link sent.")
