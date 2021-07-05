@@ -12,11 +12,11 @@ module PushCommands =
             if p.Type.Equals "link" then
                 $"URL: {p.Url.Value}{Environment.NewLine}    {p.Body}"
             else
-                $"({p.Type}) {p.Body}"
+                $"[{p.Iden}] ({p.Type}) {p.Body}"
 
         let limit = if limit <= 0 then "1" else $"{limit}"
         try
-            Http.RequestString($"{CommandHelper.BaseUrl}/pushes", headers = SystemCommands.getHeader(), query = [("limit", limit)]) 
+            Http.RequestString($"{CommandHelper.BaseUrl}/pushes", headers = SystemCommands.getHeader(), query = [("limit", limit); ("active", "true")]) 
             |> DataResponse.Parse
             |> fun r -> r.Pushes
             |> Array.map formatPush
