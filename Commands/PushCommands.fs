@@ -10,9 +10,9 @@ module PushCommands =
         
         let formatPush (p: DataResponse.Push) =
             if p.Type.Equals "link" then
-                $"URL: {p.Url.Value}{Environment.NewLine}    {p.Body}"
+                $"[{p.Iden}] ({p.Type}) {p.Title}{Environment.NewLine}     URL: {p.Url.Value}{Environment.NewLine}     {p.Body}"
             else
-                $"[{p.Iden}] ({p.Type}) {p.Body}"
+                $"[{p.Iden}] ({p.Type}) {p.Title} {p.Body}"
 
         let limit = if limit <= 0 then "1" else $"{limit}"
         try

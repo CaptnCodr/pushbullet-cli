@@ -76,6 +76,11 @@ module Program =
         let body = args |> Array.tryItem 2
         (url.Value, title, body)
 
+    let getDeviceFromIndexOrDeviceId (device: string) : string =
+        match Int32.TryParse(device) with
+        | (true, result) -> GetDevice (result |> int) |> followCommands
+        | (false, _ ) -> device
+
     let delArgument (args: string[]) =
         match args.[1] with
         | "push" | "-p" ->
@@ -122,7 +127,7 @@ module Program =
             | "limits" | "-x" -> GetLimits
             | "push" | "-p" | "-t" | "text" ->
                 if args.[1] = "-d" || args.[1] = "device" then
-                    let id = GetDevice (args.[2] |> int) |> followCommands
+                    let id = args.[2] |> getDeviceFromIndexOrDeviceId
                     if args.Length = 4 then
                         PushText (args.[3], id.ToOption())
                     else if args.Length = 5 then

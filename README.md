@@ -65,7 +65,7 @@ or
 <br />
 
 #### 2.3.3 Push to specific device (`-d` / `device`):
-(2.4.2 / 2.5.2 return devices with indexes)
+(2.4.2 / 2.5.2 return devices with indexes and device_iden)
 
 `> pb push device 0 "Hello world!"`
 
@@ -74,6 +74,8 @@ or
 `> pb text device 0 "Hello world!"`
 
 `> pb -t -d 1 "Hello world!"`
+
+`> pb push device uy123456abcd "Hello world!"`
 
 or
 
