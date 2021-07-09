@@ -1,7 +1,6 @@
 namespace Pushbullet
 
 open System.IO
-open FSharp.Data
 open Newtonsoft.Json
 open Newtonsoft.Json.Linq
 open Newtonsoft.Json.Serialization
@@ -10,17 +9,6 @@ type LowercaseContractResolver () =
     inherit DefaultContractResolver ()
         override _.ResolvePropertyName (propertyName: string) =
             propertyName.ToLower()
-
-//Remove when fixed in dotnet-sdk
-module Workaround =
-    [<Literal>]
-    let refDir = __SOURCE_DIRECTORY__
-
-type DataResponse = JsonProvider<"./Data/DataLists.json", ResolutionFolder=Workaround.refDir>
-
-type ChannelInfoResponse = JsonProvider<"./Data/ChannelInfoData.json", ResolutionFolder=Workaround.refDir>
-
-type ErrorResponse = JsonProvider<"./Data/Error.json", ResolutionFolder=Workaround.refDir>
 
 module CommandHelper =
 
@@ -32,6 +20,9 @@ module CommandHelper =
         settings.NullValueHandling <- NullValueHandling.Ignore
         settings.ContractResolver <- (LowercaseContractResolver() :> IContractResolver)
         JsonConvert.SerializeObject(a, settings)
+
+    let toValue (value: string option) =
+        if value.IsNone then null else value.Value
 
     let prettifyJson json =
         json |> JToken.Parse |> string

@@ -1,47 +1,10 @@
 namespace Pushbullet
 
 open System
+open CommandTypes
 
 module Program =
 
-    type System.String with
-        member x.ToOption () =
-            if String.IsNullOrWhiteSpace x then None else Some x
-
-    type Errors =
-        | NotEnoughArguments
-        | ArrayIndexNotFound
-
-        member this.GetMessage () =
-            match this with
-            | NotEnoughArguments -> "Not enough arguments!"
-            | ArrayIndexNotFound -> "Index of array not found!"
-
-    type Command =
-        | GetKey
-        | SetKey of string
-        | DeleteKey
-        | GetMe
-        | GetLimits
-        | PushText of string * string option
-        | PushNote of string option * string option * string option
-        | PushLink of string * string option * string option * string option
-        | ListPushes of int
-        | DeletePush of string
-        | ListDevices
-        | GetDevice of int
-        | DeleteDevice of string
-        | ListChats
-        | DeleteChat of string
-        | ListSubscriptions
-        | ChannelInfo of string
-        | DeleteSubscription of string
-        | Error of Errors
-        | None
-
-        member this.IsSetKeyCommand = match this with | SetKey _ -> true | _ -> false
-
-    
     let followCommands command =
         match command with
         | GetKey -> SystemCommands.getKey()
@@ -56,14 +19,14 @@ module Program =
         | ListPushes l -> PushCommands.list l
         | DeletePush p -> PushCommands.delete p
 
-        | ListDevices -> DeviceCommands.list
+        | ListDevices -> DeviceCommands.list()
         | GetDevice i -> DeviceCommands.getDeviceId i
         | DeleteDevice d -> DeviceCommands.delete d
 
-        | ListChats -> ChatCommands.list
+        | ListChats -> ChatCommands.list()
         | DeleteChat c -> ChatCommands.delete c
 
-        | ListSubscriptions -> SubscriptionCommands.list
+        | ListSubscriptions -> SubscriptionCommands.list()
         | ChannelInfo t -> SubscriptionCommands.channelInfo t
         | DeleteSubscription d -> SubscriptionCommands.delete d
 
@@ -76,10 +39,15 @@ module Program =
         let body = args |> Array.tryItem 2
         (url.Value, title, body)
 
+    let (|Int|_|) str =
+       match Int32.TryParse(str:string) with
+       | (true,int) -> Some(int)
+       | _ -> Option.None
+
     let getDeviceFromIndexOrDeviceId (device: string) : string =
-        match Int32.TryParse(device) with
-        | (true, result) -> GetDevice (result |> int) |> followCommands
-        | (false, _ ) -> device
+        match device with
+        | Int i -> GetDevice (i |> int) |> followCommands
+        | _ -> device
 
     let delArgument (args: string[]) =
         match args.[1] with
@@ -106,8 +74,9 @@ module Program =
     let listArgument (args: string[]) =
         match args.[1] with
         | "pushes" | "-p" ->
-            if args.Length > 1
-            then ListPushes (args.[2] |> int) else ListPushes 0
+            if args.Length > 1 
+            then ListPushes (args.[2] |> int) 
+            else ListPushes 0
         | "devices" | "-d" ->
             ListDevices
         | "chats" | "-c" ->
@@ -151,7 +120,8 @@ module Program =
                     else Error NotEnoughArguments
             | "pushes" | "-ps" ->
                 if args.Length > 1
-                then ListPushes (args.[1] |> int) else ListPushes 0
+                then ListPushes (args.[1] |> int) 
+                else ListPushes 0
             | "delete" | "-d" | "--del" ->
                 delArgument args
             | "devices" | "-ds" ->
@@ -161,7 +131,9 @@ module Program =
             | "subscriptions" | "subs" | "-s" ->
                 ListSubscriptions
             | "channelinfo" | "-ci" ->
-                ChannelInfo args.[1]
+                if args.Length > 1
+                then ChannelInfo args.[1]
+                else Error NotEnoughArguments
             | "list" | "-l" ->
                 listArgument args
             /// Add more commands.
@@ -177,9 +149,8 @@ module Program =
 
         let breakup = not(command.IsSetKeyCommand) && SystemCommands.getKey() = ""
 
-        if not breakup then
-            followCommands command |> Console.WriteLine
-        else
-            Console.WriteLine("You have to set your API key with: \"key o.Abc12345xyz\" ")
+        if not breakup 
+        then followCommands command |> Console.WriteLine
+        else Console.WriteLine("You have to set your API key with: \"key o.Abc12345xyz\" ")
 
         0

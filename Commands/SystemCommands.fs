@@ -3,6 +3,7 @@ namespace Pushbullet
 open System
 open System.Net
 open FSharp.Data
+open CommandHelper
 
 module SystemCommands =
 
@@ -23,16 +24,16 @@ module SystemCommands =
 
     let getMe () =
         try
-            Http.RequestString($"{CommandHelper.BaseUrl}/users/me", httpMethod = "GET", headers = getHeader()) |> CommandHelper.prettifyJson
+            Http.RequestString($"{BaseUrl}/users/me", httpMethod = "GET", headers = getHeader()) |> prettifyJson
         with
-        | :? WebException as ex -> ex.Response.GetResponseStream() |> CommandHelper.formatException
+        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 
     let getLimits () =
         try
-            let response = Http.Request($"{CommandHelper.BaseUrl}/users/me", httpMethod = "GET", headers = getHeader())
+            let response = Http.Request($"{BaseUrl}/users/me", httpMethod = "GET", headers = getHeader())
             let limit = response.Headers.["X-Ratelimit-Limit"]
             let remaining = response.Headers.["X-Ratelimit-Remaining"]
             let dt = response.Headers.["X-Ratelimit-Reset"] |> int64 |> DateTimeOffset.FromUnixTimeSeconds |> fun d -> d.ToString("dd.MM.yyyy HH:mm")
             $"API-Limit: {limit},\nRemaining: {remaining},\nReset at:  {dt}"
         with
-        | :? WebException as ex -> ex.Response.GetResponseStream() |> CommandHelper.formatException
+        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException

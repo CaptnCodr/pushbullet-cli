@@ -14,6 +14,8 @@
     <Content Include="Data\ChannelInfoData.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Types.fs" />
+    <Compile Include="CommandTypes.fs" />
     <Compile Include="CommandHelper.fs" />
     <Compile Include="Commands/SystemCommands.fs" />
     <Compile Include="Commands/PushCommands.fs" />
