@@ -20,6 +20,7 @@ module Program =
         | DeletePush p -> PushCommands.delete p
 
         | ListDevices -> DeviceCommands.list()
+        | GetDeviceInfo s -> DeviceCommands.getDeviceInfo s
         | GetDevice i -> DeviceCommands.getDeviceId i
         | DeleteDevice d -> DeviceCommands.delete d
 
@@ -126,6 +127,12 @@ module Program =
                 delArgument args
             | "devices" | "-ds" ->
                 ListDevices
+            | "device" | "-di" ->
+                if args.Length > 1 then 
+                    let id = args.[1] |> getDeviceFromIndexOrDeviceId
+                    GetDeviceInfo id
+                else
+                    Error NotEnoughArguments
             | "chats" | "-cs" ->
                 ListChats
             | "subscriptions" | "subs" | "-s" ->

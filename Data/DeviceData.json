@@ -1,0 +1,12 @@
+﻿{
+  "active": true,
+  "iden": "ujyLNFNNKHAsjws0XAdoU7",
+  "created": 1619814355.7691689,
+  "modified": 1625256144.814583,
+  "nickname": "Some device",
+  "manufacturer": "Microsoft",
+  "model": "PC",
+  "app_version": 1337,
+  "pushable": true,
+  "icon": "laptop"
+}

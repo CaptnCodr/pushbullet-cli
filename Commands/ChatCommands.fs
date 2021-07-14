@@ -10,7 +10,7 @@ module ChatCommands =
     let list () =
         
         let formatChat (c: DataResponse.Chat) =
-            $"[{c.Iden}] {c.With.Type} With: {c.With.Email}"
+            $"[{c.Iden} at {c.Created |> unixTimestampToDateTime}] with: {c.With.Email} per {c.With.Type}"
 
         try
             Http.RequestString($"{BaseUrl}/chats", headers = SystemCommands.getHeader(), query = [("active", "true")])

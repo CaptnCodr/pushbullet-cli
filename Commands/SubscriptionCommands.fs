@@ -11,7 +11,7 @@ module SubscriptionCommands =
         try 
             Http.RequestString($"{BaseUrl}/channel-info", httpMethod = "GET", headers = SystemCommands.getHeader(), query = [("tag", tag)]) 
             |> ChannelInfoResponse.Parse
-            |> fun r -> $"[{r.Iden}] (Tag: {r.Tag}, Subscribers: {r.SubscriberCount}) {r.Name}: {r.Description}"
+            |> fun r -> $"[{r.Iden}]:\nTag: {r.Tag}\nSubscribers: {r.SubscriberCount}\nName: {r.Name}\nDescription: {r.Description}\nRecent push: {r.RecentPushes.[0].Created |> unixTimestampToDateTime}"
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 

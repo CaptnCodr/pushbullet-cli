@@ -9,9 +9,11 @@
     <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Data\Error.json" />
-    <Content Include="Data\DataLists.json" />
     <Content Include="Data\ChannelInfoData.json" />
+    <Content Include="Data\DataLists.json" />
+    <Content Include="Data\DeviceData.json" />
+    <Content Include="Data\Error.json" />
+    <Content Include="Data\UserData.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Types.fs" />

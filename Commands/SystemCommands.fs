@@ -24,7 +24,9 @@ module SystemCommands =
 
     let getMe () =
         try
-            Http.RequestString($"{BaseUrl}/users/me", httpMethod = "GET", headers = getHeader()) |> prettifyJson
+            Http.RequestString($"{BaseUrl}/users/me", httpMethod = "GET", headers = getHeader()) 
+            |> UserResponse.Parse
+            |> fun user -> $"[{user.Iden}]:\nname: {user.Name}\nemail: {user.EmailNormalized})\ncreated: {user.Created |> unixTimestampToDateTime}\nmodified: {user.Modified |> unixTimestampToDateTime}"
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 

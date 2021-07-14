@@ -105,7 +105,15 @@ or
 
 <br />
 
-#### 2.4.3 Show all your chats:
+### 2.4.3 Information about device:
+device_iden / index: as showed in 2.4.2
+`> pb device [device_iden]` or
+
+`> pb -di [index]`
+
+<br />
+
+#### 2.4.4 Show all your chats:
 
 `> pb chats` or
 
@@ -113,7 +121,7 @@ or
 
 <br />
 
-#### 2.4.4 Show all your subscriptions:
+#### 2.4.5 Show all your subscriptions:
 
 `> pb subscriptions` or
 

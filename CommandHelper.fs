@@ -1,8 +1,8 @@
 namespace Pushbullet
 
+open System
 open System.IO
 open Newtonsoft.Json
-open Newtonsoft.Json.Linq
 open Newtonsoft.Json.Serialization
 
 type LowercaseContractResolver () =
@@ -24,10 +24,10 @@ module CommandHelper =
     let toValue (value: string option) =
         if value.IsNone then null else value.Value
 
-    let prettifyJson json =
-        json |> JToken.Parse |> string
-
     let formatException (stream: Stream) =
         new StreamReader(stream) 
         |> fun r -> r.ReadToEnd() 
         |> ErrorResponse.Parse |> fun e -> $"{e.ErrorCode}: {e.Error.Message} {e.Error.Cat}"
+
+    let unixTimestampToDateTime (timestamp: decimal) =
+        DateTimeOffset.FromUnixTimeSeconds(timestamp |> int64).LocalDateTime
