@@ -105,8 +105,8 @@ or
 
 <br />
 
-### 2.4.3 Information about device:
-device_iden / index: as showed in 2.4.2
+#### 2.4.3 Information about device:
+(2.4.2 / 2.5.2 return devices with indexes and device_iden)
 `> pb device [device_iden]` or
 
 `> pb -di [index]`
