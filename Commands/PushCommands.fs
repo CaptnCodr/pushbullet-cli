@@ -49,3 +49,11 @@ module PushCommands =
     let pushLink (url: string) (title: string option) (body: string option) (device: string option) =
         {| Type = "link"; Url = url; Title = title |> toValue; Body = body |> toValue; 
             Device_iden = device |> toValue |} |> toJson |> fun j -> push (j, "Link sent.")
+
+    let pushClip body =
+        try
+            let json = {| Push = {| Body = body; Type = "clip" |}; Type = "push" |} |> toJson
+            Http.RequestString($"{BaseUrl}/ephemerals", httpMethod = "POST", headers = SystemCommands.getHeader(), body = TextRequest json) |> ignore
+            "Clip Sent."
+        with
+        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException

@@ -8,14 +8,15 @@ module Program =
     let followCommands command =
         match command with
         | GetKey -> SystemCommands.getKey()
-        | SetKey k -> SystemCommands.setKey k; "Key set!"
-        | DeleteKey -> SystemCommands.deleteKey(); "Key deleted!"
+        | SetKey k -> SystemCommands.setKey k
+        | DeleteKey -> SystemCommands.deleteKey()
         | GetMe -> SystemCommands.getMe()
         | GetLimits -> SystemCommands.getLimits()
 
         | PushText (t, d) -> PushCommands.pushText t d
         | PushNote (t, b, d) -> PushCommands.pushNote t b d
         | PushLink (u, t, b, d) -> PushCommands.pushLink u t b d
+        | PushClip c -> PushCommands.pushClip c
         | ListPushes l -> PushCommands.list l
         | DeletePush p -> PushCommands.delete p
 
@@ -119,6 +120,11 @@ module Program =
                         let (a, b, c) = (args.[1..] |> getLinkParams)
                         PushLink (a, b, c, Option.None)
                     else Error NotEnoughArguments
+
+            | "clip" | "cb" | "-c" ->
+                if args.Length > 1
+                then PushClip args.[1]
+                else Error NotEnoughArguments
             | "pushes" | "-ps" ->
                 if args.Length > 1
                 then ListPushes (args.[1] |> int) 

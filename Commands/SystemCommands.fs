@@ -15,9 +15,11 @@ module SystemCommands =
         
     let setKey key =
         Environment.SetEnvironmentVariable(PushbulletKey, key, EnvironmentVariableTarget.User)
+        "Key set!"
 
     let deleteKey() =
         Environment.SetEnvironmentVariable(PushbulletKey, "", EnvironmentVariableTarget.User)
+        "Key deleted!"
 
     let getHeader() = 
         [("Access-Token", getKey()); (HttpRequestHeaders.ContentType "application/json")]
