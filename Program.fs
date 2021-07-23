@@ -43,32 +43,32 @@ module Program =
         (url.Value, title, body)
 
     let (|Int|_|) str =
-       match Int32.TryParse(str:string) with
+       match Int32.TryParse(str: string) with
        | (true,int) -> Some(int)
        | _ -> Option.None
 
     let getDeviceFromIndexOrDeviceId (device: string) : string =
         match device with
-        | Int i -> GetDevice (i |> int) |> followCommands
+        | Int i -> i |> GetDevice |> followCommands
         | _ -> device
 
     let delArgument (args: string[]) =
         match args.[1] with
         | "push" | "-p" ->
-            if args.Length > 2
-            then DeletePush (args.[2])
+            if args.Length > 2 then 
+                args.[2] |> DeletePush
             else Error NotEnoughArguments
         | "chat" | "-c" ->
-            if args.Length > 2
-            then DeleteChat (args.[2])
+            if args.Length > 2 then 
+                args.[2] |> DeleteChat
             else Error NotEnoughArguments
         | "device" | "-d" ->
-            if args.Length > 2
-            then DeleteDevice (args.[2])
+            if args.Length > 2 then 
+                args.[2] |> DeleteDevice
             else Error NotEnoughArguments
         | "subscription" | "-s" ->
-            if args.Length > 2
-            then DeleteSubscription (args.[2])
+            if args.Length > 2 then 
+                args.[2] |> DeleteSubscription
             else Error NotEnoughArguments
         | "key" | "-k" ->
             DeleteKey
@@ -77,8 +77,8 @@ module Program =
     let listArgument (args: string[]) =
         match args.[1] with
         | "pushes" | "-p" ->
-            if args.Length > 1 
-            then ListPushes (args.[2] |> int) 
+            if args.Length > 1 then 
+                args.[2] |> int |> ListPushes 
             else ListPushes 0
         | "devices" | "-d" ->
             ListDevices
@@ -92,8 +92,8 @@ module Program =
         if args.Length > 0 then
             match args.[0] with
             | "key" | "-k" ->
-                if args.Length > 1
-                then SetKey args.[1]
+                if args.Length > 1 then 
+                    args.[1] |> SetKey
                 else GetKey
             | "me" | "-i" -> GetMe
             | "limits" | "-x" -> GetLimits
@@ -102,13 +102,13 @@ module Program =
                     let id = args.[2] |> getDeviceFromIndexOrDeviceId
                     if args.Length = 4 then
                         PushText (args.[3], id.ToOption())
-                    else if args.Length = 5 then
+                    elif args.Length = 5 then
                         PushNote (args.[3].ToOption(), args.[4].ToOption(), id.ToOption())
                     else Error NotEnoughArguments
                 else
                     if args.Length = 2 then
                         PushText (args.[1], Option.None)
-                    else if args.Length = 3 then
+                    elif args.Length = 3 then
                         PushNote (args.[1].ToOption(), args.[2].ToOption(), Option.None)
                     else Error NotEnoughArguments
             | "link" | "-u" | "url" ->
@@ -121,52 +121,47 @@ module Program =
                         let (a, b, c) = (args.[1..] |> getLinkParams)
                         PushLink (a, b, c, Option.None)
                     else Error NotEnoughArguments
-
             | "clip" | "-c" ->
-                if args.Length > 1
-                then PushClip args.[1]
+                if args.Length > 1 then 
+                    args.[1] |> PushClip
                 else Error NotEnoughArguments
             | "pushes" | "-ps" ->
-                if args.Length > 1
-                then ListPushes (args.[1] |> int) 
+                if args.Length > 1 then 
+                    args.[1] |> int |> ListPushes 
                 else ListPushes 0
             | "delete" | "-d" | "--del" ->
-                delArgument args
+                args |> delArgument
             | "devices" | "-ds" ->
                 ListDevices
             | "device" | "-di" ->
                 if args.Length > 1 then 
-                    let id = args.[1] |> getDeviceFromIndexOrDeviceId
-                    GetDeviceInfo id
-                else
-                    Error NotEnoughArguments
+                    args.[1] |> getDeviceFromIndexOrDeviceId |> GetDeviceInfo
+                else Error NotEnoughArguments
             | "chats" | "-cs" ->
                 ListChats
             | "subscriptions" | "subs" | "-s" ->
                 ListSubscriptions
             | "channelinfo" | "-ci" ->
-                if args.Length > 1
-                then ChannelInfo args.[1]
+                if args.Length > 1 then 
+                    args.[1] |> ChannelInfo
                 else Error NotEnoughArguments
             | "list" | "-l" ->
-                listArgument args
+                args |> listArgument
             | "help" | "-h" ->
                 Help
-            /// Add more commands.
             | _ -> None
         else
             None
 
-
     [<EntryPoint>]
     let main ([<ParamArray>] argv: string[]): int =
 
-        let command = findBaseCommand argv
+        let command = argv |> findBaseCommand
 
         let breakup = not(command.IsSetKeyCommand) && SystemCommands.getKey() = ""
 
-        if not breakup 
-        then followCommands command |> Console.WriteLine
-        else Console.WriteLine("You have to set your API key with: \"key o.Abc12345xyz\" ")
-
+        if not breakup then 
+            command |> followCommands |> Console.WriteLine
+        else 
+            Console.WriteLine("You have to set your API key with: \"key o.Abc12345xyz\" ")
         0

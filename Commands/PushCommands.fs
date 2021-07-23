@@ -7,8 +7,7 @@ open CommandHelper
 
 module PushCommands =
 
-    let list (limit: int) =
-        
+    let list (limit: int) =        
         let formatPush (p: DataResponse.Push) =
             if p.Type.Equals "link" then
                 $"[{p.Iden} at {p.Created |> unixTimestampToDateTime}] ({p.Type}) {p.Title}{Environment.NewLine}     URL: {p.Url.Value}{Environment.NewLine}     {p.Body}"

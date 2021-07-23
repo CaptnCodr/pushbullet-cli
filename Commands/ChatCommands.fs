@@ -7,8 +7,7 @@ open CommandHelper
 
 module ChatCommands =
 
-    let list () =
-        
+    let list () =        
         let formatChat (c: DataResponse.Chat) =
             $"[{c.Iden} at {c.Created |> unixTimestampToDateTime}] with: {c.With.Email} per {c.With.Type}"
 

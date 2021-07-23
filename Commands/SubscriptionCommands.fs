@@ -8,10 +8,17 @@ open CommandHelper
 module SubscriptionCommands =
 
     let channelInfo (tag: string) =
+
+        let formatInfo (info: ChannelInfoResponse.Root) =
+            if info.RecentPushes.Length > 0 then
+                $"[{info.Iden}]:\nTag: {info.Tag}\nSubscribers: {info.SubscriberCount}\nName: {info.Name}\nDescription: {info.Description}\nRecent push: {info.RecentPushes.[0].Created |> unixTimestampToDateTime}"
+            else 
+                $"[{info.Iden}]:\nTag: {info.Tag}\nSubscribers: {info.SubscriberCount}\nName: {info.Name}\nDescription: {info.Description}"
+
         try 
             Http.RequestString($"{BaseUrl}/channel-info", httpMethod = "GET", headers = SystemCommands.getHeader(), query = [("tag", tag)]) 
             |> ChannelInfoResponse.Parse
-            |> fun r -> $"[{r.Iden}]:\nTag: {r.Tag}\nSubscribers: {r.SubscriberCount}\nName: {r.Name}\nDescription: {r.Description}\nRecent push: {r.RecentPushes.[0].Created |> unixTimestampToDateTime}"
+            |> formatInfo
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 
