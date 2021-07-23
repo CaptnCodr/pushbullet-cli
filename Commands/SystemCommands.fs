@@ -41,3 +41,35 @@ module SystemCommands =
             $"API-Limit: {limit},\nRemaining: {remaining},\nReset at:  {dt}"
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+
+    let getHelp () =
+        "Syntax: pb [command] [subcommand] [arguments]
+        
+Commands:\n
+key | -k [api key]                    Set API key with argument. Show API key without argument.
+me | -i                               Get profile of configured API key.
+limits | -x                           Get rate limits.
+push | -p | text | -t [arguments]     Push text or note. Use push [device / -d] to push to a specific device.
+link | url | -u [arguments]           Push a link to device(s). Use push [device / -d] to push to a specific device.
+pushes | -ps [number]                 List [number] of pushes or else last push.
+devices | -ds                         Lists devices of current account. Including identifiers and indexes to identify.
+device | -di [iden / index]           Shows information about a device. Select with identifier or index shown in the [devices / -ds] command.
+chats | -cs                           List chats of current account.
+subscriptions | subs | -s             List subscriptions with channel tag of current account.
+channelinfo | -ci [tag]               Show information about a specific channel with channel tag as shown in [subscriptions / subs / -s].
+
+delete | -d | --del [subcommand]      Deletes an object:
+    push | -p [iden]                  Deletes a push using its iden.
+    device | -d [iden]                Deletes a device using its iden.
+    chat | -c [iden]                  Deletes a chat using its iden.
+    subscription | -s [iden]          Deletes a subscription using its iden.
+    key | -k                          Deletes the current configured API key
+
+list | -l [subcommand]                List objects:
+    pushes | -p                       Pushes. Same as [pushes / -ps]
+    devices | -d                      Devices. Same as [devices / -ds]
+    chats | -c                        Chats. Sames as [chats / -cs]
+    subscription | -s                 Subscriptions. Sames as [subscriptions / subs / -s]
+
+help | -h                             This list.
+"

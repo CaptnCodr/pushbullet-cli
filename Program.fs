@@ -12,6 +12,7 @@ module Program =
         | DeleteKey -> SystemCommands.deleteKey()
         | GetMe -> SystemCommands.getMe()
         | GetLimits -> SystemCommands.getLimits()
+        | Help -> SystemCommands.getHelp()
 
         | PushText (t, d) -> PushCommands.pushText t d
         | PushNote (t, b, d) -> PushCommands.pushNote t b d
@@ -33,7 +34,7 @@ module Program =
         | DeleteSubscription d -> SubscriptionCommands.delete d
 
         | Error e -> e.GetMessage()
-        | _ -> "Command not found!"
+        | _ -> "Command not found!\n\nUse:\npb help | -h \nto show commands."
 
     let getLinkParams (args: string[]) =
         let url = args |> Array.tryItem 0
@@ -121,7 +122,7 @@ module Program =
                         PushLink (a, b, c, Option.None)
                     else Error NotEnoughArguments
 
-            | "clip" | "cb" | "-c" ->
+            | "clip" | "-c" ->
                 if args.Length > 1
                 then PushClip args.[1]
                 else Error NotEnoughArguments
@@ -149,6 +150,8 @@ module Program =
                 else Error NotEnoughArguments
             | "list" | "-l" ->
                 listArgument args
+            | "help" | "-h" ->
+                Help
             /// Add more commands.
             | _ -> None
         else

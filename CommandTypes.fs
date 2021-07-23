@@ -23,6 +23,7 @@ module CommandTypes =
         | DeleteKey
         | GetMe
         | GetLimits
+        | Help
 
         | PushText of string * string option
         | PushNote of string option * string option * string option

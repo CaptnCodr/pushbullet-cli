@@ -6,6 +6,12 @@ Set application's path in system's environment "Path" variables.
 
 ## 2. Usings
 
+### 2.0 Get help to the commands
+
+`> pb help`
+
+`> pb -h`
+
 ### 2.1 `key`
 
 First of all, create your API key from [Pushbullet](http://pushbullet.com) and set it using:
@@ -53,6 +59,15 @@ or
 `> pb link http://pushbullet.com "Title of link" "Description of Link"`
 
 `> pb url http://pushbullet.com "Title of link" "Description of Link"`
+
+<br />
+
+#### 2.3.2 Push a clip
+
+`> pb clip http://pushbullet.com`
+
+`> pb -c http://pushbullet.com`
+
 
 <br />
 
