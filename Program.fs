@@ -1,6 +1,5 @@
 namespace Pushbullet
 
-open System
 open CommandTypes
 
 module Program =
@@ -43,7 +42,7 @@ module Program =
         (url.Value, title, body)
 
     let (|Int|_|) str =
-       match Int32.TryParse(str: string) with
+       match System.Int32.TryParse(str: string) with
        | (true,int) -> Some(int)
        | _ -> Option.None
 
@@ -97,7 +96,7 @@ module Program =
                 else GetKey
             | "me" | "-i" -> GetMe
             | "limits" | "-x" -> GetLimits
-            | "push" | "-p" | "-t" | "text" ->
+            | "push" | "-p" | "text" | "-t" ->
                 if args.[1] = "-d" || args.[1] = "device" then
                     let id = args.[2] |> getDeviceFromIndexOrDeviceId
                     if args.Length = 4 then
@@ -154,14 +153,14 @@ module Program =
             None
 
     [<EntryPoint>]
-    let main ([<ParamArray>] argv: string[]): int =
+    let main ([<System.ParamArray>] argv: string[]): int =
 
         let command = argv |> findBaseCommand
 
         let breakup = not(command.IsSetKeyCommand) && SystemCommands.getKey() = ""
 
         if not breakup then 
-            command |> followCommands |> Console.WriteLine
+            printfn $"{command |> followCommands}"
         else 
-            Console.WriteLine("You have to set your API key with: \"key o.Abc12345xyz\" ")
+            printfn "You have to set your API key with: \"key o.Abc12345xyz\""
         0
