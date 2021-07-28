@@ -12,7 +12,7 @@ module ChatCommands =
             $"[{c.Iden} at {c.Created |> unixTimestampToDateTime}] with: {c.With.Email} per {c.With.Type}"
 
         try
-            Http.RequestString($"{BaseUrl}/chats", headers = SystemCommands.getHeader(), query = [("active", "true")])
+            Http.RequestString($"{BaseUrl}/chats", headers = SystemCommands.getHeader(), query = [Actives])
             |> DataResponse.Parse
             |> fun r -> r.Chats
             |> Array.map formatChat

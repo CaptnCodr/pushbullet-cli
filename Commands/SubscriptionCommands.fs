@@ -8,7 +8,6 @@ open CommandHelper
 module SubscriptionCommands =
 
     let channelInfo (tag: string) =
-
         let formatInfo (info: ChannelInfoResponse.Root) =
             if info.RecentPushes.Length > 0 then
                 $"[{info.Iden}]:\nTag: {info.Tag}\nSubscribers: {info.SubscriberCount}\nName: {info.Name}\nDescription: {info.Description}\nRecent push: {info.RecentPushes.[0].Created |> unixTimestampToDateTime}"
@@ -23,12 +22,11 @@ module SubscriptionCommands =
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 
     let list () =
-
         let formatSubscription (s: DataResponse.Subscription) =
             $"(Tag: {s.Channel.Tag}) {s.Channel.Name}: {s.Channel.Description}"
 
         try
-            Http.RequestString($"{BaseUrl}/subscriptions", headers = SystemCommands.getHeader(), query = [("active", "true")]) 
+            Http.RequestString($"{BaseUrl}/subscriptions", headers = SystemCommands.getHeader(), query = [Actives]) 
             |> DataResponse.Parse
             |> fun r -> r.Subscriptions
             |> Array.map formatSubscription

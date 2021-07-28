@@ -10,12 +10,12 @@ module CommandTypes =
 
     type Errors =
         | NotEnoughArguments
-        | ArrayIndexNotFound
+        | ParameterNotANumber
 
         member this.GetMessage () =
             match this with
-            | NotEnoughArguments -> "Not enough arguments!"
-            | ArrayIndexNotFound -> "Index of array not found!"
+            | NotEnoughArguments -> "Not enough arguments!\n\nUse:\npb help | -h \nto show commands."
+            | ParameterNotANumber -> "Parameter is not a number!"
 
     type Command =
         | GetKey

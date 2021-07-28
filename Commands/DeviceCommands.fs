@@ -9,10 +9,10 @@ module DeviceCommands =
 
     let list () =
         try
-            Http.RequestString($"{BaseUrl}/devices", headers = SystemCommands.getHeader(), query = [("active", "true")]) 
+            Http.RequestString($"{BaseUrl}/devices", headers = SystemCommands.getHeader(), query = [Actives]) 
             |> DataResponse.Parse
             |> fun r -> r.Devices
-            |> fun a -> [for i in 0 .. a.Length - 1 do $"{i} [{a.[i].Iden}] {a.[i].Nickname}"]
+            |> Array.indexed |> Array.map (fun (i, e) -> $"{i} [{e.Iden}] {e.Nickname}")
             |> String.concat Environment.NewLine
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
@@ -27,10 +27,10 @@ module DeviceCommands =
 
     let getDeviceId (index: int) : string =
         try
-            Http.RequestString($"{BaseUrl}/devices", headers = SystemCommands.getHeader(), query = [("active", "true")]) 
+            Http.RequestString($"{BaseUrl}/devices", headers = SystemCommands.getHeader(), query = [Actives]) 
             |> DataResponse.Parse
             |> fun r -> r.Devices
-            |> fun a -> if a.Length > index then a.[index].Iden else ""
+            |> fun a -> if a.Length > index then a.[index].Iden else String.Empty
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 

@@ -15,6 +15,8 @@ module CommandHelper =
     [<Literal>]
     let BaseUrl = "https://api.pushbullet.com/v2"
 
+    let Actives = ("active", "true")
+
     let toJson a =
         let settings = JsonSerializerSettings()
         settings.NullValueHandling <- NullValueHandling.Ignore

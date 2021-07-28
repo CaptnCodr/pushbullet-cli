@@ -14,9 +14,8 @@ module PushCommands =
             else
                 $"[{p.Iden} at {p.Created |> unixTimestampToDateTime}] ({p.Type}) {p.Title} {p.Body}"
 
-        let limit = if limit <= 0 then "1" else $"{limit}"
         try
-            Http.RequestString($"{BaseUrl}/pushes", headers = SystemCommands.getHeader(), query = [("limit", limit); ("active", "true")]) 
+            Http.RequestString($"{BaseUrl}/pushes", headers = SystemCommands.getHeader(), query = [("limit", $"{limit}"); Actives]) 
             |> DataResponse.Parse
             |> fun r -> r.Pushes
             |> Array.map formatPush
@@ -43,7 +42,7 @@ module PushCommands =
 
     let pushNote (title: string option) (body: string option) (device: string option) =
         {| Type = "note"; Title = title |> toValue; Body = body |> toValue; 
-        Device_iden = device |> toValue |} |> toJson |> fun j -> push (j, "Push sent.")
+            Device_iden = device |> toValue |} |> toJson |> fun j -> push (j, "Push sent.")
 
     let pushLink (url: string) (title: string option) (body: string option) (device: string option) =
         {| Type = "link"; Url = url; Title = title |> toValue; Body = body |> toValue; 
