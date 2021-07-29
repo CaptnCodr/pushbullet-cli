@@ -17,7 +17,7 @@ module DeviceCommands =
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 
-    let getDeviceInfo (iden: string) =
+    let getDeviceInfo iden =
         try
             Http.RequestString($"{BaseUrl}/devices/{iden}", headers = SystemCommands.getHeader()) 
             |> DeviceResponse.Parse
@@ -25,7 +25,7 @@ module DeviceCommands =
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 
-    let getDeviceId (index: int) : string =
+    let getDeviceId index =
         try
             Http.RequestString($"{BaseUrl}/devices", headers = SystemCommands.getHeader(), query = [Actives]) 
             |> DataResponse.Parse

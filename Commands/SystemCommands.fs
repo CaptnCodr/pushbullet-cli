@@ -11,7 +11,9 @@ module SystemCommands =
     let PushbulletKey = "PUSHBULLET_KEY"
     
     let getKey() =
-        Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User)
+        match Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User) with
+        | null -> ""
+        | value -> value
         
     let setKey key =
         Environment.SetEnvironmentVariable(PushbulletKey, key, EnvironmentVariableTarget.User)

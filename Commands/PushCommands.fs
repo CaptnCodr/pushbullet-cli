@@ -7,7 +7,7 @@ open CommandHelper
 
 module PushCommands =
 
-    let list (limit: int) =        
+    let list limit =
         let formatPush (p: DataResponse.Push) =
             if p.Type.Equals "link" then
                 $"[{p.Iden} at {p.Created |> unixTimestampToDateTime}] ({p.Type}) {p.Title}{Environment.NewLine}     URL: {p.Url.Value}{Environment.NewLine}     {p.Body}"
@@ -23,30 +23,30 @@ module PushCommands =
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
         
-    let delete (id: string) =
+    let delete id =
         try
             Http.RequestString($"{BaseUrl}/pushes/{id}", httpMethod = "DELETE", headers = SystemCommands.getHeader()) |> ignore
             "Push deleted!"
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 
-    let push (json: string, message: string) =
+    let push (json: string) (message: string) =
         try
             Http.RequestString($"{BaseUrl}/pushes", httpMethod = "POST", headers = SystemCommands.getHeader(), body = TextRequest json) |> ignore
             message
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 
-    let pushText body (device: string option) =
-        {| Type = "note"; Body = body; Device_iden = device |> toValue |} |> toJson |> fun j -> push (j, "Push sent.")
+    let pushText body device =
+        {| Type = "note"; Body = body; Device_iden = device |> toValue |} |> toJson |> fun j -> push j "Push sent."
 
-    let pushNote (title: string option) (body: string option) (device: string option) =
+    let pushNote title body device =
         {| Type = "note"; Title = title |> toValue; Body = body |> toValue; 
-            Device_iden = device |> toValue |} |> toJson |> fun j -> push (j, "Push sent.")
+            Device_iden = device |> toValue |} |> toJson |> fun j -> push j "Push sent."
 
-    let pushLink (url: string) (title: string option) (body: string option) (device: string option) =
+    let pushLink url title body device =
         {| Type = "link"; Url = url; Title = title |> toValue; Body = body |> toValue; 
-            Device_iden = device |> toValue |} |> toJson |> fun j -> push (j, "Link sent.")
+            Device_iden = device |> toValue |} |> toJson |> fun j -> push j "Link sent."
 
     let pushClip body =
         try

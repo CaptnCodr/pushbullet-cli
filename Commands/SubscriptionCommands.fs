@@ -7,7 +7,7 @@ open CommandHelper
 
 module SubscriptionCommands =
 
-    let channelInfo (tag: string) =
+    let channelInfo tag =
         let formatInfo (info: ChannelInfoResponse.Root) =
             if info.RecentPushes.Length > 0 then
                 $"[{info.Iden}]:\nTag: {info.Tag}\nSubscribers: {info.SubscriberCount}\nName: {info.Name}\nDescription: {info.Description}\nRecent push: {info.RecentPushes.[0].Created |> unixTimestampToDateTime}"

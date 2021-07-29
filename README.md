@@ -66,7 +66,7 @@ or
 
 `> pb clip http://pushbullet.com`
 
-`> pb -c http://pushbullet.com`
+`> pb -cl http://pushbullet.com`
 
 
 <br />
@@ -221,3 +221,24 @@ or
 `> pb delete subscription <SUBSCRIPTION-ID>` or
 
 `> pb -d -s <SUBSCRIPTION-ID>`
+
+<br />
+
+### 2.7 `chat`
+
+#### 2.7.1 Create a new chat:
+
+`> pb chat someone@example.com` or
+
+`> pb -c someone@example.com`
+
+<br />
+
+#### 2.7.2 Mute / unmute a chat:
+
+MUTE possibilities: `mute` / `true` / `1` <br />
+UNMUTE possibilities: `unmute` / `false` / `0`
+
+`> pb chat <CHAT-ID> mute`
+
+`> pb -c <CHAT-ID> false`

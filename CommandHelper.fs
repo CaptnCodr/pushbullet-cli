@@ -23,6 +23,9 @@ module CommandHelper =
         settings.ContractResolver <- (LowercaseContractResolver() :> IContractResolver)
         JsonConvert.SerializeObject(a, settings)
 
+    let toOption x =
+        if String.IsNullOrWhiteSpace x then None else Some x
+
     let toValue (value: string option) =
         if value.IsNone then null else value.Value
 
