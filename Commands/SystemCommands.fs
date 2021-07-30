@@ -44,6 +44,16 @@ module SystemCommands =
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 
+    let listGrants () =
+        try
+            Http.RequestString($"{BaseUrl}/grants", httpMethod = "GET", headers = getHeader(), query = [Actives]) 
+            |> DataResponse.Parse
+            |> fun r -> r.Grants 
+            |> Array.map (fun grant -> $"[{grant.Iden}] {grant.Client.Name}, created: {grant.Created |> unixTimestampToDateTime}, modified: {grant.Modified |> unixTimestampToDateTime}")
+            |> String.concat Environment.NewLine
+        with
+        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+
     let getHelp () =
         "Syntax: pb [command] [subcommand] [arguments]
         
@@ -51,6 +61,7 @@ Commands:\n
 key | -k [api key]                    Set API key with argument. Show API key without argument.
 me | -i                               Get profile of configured API key.
 limits | -x                           Get rate limits.
+grants | -g                           Get grants that have access to your PB account.
 push | -p | text | -t [arguments]     Push text or note. Use push [device / -d] to push to a specific device.
 link | url | -u [arguments]           Push a link to device(s). Use push [device / -d] to push to a specific device.
 pushes | -ps [number]                 List [number] of pushes or else last push.
@@ -67,11 +78,4 @@ delete | -d | --del [subcommand]      Deletes an object:
     subscription | -s [iden]          Deletes a subscription using its iden.
     key | -k                          Deletes the current configured API key
 
-list | -l [subcommand]                List objects:
-    pushes | -p                       Pushes. Same as [pushes / -ps]
-    devices | -d                      Devices. Same as [devices / -ds]
-    chats | -c                        Chats. Sames as [chats / -cs]
-    subscription | -s                 Subscriptions. Sames as [subscriptions / subs / -s]
-
-help | -h                             This list.
-"
+help | -h                             This help."

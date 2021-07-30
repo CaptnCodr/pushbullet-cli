@@ -42,6 +42,14 @@ Get API-Key:
 
 <br />
 
+#### 2.2.3 Get grants that have access to your pushbullet account:
+
+`> pb grants` or
+
+`> pb -g`
+
+<br />
+
 ### 2.3 `push` / `text` / `link` / `url`
 
 #### 2.3.1 Then you're able to push text to your devices (different writing styles):
@@ -80,7 +88,7 @@ or
 <br />
 
 #### 2.3.3 Push to specific device (`-d` / `device`):
-(2.4.2 / 2.5.2 return devices with indexes and device_iden)
+(2.4.2 return devices with indexes and device_iden)
 
 `> pb push device 0 "Hello world!"`
 
@@ -102,7 +110,7 @@ or
 
 <br />
 
-### 2.4 List things (changes in some time)
+### 2.4 List things
 
 #### 2.4.1 Show your last 3 pushes:
 
@@ -121,10 +129,11 @@ or
 <br />
 
 #### 2.4.3 Information about device:
-(2.4.2 / 2.5.2 return devices with indexes and device_iden)
-`> pb device [device_iden]` or
+(2.4.2 return devices with indexes and device_iden)
 
-`> pb -di [index]`
+`> pb device <DEVICE_IDEN>` or
+
+`> pb -di <INDEX>`
 
 <br />
 
@@ -146,43 +155,9 @@ or
 
 <br />
 
-### 2.5 `list` (as in 2.4)
+### 2.5 `delete`
 
-#### 2.5.1 Show your last 3 pushes:
-
-`> pb list pushes 3` or
-
-`> pb list -p` (retuns last push)
-
-<br />
-
-#### 2.5.2 Show all your devices:
-
-`> pb list devices` or
-
-`> pb list -d`
-
-<br />
-
-#### 2.5.3 Show all your chats:
-
-`> pb list chats` or
-
-`> pb list -c`
-
-<br />
-
-#### 2.5.4 Show all your subscriptions:
-
-`> pb list subscriptions` or
-
-`> pb list -s`
-
-<br />
-
-### 2.6 `delete`
-
-#### 2.6.1 Delete configured api key:
+#### 2.5.1 Delete configured api key:
 
 `> pb delete key` or
 
@@ -190,7 +165,7 @@ or
 
 <br />
 
-#### 2.6.2 Delete specific push with different writing styles:
+#### 2.5.2 Delete specific push with different writing styles:
 
 `> pb --del push <PUSH-ID>` or
 
@@ -200,7 +175,7 @@ or
 
 <br />
 
-#### 2.6.3 Delete device:
+#### 2.5.3 Delete device:
 
 `> pb delete device <DEVICE-ID>` or
 
@@ -208,7 +183,7 @@ or
 
 <br />
 
-#### 2.6.4 Delete chat:
+#### 2.5.4 Delete chat:
 
 `> pb delete chat <CHAT-ID>` or
 
@@ -216,7 +191,7 @@ or
 
 <br />
 
-#### 2.6.5 Delete subscription:
+#### 2.5.5 Delete subscription:
 
 `> pb delete subscription <SUBSCRIPTION-ID>` or
 
@@ -224,9 +199,9 @@ or
 
 <br />
 
-### 2.7 `chat`
+### 2.6 `chat`
 
-#### 2.7.1 Create a new chat:
+#### 2.6.1 Create a new chat:
 
 `> pb chat someone@example.com` or
 
@@ -234,7 +209,7 @@ or
 
 <br />
 
-#### 2.7.2 Mute / unmute a chat:
+#### 2.6.2 Mute / unmute a chat:
 
 MUTE possibilities: `mute` / `true` / `1` <br />
 UNMUTE possibilities: `unmute` / `false` / `0`

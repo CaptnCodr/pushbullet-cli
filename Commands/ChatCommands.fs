@@ -8,14 +8,11 @@ open CommandHelper
 module ChatCommands =
 
     let list () =
-        let formatChat (c: DataResponse.Chat) =
-            $"[{c.Iden}] with: {c.With.Email} per {c.With.Type} created at {c.Created |> unixTimestampToDateTime}, modified at {c.Modified |> unixTimestampToDateTime}"
-
         try
             Http.RequestString($"{BaseUrl}/chats", headers = SystemCommands.getHeader(), query = [Actives])
             |> DataResponse.Parse
             |> fun r -> r.Chats
-            |> Array.map formatChat
+            |> Array.map (fun c -> $"[{c.Iden}] with: {c.With.Email} per {c.With.Type} created at {c.Created |> unixTimestampToDateTime}, modified at {c.Modified |> unixTimestampToDateTime}")
             |> String.concat Environment.NewLine
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException

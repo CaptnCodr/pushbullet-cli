@@ -12,6 +12,7 @@ module Program =
         | DeleteKey -> SystemCommands.deleteKey()
         | GetMe -> SystemCommands.getMe()
         | GetLimits -> SystemCommands.getLimits()
+        | ListGrants -> SystemCommands.listGrants()
         | Help -> SystemCommands.getHelp()
 
         | PushText (t, d) -> PushCommands.pushText t d
@@ -39,10 +40,7 @@ module Program =
         | Other s -> $"Command '{s}' not found!\n\nUse:\npb help | -h \nto show commands."
 
     let getLinkParams args =
-        let url = args |> Array.tryItem 0
-        let title = args |> Array.tryItem 1
-        let body = args |> Array.tryItem 2
-        (url.Value, title, body)
+        ((args |> Array.tryItem 0).Value, args |> Array.tryItem 1, args |> Array.tryItem 2)
 
     let (|Int|_|) str =
        match System.Int32.TryParse(str: string) with
@@ -60,38 +58,13 @@ module Program =
         | Int i -> i |> GetDevice |> followCommands
         | _ -> device
 
-    let delArgument (args: string[]) =
-        match args.Length with
-        | 3 -> 
-            match args.[1] with
-            | "push" | "-p" -> args.[2] |> DeletePush
-            | "chat" | "-c" -> args.[2] |> DeleteChat
-            | "device" | "-d" -> args.[2] |> DeleteDevice
-            | "subscription" | "-s" -> args.[2] |> DeleteSubscription
-            | e -> Other e
-        | 2 -> match args.[1] with | "key" | "-k" -> DeleteKey | e -> Other e
-        | _ -> Error NotEnoughArguments
-
-    let listArgument (args: string[]) =
-        match args.[1] with
-        | "pushes" | "-p" ->
-            match args.Length with
-            | 3 -> 
-                match args.[2] with
-                | Int i -> (if i < 1 then 1 else i) |> ListPushes
-                | _ -> Error ParameterInvalid
-            | _ -> ListPushes 1
-        | "devices" | "-d" -> ListDevices
-        | "chats" | "-c" -> ListChats
-        | "subscriptions" | "-s" -> ListSubscriptions
-        | e -> Other e
-
     let findBaseCommand (args: string[]) =
         if args.Length > 0 then
             match args.[0] with
             | "key" | "-k" -> match args.Length with | 2 -> args.[1] |> SetKey | _ -> GetKey
             | "me" | "-i" -> GetMe
             | "limits" | "-x" -> GetLimits
+            | "grants" | "-g" -> ListGrants
             | "push" | "-p" | "text" | "-t" ->
                 match args.Length with
                 | x when x > 1 -> 
@@ -118,7 +91,17 @@ module Program =
                 | _ -> Error NotEnoughArguments
             | "clip" | "-cl" -> match args.Length with | 2 -> args.[1] |> PushClip | _ -> Error NotEnoughArguments
             | "pushes" | "-ps" -> match args.Length with | 2 -> args.[1] |> int |> ListPushes | _ -> Error NotEnoughArguments
-            | "delete" | "-d" | "--del" -> args |> delArgument
+            | "delete" | "-d" | "--del" -> 
+                match args.Length with
+                | 3 -> 
+                    match args.[1] with
+                    | "push" | "-p" -> args.[2] |> DeletePush
+                    | "chat" | "-c" -> args.[2] |> DeleteChat
+                    | "device" | "-d" -> args.[2] |> DeleteDevice
+                    | "subscription" | "-s" -> args.[2] |> DeleteSubscription
+                    | e -> Other e
+                | 2 -> match args.[1] with | "key" | "-k" -> DeleteKey | e -> Other e
+                | _ -> Error NotEnoughArguments
             | "devices" | "-ds" -> ListDevices
             | "device" | "-di" -> match args.Length with | 2 -> args.[1] |> getDeviceFromIndexOrDeviceId |> GetDeviceInfo | _ -> Error NotEnoughArguments
             | "chats" | "-cs" -> ListChats
@@ -129,7 +112,6 @@ module Program =
                 | _ -> Error NotEnoughArguments
             | "subscriptions" | "subs" | "-s" -> ListSubscriptions
             | "channelinfo" | "-ci" -> match args.Length with | 2 -> args.[1] |> ChannelInfo | _ -> Error NotEnoughArguments
-            | "list" | "-l" -> match args.Length with | x when x > 1 -> args |> listArgument | _ -> Error NotEnoughArguments
             | "help" | "-h" -> Help
             | e -> Other e
         else

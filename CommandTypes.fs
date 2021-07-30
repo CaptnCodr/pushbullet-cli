@@ -23,6 +23,7 @@ module CommandTypes =
         | DeleteKey
         | GetMe
         | GetLimits
+        | ListGrants
         | Help
 
         // Push commands

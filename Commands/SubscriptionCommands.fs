@@ -22,14 +22,11 @@ module SubscriptionCommands =
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
 
     let list () =
-        let formatSubscription (s: DataResponse.Subscription) =
-            $"(Tag: {s.Channel.Tag}) {s.Channel.Name}: {s.Channel.Description}"
-
         try
             Http.RequestString($"{BaseUrl}/subscriptions", headers = SystemCommands.getHeader(), query = [Actives]) 
             |> DataResponse.Parse
             |> fun r -> r.Subscriptions
-            |> Array.map formatSubscription
+            |> Array.map (fun s ->  $"(Tag: {s.Channel.Tag}) {s.Channel.Name}: {s.Channel.Description}")
             |> String.concat Environment.NewLine
         with
         | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
