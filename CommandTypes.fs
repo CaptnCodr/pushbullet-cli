@@ -21,10 +21,10 @@ module CommandTypes =
         | GetKey
         | SetKey of string
         | DeleteKey
-        | GetMe
+        | GetProfile
         | GetLimits
         | ListGrants
-        | Help
+        | GetHelp
 
         // Push commands
         | PushText of string * string option
@@ -48,7 +48,7 @@ module CommandTypes =
 
         // Subscription commands
         | ListSubscriptions
-        | ChannelInfo of string
+        | GetChannelInfo of string
         | DeleteSubscription of string
 
         // misc

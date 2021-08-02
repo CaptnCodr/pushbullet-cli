@@ -13,9 +13,14 @@ type LowercaseContractResolver () =
 module CommandHelper =
 
     [<Literal>]
-    let BaseUrl = "https://api.pushbullet.com/v2"
+    let PushbulletKey = "PUSHBULLET_KEY"
 
     let Actives = ("active", "true")
+
+    let getSystemKey () =
+        match Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User) with
+        | null -> ""
+        | value -> value
 
     let toJson a =
         let settings = JsonSerializerSettings()

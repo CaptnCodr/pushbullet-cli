@@ -2,6 +2,7 @@ namespace Pushbullet
 
 open CommandTypes
 open CommandHelper
+open Patterns
 
 module Program =
 
@@ -10,10 +11,10 @@ module Program =
         | GetKey -> SystemCommands.getKey()
         | SetKey k -> SystemCommands.setKey k
         | DeleteKey -> SystemCommands.deleteKey()
-        | GetMe -> SystemCommands.getMe()
+        | GetProfile -> SystemCommands.getProfile()
         | GetLimits -> SystemCommands.getLimits()
         | ListGrants -> SystemCommands.listGrants()
-        | Help -> SystemCommands.getHelp()
+        | GetHelp -> SystemCommands.getHelp()
 
         | PushText (t, d) -> PushCommands.pushText t d
         | PushNote (t, b, d) -> PushCommands.pushNote t b d
@@ -33,7 +34,7 @@ module Program =
         | DeleteChat c -> ChatCommands.delete c
 
         | ListSubscriptions -> SubscriptionCommands.list()
-        | ChannelInfo t -> SubscriptionCommands.channelInfo t
+        | GetChannelInfo t -> SubscriptionCommands.channelInfo t
         | DeleteSubscription d -> SubscriptionCommands.delete d
 
         | Error e -> e.GetMessage()
@@ -44,7 +45,7 @@ module Program =
 
     let (|Int|_|) str =
        match System.Int32.TryParse(str: string) with
-       | (true,int) -> Some int
+       | (true, int) -> Some int
        | _ -> None
 
     let valueToBool value = 
@@ -61,15 +62,15 @@ module Program =
     let findBaseCommand (args: string[]) =
         if args.Length > 0 then
             match args.[0] with
-            | "key" | "-k" -> match args.Length with | 2 -> args.[1] |> SetKey | _ -> GetKey
-            | "me" | "-i" -> GetMe
-            | "limits" | "-x" -> GetLimits
-            | "grants" | "-g" -> ListGrants
-            | "push" | "-p" | "text" | "-t" ->
+            | Key _ -> match args.Length with | 2 -> args.[1] |> SetKey | _ -> GetKey
+            | Profile _ -> GetProfile
+            | Limits _ -> GetLimits
+            | Grants _ -> ListGrants
+            | Push _ | Text _ ->
                 match args.Length with
                 | x when x > 1 -> 
                     match args.[1] with 
-                    | "device" | "-d" -> 
+                    | Device _ -> 
                         match args.Length with
                         | 4 -> (args.[3], args.[2] |> getDeviceFromIndexOrDeviceId |> toOption) |> PushText
                         | 5 -> (args.[3] |> toOption, args.[4] |> toOption, args.[2] |> getDeviceFromIndexOrDeviceId |> toOption) |> PushNote 
@@ -80,39 +81,43 @@ module Program =
                         | 3 -> (args.[1] |> toOption, args.[2] |> toOption, None) |> PushNote
                         | _ -> Error NotEnoughArguments
                 | _ -> Error NotEnoughArguments
-            | "link" | "-u" | "url" ->
+            | Link _ | Url _ ->
                 match args.Length with
                 | x when x > 1 -> 
                     match args.[1] with
-                    | "device" | "-d" -> let (a, b, c) = (args.[3..] |> getLinkParams) in PushLink (a, b, c, args.[2] |> int |> GetDevice |> followCommands |> toOption)
-                    | _ -> match args.Length with 
-                            | 2 -> let (a, b, c) = (args.[1..] |> getLinkParams) in PushLink (a, b, c, None) 
-                            | _ -> Error NotEnoughArguments
+                    | Device _ -> let (a, b, c) = (args.[3..] |> getLinkParams) in PushLink (a, b, c, args.[2] |> int |> GetDevice |> followCommands |> toOption)
+                    | _ -> 
+                        match args.Length with 
+                        | 2 -> let (a, b, c) = (args.[1..] |> getLinkParams) in PushLink (a, b, c, None) 
+                        | _ -> Error NotEnoughArguments
                 | _ -> Error NotEnoughArguments
-            | "clip" | "-cl" -> match args.Length with | 2 -> args.[1] |> PushClip | _ -> Error NotEnoughArguments
-            | "pushes" | "-ps" -> match args.Length with | 2 -> args.[1] |> int |> ListPushes | _ -> Error NotEnoughArguments
-            | "delete" | "-d" | "--del" -> 
+            | Clip _ -> match args.Length with | 2 -> args.[1] |> PushClip | _ -> Error NotEnoughArguments
+            | Pushes _ -> match args.Length with | 2 -> args.[1] |> int |> ListPushes | _ -> Error NotEnoughArguments
+            | Delete _ -> 
                 match args.Length with
                 | 3 -> 
                     match args.[1] with
-                    | "push" | "-p" -> args.[2] |> DeletePush
-                    | "chat" | "-c" -> args.[2] |> DeleteChat
-                    | "device" | "-d" -> args.[2] |> DeleteDevice
-                    | "subscription" | "-s" -> args.[2] |> DeleteSubscription
+                    | Push _ -> args.[2] |> DeletePush
+                    | Chat _ -> args.[2] |> DeleteChat
+                    | Device _ -> args.[2] |> DeleteDevice
+                    | Subscription _ -> args.[2] |> DeleteSubscription
                     | e -> Other e
-                | 2 -> match args.[1] with | "key" | "-k" -> DeleteKey | e -> Other e
+                | 2 -> match args.[1] with | Key _ -> DeleteKey | e -> Other e
                 | _ -> Error NotEnoughArguments
-            | "devices" | "-ds" -> ListDevices
-            | "device" | "-di" -> match args.Length with | 2 -> args.[1] |> getDeviceFromIndexOrDeviceId |> GetDeviceInfo | _ -> Error NotEnoughArguments
-            | "chats" | "-cs" -> ListChats
-            | "chat" | "-c" ->
+            | Devices _ -> ListDevices
+            | Device _ -> 
+                match args.Length with 
+                | 2 -> match args.[1] |> getDeviceFromIndexOrDeviceId |> toOption with | Some x -> x |> GetDeviceInfo | None -> Error ParameterInvalid
+                | _ -> Error NotEnoughArguments
+            | Chats _ -> ListChats
+            | Chat _ ->
                 match args.Length with
                 | 3 -> match args.[2] |> valueToBool with | Some b -> (args.[1], b) |> UpdateChat | None -> Error ParameterInvalid
                 | 2 -> args.[1] |> CreateChat
                 | _ -> Error NotEnoughArguments
-            | "subscriptions" | "subs" | "-s" -> ListSubscriptions
-            | "channelinfo" | "-ci" -> match args.Length with | 2 -> args.[1] |> ChannelInfo | _ -> Error NotEnoughArguments
-            | "help" | "-h" -> Help
+            | Subscriptions _ -> ListSubscriptions
+            | ChannelInfo _ -> match args.Length with | 2 -> args.[1] |> GetChannelInfo | _ -> Error NotEnoughArguments
+            | Help _ -> GetHelp
             | e -> Other e
         else
             Error NoParametersGiven

@@ -19,11 +19,13 @@
     <Compile Include="Types.fs" />
     <Compile Include="CommandTypes.fs" />
     <Compile Include="CommandHelper.fs" />
+    <Compile Include="HttpService.fs" />
     <Compile Include="Commands/SystemCommands.fs" />
     <Compile Include="Commands/PushCommands.fs" />
     <Compile Include="Commands/DeviceCommands.fs" />
     <Compile Include="Commands/ChatCommands.fs" />
     <Compile Include="Commands/SubscriptionCommands.fs" />
+    <Compile Include="Patterns.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <Import Project=".paket\Paket.Restore.targets" />

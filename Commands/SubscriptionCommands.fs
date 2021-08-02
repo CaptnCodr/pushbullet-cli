@@ -1,7 +1,5 @@
 namespace Pushbullet
 
-open System.Net
-open FSharp.Data
 open System
 open CommandHelper
 
@@ -14,26 +12,16 @@ module SubscriptionCommands =
             else 
                 $"[{info.Iden}]:\nTag: {info.Tag}\nSubscribers: {info.SubscriberCount}\nName: {info.Name}\nDescription: {info.Description}"
 
-        try 
-            Http.RequestString($"{BaseUrl}/channel-info", httpMethod = "GET", headers = SystemCommands.getHeader(), query = [("tag", tag)]) 
-            |> ChannelInfoResponse.Parse
-            |> formatInfo
-        with
-        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+        HttpService.GetRequest "channel-info" [("tag", tag)]
+        |> ChannelInfoResponse.Parse
+        |> formatInfo
 
     let list () =
-        try
-            Http.RequestString($"{BaseUrl}/subscriptions", headers = SystemCommands.getHeader(), query = [Actives]) 
-            |> DataResponse.Parse
-            |> fun r -> r.Subscriptions
-            |> Array.map (fun s ->  $"(Tag: {s.Channel.Tag}) {s.Channel.Name}: {s.Channel.Description}")
-            |> String.concat Environment.NewLine
-        with
-        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+        HttpService.GetRequest "subscriptions" [Actives]
+        |> DataResponse.Parse
+        |> fun r -> r.Subscriptions
+        |> Array.map (fun s ->  $"(Tag: {s.Channel.Tag}) {s.Channel.Name}: {s.Channel.Description}")
+        |> String.concat Environment.NewLine
 
     let delete id =
-        try
-            Http.RequestString($"{BaseUrl}/subscriptions/{id}", httpMethod = "DELETE", headers = SystemCommands.getHeader()) |> ignore
-            "Subscription deleted!"
-        with
-        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+        HttpService.DeleteRequest $"subscriptions/{id}" "Subscription deleted!"

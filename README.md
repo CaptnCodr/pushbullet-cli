@@ -66,7 +66,11 @@ or
 
 `> pb link http://pushbullet.com "Title of link" "Description of Link"`
 
+`> pb -l http://pushbullet.com "Title of link" "Description of Link"`
+
 `> pb url http://pushbullet.com "Title of link" "Description of Link"`
+
+`> pb -u http://pushbullet.com "Title of link" "Description of Link"`
 
 <br />
 
@@ -133,7 +137,7 @@ or
 
 `> pb device <DEVICE_IDEN>` or
 
-`> pb -di <INDEX>`
+`> pb -d <INDEX>`
 
 <br />
 
@@ -161,17 +165,21 @@ or
 
 `> pb delete key` or
 
-`> pb -d -k`
+`> pb -del -k`
+
+`> pb remove -k`
+
+`> pb -r -k`
 
 <br />
 
 #### 2.5.2 Delete specific push with different writing styles:
 
-`> pb --del push <PUSH-ID>` or
+`> pb -del push <PUSH-ID>` or
 
 `> pb delete -p <PUSH-ID>` or
 
-`> pb -d -p <PUSH-ID>`
+`> pb -r -p <PUSH-ID>`
 
 <br />
 
@@ -179,7 +187,7 @@ or
 
 `> pb delete device <DEVICE-ID>` or
 
-`> pb -d -d <DEVICE-ID>`
+`> pb -del -d <DEVICE-ID>`
 
 <br />
 
@@ -187,7 +195,7 @@ or
 
 `> pb delete chat <CHAT-ID>` or
 
-`> pb -d -c <CHAT-ID>`
+`> pb -r -c <CHAT-ID>`
 
 <br />
 
@@ -195,7 +203,7 @@ or
 
 `> pb delete subscription <SUBSCRIPTION-ID>` or
 
-`> pb -d -s <SUBSCRIPTION-ID>`
+`> pb remove -s <SUBSCRIPTION-ID>`
 
 <br />
 

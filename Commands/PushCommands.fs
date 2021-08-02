@@ -1,7 +1,5 @@
 namespace Pushbullet
 
-open System.Net
-open FSharp.Data
 open System
 open CommandHelper
 
@@ -14,28 +12,17 @@ module PushCommands =
             else
                 $"[{p.Iden} at {p.Created |> unixTimestampToDateTime}] ({p.Type}) {p.Title} {p.Body}"
 
-        try
-            Http.RequestString($"{BaseUrl}/pushes", headers = SystemCommands.getHeader(), query = [("limit", $"{limit}"); Actives]) 
-            |> DataResponse.Parse
-            |> fun r -> r.Pushes
-            |> Array.map formatPush
-            |> String.concat Environment.NewLine
-        with
-        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+        HttpService.GetRequest "pushes" [("limit", $"{limit}"); Actives]
+        |> DataResponse.Parse
+        |> fun r -> r.Pushes
+        |> Array.map formatPush
+        |> String.concat Environment.NewLine
         
     let delete id =
-        try
-            Http.RequestString($"{BaseUrl}/pushes/{id}", httpMethod = "DELETE", headers = SystemCommands.getHeader()) |> ignore
-            "Push deleted!"
-        with
-        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+        HttpService.DeleteRequest $"pushes/{id}" "Push deleted!"
 
     let push (json: string) (message: string) =
-        try
-            Http.RequestString($"{BaseUrl}/pushes", httpMethod = "POST", headers = SystemCommands.getHeader(), body = TextRequest json) |> ignore
-            message
-        with
-        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+        HttpService.PostRequest "pushes" json message
 
     let pushText body device =
         {| Type = "note"; Body = body; Device_iden = device |> toValue |} |> toJson |> fun j -> push j "Push sent."
@@ -49,9 +36,5 @@ module PushCommands =
             Device_iden = device |> toValue |} |> toJson |> fun j -> push j "Link sent."
 
     let pushClip body =
-        try
-            let json = {| Push = {| Body = body; Type = "clip" |}; Type = "push" |} |> toJson
-            Http.RequestString($"{BaseUrl}/ephemerals", httpMethod = "POST", headers = SystemCommands.getHeader(), body = TextRequest json) |> ignore
-            "Clip Sent."
-        with
-        | :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+        let json = {| Push = {| Body = body; Type = "clip" |}; Type = "push" |} |> toJson
+        HttpService.PostRequest "ephemerals" json "Clip Sent."
