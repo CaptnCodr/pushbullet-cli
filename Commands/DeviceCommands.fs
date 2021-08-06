@@ -15,7 +15,7 @@ module DeviceCommands =
     let getDeviceInfo iden =
         HttpService.GetRequest $"devices/{iden}" []
         |> DeviceResponse.Parse
-        |> fun d -> $"[{d.Iden}]:\nName: {d.Nickname}\nDevice: {d.Manufacturer} {d.Model}\nAppVersion: {d.AppVersion}\nCreated: {d.Created |> unixTimestampToDateTime}\nModified: {d.Modified |> unixTimestampToDateTime}"
+        |> fun d -> $"[{d.Iden}]:\nname: {d.Nickname}\ndevice: {d.Manufacturer} {d.Model}\napp version: {d.AppVersion}\ncreated: {d.Created |> unixTimestampToDateTime}\nmodified: {d.Modified |> unixTimestampToDateTime}"
 
     let getDeviceId index =
         HttpService.GetRequest "devices" [Actives]

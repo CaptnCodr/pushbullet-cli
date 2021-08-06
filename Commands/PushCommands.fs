@@ -17,24 +17,26 @@ module PushCommands =
         |> fun r -> r.Pushes
         |> Array.map formatPush
         |> String.concat Environment.NewLine
+
+    let getSinglePush id =
+        HttpService.GetRequest $"pushes/{id}" []
+        |> PushResponse.Parse
+        |> fun p -> $"[{p.Iden}]:\nreceiver: {p.ReceiverEmail}\ncreated: {p.Created |> unixTimestampToDateTime}\nmodified: {p.Modified |> unixTimestampToDateTime}\ntarget device: {p.TargetDeviceIden}\ntype: {p.Type}\ntitle: {p.Title}\nbody: {p.Body}\nurl: {p.Url}"
         
     let delete id =
         HttpService.DeleteRequest $"pushes/{id}" "Push deleted!"
 
-    let push (json: string) (message: string) =
+    let push (message: string) (json: 't) =
         HttpService.PostRequest "pushes" json message
 
     let pushText body device =
-        {| Type = "note"; Body = body; Device_iden = device |> toValue |} |> toJson |> fun j -> push j "Push sent."
+        {| Type = "note"; Body = body; Device_iden = device |} |> push "Push sent."
 
     let pushNote title body device =
-        {| Type = "note"; Title = title |> toValue; Body = body |> toValue; 
-            Device_iden = device |> toValue |} |> toJson |> fun j -> push j "Push sent."
+        {| Type = "note"; Title = title; Body = body; Device_iden = device |} |> push "Push sent."
 
     let pushLink url title body device =
-        {| Type = "link"; Url = url; Title = title |> toValue; Body = body |> toValue; 
-            Device_iden = device |> toValue |} |> toJson |> fun j -> push j "Link sent."
+        {| Type = "link"; Url = url; Title = title; Body = body; Device_iden = device |} |> push "Link sent."
 
     let pushClip body =
-        let json = {| Push = {| Body = body; Type = "clip" |}; Type = "push" |} |> toJson
-        HttpService.PostRequest "ephemerals" json "Clip Sent."
+        HttpService.PostRequest "ephemerals" {| Push = {| Body = body; Type = "clip" |}; Type = "push" |} "Clip Sent."

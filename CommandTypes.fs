@@ -1,9 +1,7 @@
 ﻿namespace Pushbullet
 
-open System
-
 module CommandTypes =
-
+    
     type Errors =
         | NotEnoughArguments
         | ParameterInvalid
@@ -15,7 +13,7 @@ module CommandTypes =
             | ParameterInvalid -> "Parameter is invalid!"
             | NoParametersGiven -> "No parameters given.\n\nShow commands with:\npb help | -h"
 
-    type Command =
+    type Commands =
 
         // System commands
         | GetKey
@@ -32,6 +30,7 @@ module CommandTypes =
         | PushLink of string * string option * string option * string option
         | PushClip of string
         | ListPushes of int
+        | GetPush of string
         | DeletePush of string
 
         // Device commands

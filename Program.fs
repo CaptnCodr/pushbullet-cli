@@ -1,7 +1,6 @@
 namespace Pushbullet
 
 open CommandTypes
-open CommandHelper
 open Patterns
 
 module Program =
@@ -21,6 +20,7 @@ module Program =
         | PushLink (u, t, b, d) -> PushCommands.pushLink u t b d
         | PushClip c -> PushCommands.pushClip c
         | ListPushes l -> PushCommands.list l
+        | GetPush p -> PushCommands.getSinglePush p
         | DeletePush p -> PushCommands.delete p
 
         | ListDevices -> DeviceCommands.list()
@@ -39,6 +39,9 @@ module Program =
 
         | Error e -> e.GetMessage()
         | Other s -> $"Command '{s}' not found!\n\nUse:\npb help | -h \nto show commands."
+
+    let toOption x =
+        if System.String.IsNullOrWhiteSpace x then None else Some x
 
     let getLinkParams args =
         ((args |> Array.tryItem 0).Value, args |> Array.tryItem 1, args |> Array.tryItem 2)
@@ -66,6 +69,7 @@ module Program =
             | Profile _ -> GetProfile
             | Limits _ -> GetLimits
             | Grants _ -> ListGrants
+            | PushInfo _ -> match args.Length with | 2 -> GetPush args.[1] | _ -> Error NotEnoughArguments
             | Push _ | Text _ ->
                 match args.Length with
                 | x when x > 1 -> 
@@ -88,11 +92,11 @@ module Program =
                     | Device _ -> let (a, b, c) = (args.[3..] |> getLinkParams) in PushLink (a, b, c, args.[2] |> int |> GetDevice |> followCommands |> toOption)
                     | _ -> 
                         match args.Length with 
-                        | 2 -> let (a, b, c) = (args.[1..] |> getLinkParams) in PushLink (a, b, c, None) 
+                        | y when y > 2 -> let (a, b, c) = (args.[1..] |> getLinkParams) in PushLink (a, b, c, None) 
                         | _ -> Error NotEnoughArguments
                 | _ -> Error NotEnoughArguments
             | Clip _ -> match args.Length with | 2 -> args.[1] |> PushClip | _ -> Error NotEnoughArguments
-            | Pushes _ -> match args.Length with | 2 -> args.[1] |> int |> ListPushes | _ -> Error NotEnoughArguments
+            | Pushes _ -> match args.Length with | 1 -> ListPushes 1 | 2 -> args.[1] |> int |> ListPushes | _ -> Error NotEnoughArguments
             | Delete _ -> 
                 match args.Length with
                 | 3 -> 

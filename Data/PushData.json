@@ -1,0 +1,20 @@
+﻿{
+  "active": true,
+  "iden": "ujyLNFNNKHAsjzVslXeg7o",
+  "created": 1628286146.365101,
+  "modified": 1628286153.798669,
+  "type": "link",
+  "dismissed": true,
+  "direction": "self",
+  "sender_iden": "ujyLNXNNKHA",
+  "sender_email": "some@email.com",
+  "sender_email_normalized": "some@email.com",
+  "sender_name": "Some Guy",
+  "receiver_iden": "ujyLNFNNKHA",
+  "receiver_email": "some@email.com",
+  "receiver_email_normalized": "some@email.com",
+  "target_device_iden": "ujyLNFNNKHAsjAqrGprm6C",
+  "title": "Website",
+  "body": "with helpful content",
+  "url": "https://somesite.com"
+}

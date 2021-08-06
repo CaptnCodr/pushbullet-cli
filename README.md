@@ -80,7 +80,6 @@ or
 
 `> pb -cl http://pushbullet.com`
 
-
 <br />
 
 #### 2.3.2 You can drop arguments by pass an empty string like:
@@ -124,7 +123,15 @@ or
 
 <br />
 
-#### 2.4.2 Show all your devices:
+#### 2.4.2 Show more about one push:
+
+`> pb pushinfo <PUSH-ID>` or
+
+`> pb -pi <PUSH-ID>`
+
+<br />
+
+#### 2.4.3 Show all your devices:
 
 `> pb devices` or
 
@@ -132,16 +139,16 @@ or
 
 <br />
 
-#### 2.4.3 Information about device:
-(2.4.2 return devices with indexes and device_iden)
+#### 2.4.4 Information about device:
+(2.4.3 return devices with indexes and device_iden)
 
-`> pb device <DEVICE_IDEN>` or
+`> pb device <DEVICE-ID>` or
 
 `> pb -d <INDEX>`
 
 <br />
 
-#### 2.4.4 Show all your chats:
+#### 2.4.5 Show all your chats:
 
 `> pb chats` or
 
@@ -149,7 +156,7 @@ or
 
 <br />
 
-#### 2.4.5 Show all your subscriptions:
+#### 2.4.6 Show all your subscriptions:
 
 `> pb subscriptions` or
 

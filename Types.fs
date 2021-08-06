@@ -15,4 +15,6 @@ type DeviceResponse = JsonProvider<"./Data/DeviceData.json", ResolutionFolder=Wo
 
 type ErrorResponse = JsonProvider<"./Data/Error.json", ResolutionFolder=Workaround.refDir>
 
+type PushResponse = JsonProvider<"./Data/PushData.json", ResolutionFolder=Workaround.refDir>
+
 type UserResponse = JsonProvider<"./Data/UserData.json", ResolutionFolder=Workaround.refDir>

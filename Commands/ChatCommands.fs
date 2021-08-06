@@ -16,10 +16,8 @@ module ChatCommands =
         HttpService.DeleteRequest $"chats/{id}" "Chat deleted!"
 
     let update id status =
-        let json = {| Muted = status |} |> toJson
         let message = if status then "Chat muted." else "Chat unmuted."
-        HttpService.PostRequest $"chats/{id}" json message
+        HttpService.PostRequest $"chats/{id}" {| Muted = status |} message
 
     let create email =
-        let json = {| Email = email |} |> toJson
-        HttpService.PostRequest "chats" json "Chat created!"
+        HttpService.PostRequest "chats" {| Email = email |} "Chat created!"
