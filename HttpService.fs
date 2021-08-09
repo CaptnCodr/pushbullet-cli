@@ -5,8 +5,6 @@ open System.Net
 open FsHttp
 open FsHttp.DslCE
 open Newtonsoft.Json
-open FSharp.Data
-open FsHttp.Dsl
 
 module HttpService =
 
