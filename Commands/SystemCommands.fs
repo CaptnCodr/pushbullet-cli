@@ -3,7 +3,6 @@ namespace Pushbullet
 open System
 open System.IO
 open System.Reflection
-open FSharp.Data
 open CommandHelper
 
 module SystemCommands =
@@ -19,9 +18,6 @@ module SystemCommands =
         VariableAccess.setSystemKey ""
         "Key deleted!"
 
-    let getHeader() = 
-        [("Access-Token", getKey()); (HttpRequestHeaders.ContentType "application/json")]
-
     let getProfile () =
         HttpService.GetRequest "users/me" []
         |> UserResponse.Parse
@@ -31,10 +27,7 @@ module SystemCommands =
         let response = HttpService.GetResponse "users/me" 
         match response with 
         | HttpService.Ok r ->
-            let limit = r.Headers.["X-Ratelimit-Limit"]
-            let remaining = r.Headers.["X-Ratelimit-Remaining"]
-            let dt = r.Headers.["X-Ratelimit-Reset"] |> decimal |> unixTimestampToDateTime
-            $"API-Limit: {limit},\nRemaining: {remaining},\nReset at:  {dt}"
+            $"API-Limit: {r.Limit},\nRemaining: {r.Remaining},\nReset at:  {(r.Reset |> decimal |> unixTimestampToDateTime)}"
         | HttpService.Error s -> s
 
     let listGrants () =

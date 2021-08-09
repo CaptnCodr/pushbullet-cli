@@ -2,20 +2,21 @@
 
 open System.IO
 open System.Net
-open FSharp.Data
+open FsHttp
+open FsHttp.DslCE
 open Newtonsoft.Json
+open FSharp.Data
+open FsHttp.Dsl
 
 module HttpService =
 
-    type Response =
-        | Ok of HttpResponse
+    type Response = 
+        | Ok of HeaderResponse 
         | Error of string
+    and HeaderResponse = { Limit: string; Remaining: string; Reset: string }
 
     [<Literal>]
     let BaseUrl = "https://api.pushbullet.com/v2"
-
-    let private getHeader () =
-        [ ("Access-Token", VariableAccess.getSystemKey ()); (HttpRequestHeaders.ContentType "application/json") ]
 
     let private formatException (stream: Stream) =
         new StreamReader(stream)
@@ -25,24 +26,51 @@ module HttpService =
     let toJson value =
         (value, JsonExtensions.GetSettings()) |> JsonConvert.SerializeObject
 
-    let GetRequest (path: string) (query: (string * string) list) : string =
-        try
-            Http.RequestString($"{BaseUrl}/{path}", httpMethod = "GET", headers = getHeader (), query = query)
-        with :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+    let private examineResponse (response: Domain.Response) =
+        match response.statusCode with 
+        | HttpStatusCode.OK -> Choice1Of2 response
+        | _ -> Choice2Of2 response
+
+    let private chooseGetResponse (response: Choice<Domain.Response, Domain.Response>) =
+        match response with
+        | Choice1Of2 r -> r |> Response.toString 16000
+        | Choice2Of2 e -> e |> Response.toStream |> formatException
+
+    let private chooseResponseWithMessage (successMessage: string) (response: Choice<Domain.Response, Domain.Response>) =
+        match response with
+        | Choice1Of2 _ -> successMessage
+        | Choice2Of2 e -> e |> Response.toStream |> formatException
+        
+    let private chooseHeaders (response: Choice<Domain.Response, Domain.Response>) =
+        match response with 
+        | Choice1Of2 r -> r.headers  |> (fun h -> { Limit = (h.GetValues("X-Ratelimit-Limit") |> Seq.toArray |> fun r -> r.[0]);
+                                            Remaining = (h.GetValues("X-Ratelimit-Remaining") |> Seq.toArray |> fun r -> r.[0]);
+                                            Reset = (h.GetValues("X-Ratelimit-Reset") |> Seq.toArray |> fun r -> r.[0]) }) |> Ok
+        | Choice2Of2 e -> e |> Response.toStream |> formatException |> Error
+
+    let GetRequest (path: string) (query': (string * string) list) : string =
+        http {
+            GET $"{BaseUrl}/{path}"
+            query query'
+            Header ("Access-Token") (VariableAccess.getSystemKey())
+        } |> (examineResponse >> chooseGetResponse)
 
     let PostRequest (path: string) (record: 't) (successMessage: string) =
-        try
-            Http.RequestString($"{BaseUrl}/{path}", httpMethod = "POST", headers = getHeader (), body = TextRequest (record |> toJson)) |> ignore
-            successMessage
-        with :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+        http {
+            POST $"{BaseUrl}/{path}"
+            Header ("Access-Token") (VariableAccess.getSystemKey())
+            body
+            json (record |> toJson)
+        } |> examineResponse |> chooseResponseWithMessage successMessage
 
     let DeleteRequest (path: string) (successMessage: string) =
-        try
-            Http.RequestString($"{BaseUrl}/{path}", httpMethod = "DELETE", headers = getHeader ()) |> ignore
-            successMessage
-        with :? WebException as ex -> ex.Response.GetResponseStream() |> formatException
+        http {
+            DELETE $"{BaseUrl}/{path}"
+            Header ("Access-Token") (VariableAccess.getSystemKey())
+        } |> examineResponse |> chooseResponseWithMessage successMessage
 
     let GetResponse (path: string) =
-        try
-            Http.Request($"{BaseUrl}/{path}", headers = getHeader ()) |> Ok
-        with :? WebException as ex -> ex.Response.GetResponseStream() |> formatException |> Error
+        http {
+            GET $"{BaseUrl}/{path}"
+            Header ("Access-Token") (VariableAccess.getSystemKey())
+        } |> (examineResponse >> chooseHeaders)

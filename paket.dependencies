@@ -4,3 +4,4 @@ source https://api.nuget.org/v3/index.json
 nuget FSharp.Core
 nuget FSharp.Data
 nuget Newtonsoft.Json
+nuget SchlenkR.FsHttp
