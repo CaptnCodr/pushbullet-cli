@@ -23,6 +23,8 @@ module Program =
         | GetPush p -> PushCommands.getSinglePush p
         | DeletePush p -> PushCommands.delete p
 
+        | SendMessage (d, n, m) -> MessageCommands.create d n m
+
         | ListDevices -> DeviceCommands.list()
         | GetDeviceInfo s -> DeviceCommands.getDeviceInfo s
         | GetDevice i -> DeviceCommands.getDeviceId i
@@ -107,6 +109,10 @@ module Program =
                     | Subscription _ -> args.[2] |> DeleteSubscription
                     | e -> Other e
                 | 2 -> match args.[1] with | Key _ -> DeleteKey | e -> Other e
+                | _ -> Error NotEnoughArguments
+            | Sms _ -> 
+                match args.Length with 
+                | 4 -> (args.[1] |> getDeviceFromIndexOrDeviceId, args.[2], args.[3]) |> SendMessage
                 | _ -> Error NotEnoughArguments
             | Devices _ -> ListDevices
             | Device _ -> 

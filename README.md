@@ -113,6 +113,17 @@ or
 
 <br />
 
+#### 2.3.4 Send sms
+(2.4.2 return devices with indexes and device_iden)
+
+`> pb sms <INDEX> +123456789 "Hello"` or
+
+`> pb -m <DEVICE-ID> +12984672654 "Hello there!"`
+
+Note: device id / device index AND mobile number must be set.
+
+<br />
+
 ### 2.4 List things
 
 #### 2.4.1 Show your last 3 pushes:

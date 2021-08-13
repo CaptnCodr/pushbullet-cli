@@ -1,12 +1,12 @@
 namespace Pushbullet
 
 open System
-open CommandHelper
+open Utilities
 
 module ChatCommands =
 
     let list () =
-        HttpService.GetRequest "chats" [Actives]
+        HttpService.GetListRequest "chats"
         |> DataResponse.Parse
         |> fun r -> r.Chats
         |> Array.map (fun c -> $"[{c.Iden}] with: {c.With.Email} per {c.With.Type} created at {c.Created |> unixTimestampToDateTime}, modified at {c.Modified |> unixTimestampToDateTime}")

@@ -46,12 +46,15 @@ module HttpService =
                                             Reset = (h.GetValues("X-Ratelimit-Reset") |> Seq.toArray |> fun r -> r.[0]) }) |> Ok
         | Choice2Of2 e -> e |> Response.toStream |> formatException |> Error
 
+
     let GetRequest (path: string) (query': (string * string) list) : string =
         http {
             GET $"{BaseUrl}/{path}"
             query query'
             Header ("Access-Token") (VariableAccess.getSystemKey())
         } |> (examineResponse >> chooseGetResponse)
+        
+    let GetListRequest (path: string) : string = GetRequest path [("active", "true")]
 
     let PostRequest (path: string) (record: 't) (successMessage: string) =
         http {

@@ -15,6 +15,8 @@ module Patterns =
     let (|Text|_|) x = match x with | "text" | "-t" -> Some x | _ -> None 
     /// <summary>"push" | "-p"</summary> 
     let (|Push|_|) x = match x with | "push" | "-p" -> Some x | _ -> None 
+    /// <summary>"sms" | "-m"</summary>
+    let (|Sms|_|) x = match x with | "sms" | "-m" -> Some x | _ -> None 
     /// <summary>"chat" | "-c"</summary> 
     let (|Chat|_|) x = match x with | "chat" | "-c" -> Some x | _ -> None 
     /// <summary>"chats" | "-cs"</summary> 

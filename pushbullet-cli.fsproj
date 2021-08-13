@@ -20,16 +20,17 @@
     <Compile Include="Types.fs" />
     <Compile Include="CommandTypes.fs" />
     <Compile Include="VariableAccess.fs" />
-    <Compile Include="CommandHelper.fs" />
+    <Compile Include="Utilities.fs" />
     <Compile Include="JsonExtensions.fs" />
     <Compile Include="HttpService.fs" />
     <EmbeddedResource Label="HelpText" Include="Resources\Help.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <Compile Include="Commands/SystemCommands.fs" />
-    <Compile Include="Commands/PushCommands.fs" />
-    <Compile Include="Commands/DeviceCommands.fs" />
     <Compile Include="Commands/ChatCommands.fs" />
+    <Compile Include="Commands/DeviceCommands.fs" />
+    <Compile Include="Commands/MessageCommands.fs" />
+    <Compile Include="Commands/PushCommands.fs" />
     <Compile Include="Commands/SubscriptionCommands.fs" />
     <Compile Include="Patterns.fs" />
     <Compile Include="Program.fs" />

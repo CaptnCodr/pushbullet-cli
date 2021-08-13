@@ -1,7 +1,7 @@
 namespace Pushbullet
 
 open System
-open CommandHelper
+open Utilities
 
 module SubscriptionCommands =
 
@@ -17,7 +17,7 @@ module SubscriptionCommands =
         |> formatInfo
 
     let list () =
-        HttpService.GetRequest "subscriptions" [Actives]
+        HttpService.GetListRequest "subscriptions"
         |> DataResponse.Parse
         |> fun r -> r.Subscriptions
         |> Array.map (fun s ->  $"(Tag: {s.Channel.Tag}) {s.Channel.Name}: {s.Channel.Description}")

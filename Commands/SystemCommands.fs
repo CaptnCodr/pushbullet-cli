@@ -3,7 +3,7 @@ namespace Pushbullet
 open System
 open System.IO
 open System.Reflection
-open CommandHelper
+open Utilities
 
 module SystemCommands =
     
@@ -31,7 +31,7 @@ module SystemCommands =
         | HttpService.Error s -> s
 
     let listGrants () =
-        HttpService.GetRequest "grants" [Actives]
+        HttpService.GetListRequest "grants"
         |> DataResponse.Parse
         |> fun r -> r.Grants 
         |> Array.map (fun grant -> $"[{grant.Iden}] {grant.Client.Name}, created: {grant.Created |> unixTimestampToDateTime}, modified: {grant.Modified |> unixTimestampToDateTime}")

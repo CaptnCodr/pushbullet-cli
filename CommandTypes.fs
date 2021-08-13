@@ -33,6 +33,9 @@ module CommandTypes =
         | GetPush of string
         | DeletePush of string
 
+        // Sms commands
+        | SendMessage of string * string * string
+
         // Device commands
         | ListDevices
         | GetDeviceInfo of string

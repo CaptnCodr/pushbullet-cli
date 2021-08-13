@@ -9,6 +9,7 @@ grants | -g                                 Get grants that have access to your 
 push | -p | text | -t [arguments]           Push text or note. Use push [device / -d] to push to a specific device.
 link | -l | url | -u [arguments]            Push a link to device(s). Use push [device / -d] to push to a specific device.
 pushes | -ps [number]                       List [number] of pushes or else last push.
+sms | -m [arguments]                        Send sms to eligible Device. sms [device] [mobile number] [text]
 devices | -ds                               Lists devices of current account. Including identifiers and indexes to identify.
 device | -d [iden / index]                  Shows information about a device. Select with identifier or index shown in the [devices / -ds] command.
 chats | -cs                                 List chats of current account.

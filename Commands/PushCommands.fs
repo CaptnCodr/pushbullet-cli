@@ -1,7 +1,7 @@
 namespace Pushbullet
 
 open System
-open CommandHelper
+open Utilities
 
 module PushCommands =
 
@@ -12,7 +12,7 @@ module PushCommands =
             else
                 $"[{p.Iden} at {p.Created |> unixTimestampToDateTime}] ({p.Type}) {p.Title} {p.Body}"
 
-        HttpService.GetRequest "pushes" [("limit", $"{limit}"); Actives]
+        HttpService.GetRequest "pushes" [("limit", $"{limit}"); ("active", "true")]
         |> DataResponse.Parse
         |> fun r -> r.Pushes
         |> Array.map formatPush

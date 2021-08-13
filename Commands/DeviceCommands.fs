@@ -1,12 +1,12 @@
 namespace Pushbullet
 
 open System
-open CommandHelper
+open Utilities
 
 module DeviceCommands =
 
     let list () =
-        HttpService.GetRequest "devices" [Actives]
+        HttpService.GetListRequest "devices"
         |> DataResponse.Parse
         |> fun r -> r.Devices
         |> Array.indexed |> Array.map (fun (i, e) -> $"{i} [{e.Iden}] {e.Nickname}")
@@ -18,7 +18,7 @@ module DeviceCommands =
         |> fun d -> $"[{d.Iden}]:\nname: {d.Nickname}\ndevice: {d.Manufacturer} {d.Model}\napp version: {d.AppVersion}\ncreated: {d.Created |> unixTimestampToDateTime}\nmodified: {d.Modified |> unixTimestampToDateTime}"
 
     let getDeviceId index =
-        HttpService.GetRequest "devices" [Actives]
+        HttpService.GetListRequest "devices"
         |> DataResponse.Parse
         |> fun r -> r.Devices
         |> fun a -> if a.Length > index then a.[index].Iden else String.Empty
