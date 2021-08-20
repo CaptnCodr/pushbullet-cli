@@ -223,6 +223,16 @@ Note: device id / device index AND mobile number must be set.
 
 `> pb remove -s <SUBSCRIPTION-ID>`
 
+<br/>
+
+#### 2.5.6 Delete texts / sms:
+
+`> pb delete sms <SMS-ID>` or
+
+`> pb -d -m <SMS-ID>`
+
+`SMS-ID` will be shown, when a text will be sent.
+
 <br />
 
 ### 2.6 `chat`
