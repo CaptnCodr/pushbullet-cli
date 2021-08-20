@@ -35,6 +35,7 @@ module CommandTypes =
 
         // Sms commands
         | SendMessage of string * string * string
+        | DeleteMessage of string
 
         // Device commands
         | ListDevices

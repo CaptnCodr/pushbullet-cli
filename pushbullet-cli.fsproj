@@ -13,6 +13,7 @@
     <Content Include="Data\DataLists.json" />
     <Content Include="Data\DeviceData.json" />
     <Content Include="Data\Error.json" />
+    <Content Include="Data\MessageData.json" />
     <Content Include="Data\PushData.json" />
     <Content Include="Data\UserData.json" />
   </ItemGroup>

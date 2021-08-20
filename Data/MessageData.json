@@ -1,0 +1,16 @@
+﻿{
+  "active": true,
+  "created": 1412047948.579029,
+  "data": {
+    "addresses": [
+      "+13035551212"
+    ],
+    "file_type": "image/jpeg",
+    "guid": "993aaa48567d91068e96c75a74644159",
+    "message": "Text message body.",
+    "target_device_iden": "ujpah72o0sjAoRtnM0jc"
+  },
+  "file_url": "https://dl.pushbulletusercontent.com/foGfub1jtC6yYcOMACk1AbHwTrTKvrDc/john.jpg",
+  "iden": "ujpah72o0sjAoRtnM0jc",
+  "modified": 1412047948.579031
+}

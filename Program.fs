@@ -24,6 +24,7 @@ module Program =
         | DeletePush p -> PushCommands.delete p
 
         | SendMessage (d, n, m) -> MessageCommands.create d n m
+        | DeleteMessage m -> MessageCommands.delete m
 
         | ListDevices -> DeviceCommands.list()
         | GetDeviceInfo s -> DeviceCommands.getDeviceInfo s
@@ -98,7 +99,7 @@ module Program =
                         | _ -> Error NotEnoughArguments
                 | _ -> Error NotEnoughArguments
             | Clip _ -> match args.Length with | 2 -> args.[1] |> PushClip | _ -> Error NotEnoughArguments
-            | Pushes _ -> match args.Length with | 1 -> ListPushes 1 | 2 -> args.[1] |> int |> ListPushes | _ -> Error NotEnoughArguments
+            | Pushes _ -> match args.Length with | 1 -> ListPushes 0 | 2 -> args.[1] |> int |> ListPushes | _ -> Error NotEnoughArguments
             | Delete _ -> 
                 match args.Length with
                 | 3 -> 
@@ -107,6 +108,7 @@ module Program =
                     | Chat _ -> args.[2] |> DeleteChat
                     | Device _ -> args.[2] |> DeleteDevice
                     | Subscription _ -> args.[2] |> DeleteSubscription
+                    | Sms _ -> args.[2] |> DeleteMessage
                     | e -> Other e
                 | 2 -> match args.[1] with | Key _ -> DeleteKey | e -> Other e
                 | _ -> Error NotEnoughArguments

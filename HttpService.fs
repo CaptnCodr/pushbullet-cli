@@ -36,7 +36,10 @@ module HttpService =
 
     let private chooseResponseWithMessage (successMessage: string) (response: Choice<Domain.Response, Domain.Response>) =
         match response with
-        | Choice1Of2 _ -> successMessage
+        | Choice1Of2 r -> 
+            match successMessage with
+            | "" -> r |> Response.toString 16000
+            | _ -> successMessage
         | Choice2Of2 e -> e |> Response.toStream |> formatException
         
     let private chooseHeaders (response: Choice<Domain.Response, Domain.Response>) =
