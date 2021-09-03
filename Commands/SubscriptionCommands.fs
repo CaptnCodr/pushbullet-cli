@@ -5,6 +5,9 @@ open Utilities
 
 module SubscriptionCommands =
 
+    [<Literal>]
+    let private Subscriptions = "subscriptions"
+
     let channelInfo tag =
         let formatInfo (info: ChannelInfoResponse.Root) =
             if info.RecentPushes.Length > 0 then
@@ -17,11 +20,11 @@ module SubscriptionCommands =
         |> formatInfo
 
     let list () =
-        HttpService.GetListRequest "subscriptions"
+        HttpService.GetListRequest Subscriptions
         |> DataResponse.Parse
         |> fun r -> r.Subscriptions
         |> Array.map (fun s ->  $"(Tag: {s.Channel.Tag}) {s.Channel.Name}: {s.Channel.Description}")
         |> String.concat Environment.NewLine
 
     let delete id =
-        HttpService.DeleteRequest $"subscriptions/{id}" "Subscription deleted!"
+        HttpService.DeleteRequest $"{Subscriptions}/{id}" "Subscription deleted!"

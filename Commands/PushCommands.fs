@@ -5,6 +5,9 @@ open Utilities
 
 module PushCommands =
 
+    [<Literal>]
+    let private Pushes = "pushes"
+
     let list limit =
         let formatPush (p: DataResponse.Push) =
             if p.Type.Equals "link" then
@@ -12,19 +15,19 @@ module PushCommands =
             else
                 $"[{p.Iden} at {p.Created |> unixTimestampToDateTime}] ({p.Type}) {p.Title} {p.Body}"
 
-        HttpService.GetRequest "pushes" [("limit", $"{limit}"); ("active", "true")]
+        HttpService.GetRequest Pushes [("limit", $"{limit}"); ("active", "true")]
         |> DataResponse.Parse
         |> fun r -> r.Pushes
         |> Array.map formatPush
         |> String.concat Environment.NewLine
 
     let getSinglePush id =
-        HttpService.GetRequest $"pushes/{id}" []
+        HttpService.GetRequest $"{Pushes}/{id}" []
         |> PushResponse.Parse
         |> fun p -> $"[{p.Iden}]:\nreceiver: {p.ReceiverEmail}\ncreated: {p.Created |> unixTimestampToDateTime}\nmodified: {p.Modified |> unixTimestampToDateTime}\ntarget device: {p.TargetDeviceIden}\ntype: {p.Type}\ntitle: {p.Title}\nbody: {p.Body}\nurl: {p.Url}"
         
     let delete id =
-        HttpService.DeleteRequest $"pushes/{id}" "Push deleted!"
+        HttpService.DeleteRequest $"{Pushes}/{id}" "Push deleted!"
 
     let push (message: string) (json: 't) =
         HttpService.PostRequest "pushes" json message
