@@ -5,10 +5,18 @@ open Utilities
 
 module PushCommands =
 
+    type PushTextCommand = PushTextCommand of body:string * deviceid:string option
+    type PushNoteCommand = PushNoteCommand of title:string option * body:string option * deviceid:string option
+    type PushLinkCommand = PushLinkCommand of url:string * title:string option * body:string option * deviceid:string option
+    type PushClipCommand = PushClipCommand of string
+    type ListPushesCommand = ListPushesCommand of int
+    type GetPushCommand = GetPushCommand of string
+    type DeletePushCommand = DeletePushCommand of string
+
     [<Literal>]
     let private Pushes = "pushes"
 
-    let list limit =
+    let list (ListPushesCommand limit) =
         let formatPush (p: DataResponse.Push) =
             if p.Type.Equals "link" then
                 $"[{p.Iden} at {p.Created |> unixTimestampToDateTime}] ({p.Type}) {p.Title}{Environment.NewLine}     URL: {p.Url.Value}{Environment.NewLine}     {p.Body}"
@@ -21,25 +29,25 @@ module PushCommands =
         |> Array.map formatPush
         |> String.concat Environment.NewLine
 
-    let getSinglePush id =
+    let getSinglePush (GetPushCommand id) =
         HttpService.GetRequest $"{Pushes}/{id}" []
         |> PushResponse.Parse
         |> fun p -> $"[{p.Iden}]:\nreceiver: {p.ReceiverEmail}\ncreated: {p.Created |> unixTimestampToDateTime}\nmodified: {p.Modified |> unixTimestampToDateTime}\ntarget device: {p.TargetDeviceIden}\ntype: {p.Type}\ntitle: {p.Title}\nbody: {p.Body}\nurl: {p.Url}"
         
-    let delete id =
+    let delete (DeletePushCommand id) =
         HttpService.DeleteRequest $"{Pushes}/{id}" "Push deleted!"
 
     let push (message: string) (json: 't) =
         HttpService.PostRequest "pushes" json message
 
-    let pushText body device =
+    let pushText (PushTextCommand (body, device)) =
         {| Type = "note"; Body = body; Device_iden = device |} |> push "Push sent."
 
-    let pushNote title body device =
+    let pushNote (PushNoteCommand (title, body, device)) =
         {| Type = "note"; Title = title; Body = body; Device_iden = device |} |> push "Push sent."
 
-    let pushLink url title body device =
+    let pushLink (PushLinkCommand (url, title, body, device)) =
         {| Type = "link"; Url = url; Title = title; Body = body; Device_iden = device |} |> push "Link sent."
 
-    let pushClip body =
+    let pushClip (PushClipCommand body) =
         HttpService.PostRequest "ephemerals" {| Push = {| Body = body; Type = "clip" |}; Type = "push" |} "Clip Sent."

@@ -1,7 +1,7 @@
 ﻿namespace Pushbullet
 
 module CommandTypes =
-    
+
     type Errors =
         | NotEnoughArguments
         | ParameterInvalid
@@ -13,11 +13,12 @@ module CommandTypes =
             | ParameterInvalid -> "Parameter is invalid!"
             | NoParametersGiven -> "No parameters given.\n\nShow commands with:\npb help | -h"
 
+    
     type Commands =
 
         // System commands
         | GetKey
-        | SetKey of string
+        | SetKey of SystemCommands.SetKeyCommand
         | DeleteKey
         | GetProfile
         | GetLimits
@@ -25,34 +26,34 @@ module CommandTypes =
         | GetHelp
 
         // Push commands
-        | PushText of string * string option
-        | PushNote of string option * string option * string option
-        | PushLink of string * string option * string option * string option
-        | PushClip of string
-        | ListPushes of int
-        | GetPush of string
-        | DeletePush of string
+        | PushText of PushCommands.PushTextCommand
+        | PushNote of PushCommands.PushNoteCommand
+        | PushLink of PushCommands.PushLinkCommand
+        | PushClip of PushCommands.PushClipCommand
+        | ListPushes of PushCommands.ListPushesCommand
+        | GetPush of PushCommands.GetPushCommand
+        | DeletePush of PushCommands.DeletePushCommand
 
         // Sms commands
-        | SendMessage of string * string * string
-        | DeleteMessage of string
+        | SendMessage of MessageCommands.SendMessageCommand
+        | DeleteMessage of MessageCommands.DeleteMessageCommand
 
         // Device commands
         | ListDevices
-        | GetDeviceInfo of string
-        | GetDevice of int
-        | DeleteDevice of string
+        | GetDeviceInfo of DeviceCommands.GetDeviceInfoCommand
+        | GetDevice of DeviceCommands.GetDeviceCommand
+        | DeleteDevice of DeviceCommands.DeleteDeviceCommand
 
         // Chat commands
         | ListChats
-        | UpdateChat of string * bool
-        | CreateChat of string
-        | DeleteChat of string
+        | UpdateChat of ChatCommands.UpdateChatCommand
+        | CreateChat of ChatCommands.CreateChatCommand
+        | DeleteChat of ChatCommands.DeleteChatCommand
 
         // Subscription commands
         | ListSubscriptions
-        | GetChannelInfo of string
-        | DeleteSubscription of string
+        | GetChannelInfo of SubscriptionCommands.GetChannelInfoCommand
+        | DeleteSubscription of SubscriptionCommands.DeleteSubscriptionCommand
 
         // misc
         | Error of Errors

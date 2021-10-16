@@ -7,10 +7,12 @@ open Utilities
 
 module SystemCommands =
     
+    type SetKeyCommand = SetKeyCommand of string
+
     let getKey() = 
         VariableAccess.getSystemKey()
         
-    let setKey key =
+    let setKey (SetKeyCommand key) =
         VariableAccess.setSystemKey key
         "Key set!"
 

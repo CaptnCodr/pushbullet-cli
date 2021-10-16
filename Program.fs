@@ -5,7 +5,7 @@ open Patterns
 
 module Program =
 
-    let followCommands command =
+    let dispatchCommand command =
         match command with
         | GetKey -> SystemCommands.getKey()
         | SetKey k -> SystemCommands.setKey k
@@ -15,15 +15,15 @@ module Program =
         | ListGrants -> SystemCommands.listGrants()
         | GetHelp -> SystemCommands.getHelp()
 
-        | PushText (t, d) -> PushCommands.pushText t d
-        | PushNote (t, b, d) -> PushCommands.pushNote t b d
-        | PushLink (u, t, b, d) -> PushCommands.pushLink u t b d
+        | PushText p -> PushCommands.pushText p
+        | PushNote n -> PushCommands.pushNote n
+        | PushLink l -> PushCommands.pushLink l
         | PushClip c -> PushCommands.pushClip c
         | ListPushes l -> PushCommands.list l
         | GetPush p -> PushCommands.getSinglePush p
         | DeletePush p -> PushCommands.delete p
 
-        | SendMessage (d, n, m) -> MessageCommands.create d n m
+        | SendMessage m -> MessageCommands.create m
         | DeleteMessage m -> MessageCommands.delete m
 
         | ListDevices -> DeviceCommands.list()
@@ -32,7 +32,7 @@ module Program =
         | DeleteDevice d -> DeviceCommands.delete d
 
         | ListChats -> ChatCommands.list()
-        | UpdateChat (i, s) -> ChatCommands.update i s
+        | UpdateChat c -> ChatCommands.update c
         | CreateChat c -> ChatCommands.create c
         | DeleteChat c -> ChatCommands.delete c
 
@@ -62,73 +62,73 @@ module Program =
 
     let getDeviceFromIndexOrDeviceId device =
         match device with
-        | Int i -> i |> GetDevice |> followCommands
+        | Int i -> i |> DeviceCommands.GetDeviceCommand |> GetDevice |> dispatchCommand
         | _ -> device
 
-    let findBaseCommand (args: string[]) =
+    let findCommand (args: string[]) =
         if args.Length > 0 then
             match args.[0] with
-            | Key _ -> match args.Length with | 2 -> args.[1] |> SetKey | _ -> GetKey
+            | Key _ -> match args.Length with | 2 -> args.[1] |> SystemCommands.SetKeyCommand |> SetKey | _ -> GetKey
             | Profile _ -> GetProfile
             | Limits _ -> GetLimits
             | Grants _ -> ListGrants
-            | PushInfo _ -> match args.Length with | 2 -> GetPush args.[1] | _ -> Error NotEnoughArguments
+            | PushInfo _ -> match args.Length with | 2 -> args.[1] |> PushCommands.GetPushCommand |> GetPush | _ -> Error NotEnoughArguments
             | Push _ | Text _ ->
                 match args.Length with
                 | x when x > 1 -> 
                     match args.[1] with 
                     | Device _ -> 
                         match args.Length with
-                        | 4 -> (args.[3], args.[2] |> getDeviceFromIndexOrDeviceId |> toOption) |> PushText
-                        | 5 -> (args.[3] |> toOption, args.[4] |> toOption, args.[2] |> getDeviceFromIndexOrDeviceId |> toOption) |> PushNote 
+                        | 4 -> (args.[3], args.[2] |> getDeviceFromIndexOrDeviceId |> toOption) |> PushCommands.PushTextCommand |> PushText
+                        | 5 -> (args.[3] |> toOption, args.[4] |> toOption, args.[2] |> getDeviceFromIndexOrDeviceId |> toOption) |> PushCommands.PushNoteCommand |> PushNote 
                         | _ -> Error NotEnoughArguments
                     | _ -> 
                         match args.Length with
-                        | 2 -> (args.[1], None) |> PushText 
-                        | 3 -> (args.[1] |> toOption, args.[2] |> toOption, None) |> PushNote
+                        | 2 -> (args.[1], None) |> PushCommands.PushTextCommand |> PushText 
+                        | 3 -> (args.[1] |> toOption, args.[2] |> toOption, None) |> PushCommands.PushNoteCommand |> PushNote
                         | _ -> Error NotEnoughArguments
                 | _ -> Error NotEnoughArguments
             | Link _ | Url _ ->
                 match args.Length with
                 | x when x > 1 -> 
                     match args.[1] with
-                    | Device _ -> let (a, b, c) = (args.[3..] |> getLinkParams) in PushLink (a, b, c, args.[2] |> int |> GetDevice |> followCommands |> toOption)
+                    | Device _ -> let (a, b, c) = (args.[3..] |> getLinkParams) in (a, b, c, args.[2] |> int |> DeviceCommands.GetDeviceCommand |> GetDevice |> dispatchCommand |> toOption) |> PushCommands.PushLinkCommand |> PushLink 
                     | _ -> 
                         match args.Length with 
-                        | y when y > 2 -> let (a, b, c) = (args.[1..] |> getLinkParams) in PushLink (a, b, c, None) 
+                        | y when y > 2 -> let (a, b, c) = (args.[1..] |> getLinkParams) in (a, b, c, None) |> PushCommands.PushLinkCommand |> PushLink 
                         | _ -> Error NotEnoughArguments
                 | _ -> Error NotEnoughArguments
-            | Clip _ -> match args.Length with | 2 -> args.[1] |> PushClip | _ -> Error NotEnoughArguments
-            | Pushes _ -> match args.Length with | 1 -> ListPushes 0 | 2 -> args.[1] |> int |> ListPushes | _ -> Error NotEnoughArguments
+            | Clip _ -> match args.Length with | 2 -> args.[1] |> PushCommands.PushClipCommand |> PushClip | _ -> Error NotEnoughArguments
+            | Pushes _ -> match args.Length with | 1 -> 0 |> PushCommands.ListPushesCommand |> ListPushes | 2 -> args.[1] |> int |> PushCommands.ListPushesCommand |> ListPushes | _ -> Error NotEnoughArguments
             | Delete _ -> 
                 match args.Length with
                 | 3 -> 
                     match args.[1] with
-                    | Push _ -> args.[2] |> DeletePush
-                    | Chat _ -> args.[2] |> DeleteChat
-                    | Device _ -> args.[2] |> DeleteDevice
-                    | Subscription _ -> args.[2] |> DeleteSubscription
-                    | Sms _ -> args.[2] |> DeleteMessage
+                    | Push _ -> args.[2] |> PushCommands.DeletePushCommand |> DeletePush
+                    | Chat _ -> args.[2] |> ChatCommands.DeleteChatCommand |> DeleteChat
+                    | Device _ -> args.[2] |> DeviceCommands.DeleteDeviceCommand |> DeleteDevice
+                    | Subscription _ -> args.[2] |> SubscriptionCommands.DeleteSubscriptionCommand |> DeleteSubscription
+                    | Sms _ -> args.[2] |> MessageCommands.DeleteMessageCommand |> DeleteMessage
                     | e -> Other e
                 | 2 -> match args.[1] with | Key _ -> DeleteKey | e -> Other e
                 | _ -> Error NotEnoughArguments
             | Sms _ -> 
                 match args.Length with 
-                | 4 -> (args.[1] |> getDeviceFromIndexOrDeviceId, args.[2], args.[3]) |> SendMessage
+                | 4 -> (args.[1] |> getDeviceFromIndexOrDeviceId, args.[2], args.[3]) |> MessageCommands.SendMessageCommand |> SendMessage
                 | _ -> Error NotEnoughArguments
             | Devices _ -> ListDevices
             | Device _ -> 
                 match args.Length with 
-                | 2 -> match args.[1] |> getDeviceFromIndexOrDeviceId |> toOption with | Some x -> x |> GetDeviceInfo | None -> Error ParameterInvalid
+                | 2 -> match args.[1] |> getDeviceFromIndexOrDeviceId |> toOption with | Some x -> x |> DeviceCommands.GetDeviceInfoCommand |> GetDeviceInfo | None -> Error ParameterInvalid
                 | _ -> Error NotEnoughArguments
             | Chats _ -> ListChats
             | Chat _ ->
                 match args.Length with
-                | 3 -> match args.[2] |> valueToBool with | Some b -> (args.[1], b) |> UpdateChat | None -> Error ParameterInvalid
-                | 2 -> args.[1] |> CreateChat
+                | 3 -> match args.[2] |> valueToBool with | Some b -> (args.[1], b) |> ChatCommands.UpdateChatCommand |> UpdateChat | None -> Error ParameterInvalid
+                | 2 -> args.[1] |> ChatCommands.CreateChatCommand |> CreateChat
                 | _ -> Error NotEnoughArguments
             | Subscriptions _ -> ListSubscriptions
-            | ChannelInfo _ -> match args.Length with | 2 -> args.[1] |> GetChannelInfo | _ -> Error NotEnoughArguments
+            | ChannelInfo _ -> match args.Length with | 2 -> args.[1] |> SubscriptionCommands.GetChannelInfoCommand |> GetChannelInfo | _ -> Error NotEnoughArguments
             | Help _ -> GetHelp
             | e -> Other e
         else
@@ -137,10 +137,10 @@ module Program =
     [<EntryPoint>]
     let main ([<System.ParamArray>] argv: string[]): int =
 
-        let command = argv |> findBaseCommand
+        let command = argv |> findCommand
 
         if command.IsSetKeyCommand || SystemCommands.getKey() <> ""
-        then printfn $"{command |> followCommands}"
+        then printfn $"{command |> dispatchCommand}"
         else printfn "You have to set your API key with:\n\">pb key o.Abc12345xyz\""
 
         0
