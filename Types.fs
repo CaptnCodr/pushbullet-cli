@@ -2,21 +2,16 @@
 
 open FSharp.Data
 
-//Remove when fixed in dotnet-sdk
-module Workaround =
-    [<Literal>]
-    let refDir = __SOURCE_DIRECTORY__
+type ChannelInfoResponse = JsonProvider<"./Data/ChannelInfoData.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
-type ChannelInfoResponse = JsonProvider<"./Data/ChannelInfoData.json", ResolutionFolder=Workaround.refDir>
+type DataResponse = JsonProvider<"./Data/DataLists.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
-type DataResponse = JsonProvider<"./Data/DataLists.json", ResolutionFolder=Workaround.refDir>
+type DeviceResponse = JsonProvider<"./Data/DeviceData.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
-type DeviceResponse = JsonProvider<"./Data/DeviceData.json", ResolutionFolder=Workaround.refDir>
+type ErrorResponse = JsonProvider<"./Data/Error.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
-type ErrorResponse = JsonProvider<"./Data/Error.json", ResolutionFolder=Workaround.refDir>
+type MessageResponse = JsonProvider<"./Data/MessageData.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
-type MessageResponse = JsonProvider<"./Data/MessageData.json", ResolutionFolder=Workaround.refDir>
+type PushResponse = JsonProvider<"./Data/PushData.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
-type PushResponse = JsonProvider<"./Data/PushData.json", ResolutionFolder=Workaround.refDir>
-
-type UserResponse = JsonProvider<"./Data/UserData.json", ResolutionFolder=Workaround.refDir>
+type UserResponse = JsonProvider<"./Data/UserData.json", ResolutionFolder=__SOURCE_DIRECTORY__>

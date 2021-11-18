@@ -11,6 +11,8 @@ module Patterns =
     let (|Grants|_|) x = match x with | "grants" | "-g" -> Some x | _ -> None 
     /// <summary>"help" | "-h"</summary> 
     let (|Help|_|) x = match x with | "help" | "-h" -> Some x | _ -> None 
+    /// <summary>"version" | "-v"</summary> 
+    let (|Version|_|) x = match x with | "version" | "-v" -> Some x | _ -> None 
     /// <summary>"text" | "-t"</summary> 
     let (|Text|_|) x = match x with | "text" | "-t" -> Some x | _ -> None 
     /// <summary>"push" | "-p"</summary> 

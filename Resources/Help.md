@@ -23,4 +23,5 @@ delete | --del | remove | -r [subcommand]   Deletes an object:
     subscription | -s [iden]                Deletes a subscription using its iden.
     key | -k                                Deletes the current configured API key
 
+version | -v                                Shows the actual pushbullet-cli version.
 help | -h                                   This help.

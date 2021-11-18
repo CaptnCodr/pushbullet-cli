@@ -24,6 +24,7 @@ module CommandTypes =
         | GetLimits
         | ListGrants
         | GetHelp
+        | GetVersion
 
         // Push commands
         | PushText of PushCommands.PushTextCommand

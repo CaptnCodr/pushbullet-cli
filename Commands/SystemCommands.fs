@@ -43,3 +43,6 @@ module SystemCommands =
         Assembly.GetExecutingAssembly().GetManifestResourceStream("pushbullet-cli.Resources.Help.md")
         |> fun stream -> new StreamReader(stream)
         |> fun sr -> sr.ReadToEnd()
+
+    let getVersion () =
+        Assembly.GetExecutingAssembly().GetName().Version |> string

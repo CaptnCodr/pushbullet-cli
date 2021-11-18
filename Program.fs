@@ -14,6 +14,7 @@ module Program =
         | GetLimits -> SystemCommands.getLimits()
         | ListGrants -> SystemCommands.listGrants()
         | GetHelp -> SystemCommands.getHelp()
+        | GetVersion -> SystemCommands.getVersion()
 
         | PushText p -> PushCommands.pushText p
         | PushNote n -> PushCommands.pushNote n
@@ -130,6 +131,7 @@ module Program =
             | Subscriptions _ -> ListSubscriptions
             | ChannelInfo _ -> match args.Length with | 2 -> args.[1] |> SubscriptionCommands.GetChannelInfoCommand |> GetChannelInfo | _ -> Error NotEnoughArguments
             | Help _ -> GetHelp
+            | Version _ -> GetVersion
             | e -> Other e
         else
             Error NoParametersGiven
