@@ -1,5 +1,7 @@
 ﻿namespace Pushbullet
 
+open Resources
+
 module CommandTypes =
 
     type Errors =
@@ -9,10 +11,9 @@ module CommandTypes =
 
         member x.GetMessage () =
             match x with
-            | NotEnoughArguments -> "Not enough arguments!\n\nShow commands with:\npb help | -h"
-            | ParameterInvalid -> "Parameter is invalid!"
-            | NoParametersGiven -> "No parameters given.\n\nShow commands with:\npb help | -h"
-
+            | NotEnoughArguments -> Errors_NotEnoughArguments.ResourceString
+            | ParameterInvalid -> Errors_ParameterInvalid.ResourceString
+            | NoParametersGiven -> Errors_NoParametersGiven.ResourceString
     
     type Commands =
 

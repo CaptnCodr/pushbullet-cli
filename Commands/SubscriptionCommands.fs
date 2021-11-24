@@ -1,6 +1,7 @@
 namespace Pushbullet
 
 open System
+open Resources
 open Utilities
 
 module SubscriptionCommands =
@@ -30,4 +31,4 @@ module SubscriptionCommands =
         |> formatInfo
 
     let delete (DeleteSubscriptionCommand id) =
-        HttpService.DeleteRequest $"{Subscriptions}/{id}" "Subscription deleted!"
+        HttpService.DeleteRequest $"{Subscriptions}/{id}" SubscriptionDeleted.ResourceString

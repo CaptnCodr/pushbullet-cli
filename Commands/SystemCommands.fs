@@ -3,10 +3,14 @@ namespace Pushbullet
 open System
 open System.IO
 open System.Reflection
+open Resources
 open Utilities
 
 module SystemCommands =
     
+    [<Literal>]
+    let HelpFile = "pushbullet-cli.Resources.Help.md"
+
     type SetKeyCommand = SetKeyCommand of string
 
     let getKey() = 
@@ -14,11 +18,11 @@ module SystemCommands =
         
     let setKey (SetKeyCommand key) =
         VariableAccess.setSystemKey key
-        "Key set!"
+        KeySet.ResourceString
 
     let deleteKey() =
         VariableAccess.setSystemKey ""
-        "Key deleted!"
+        KeyRemoved.ResourceString
 
     let getProfile () =
         HttpService.GetRequest "users/me" []
@@ -40,7 +44,7 @@ module SystemCommands =
         |> String.concat Environment.NewLine
 
     let getHelp () =
-        Assembly.GetExecutingAssembly().GetManifestResourceStream("pushbullet-cli.Resources.Help.md")
+        Assembly.GetExecutingAssembly().GetManifestResourceStream(HelpFile)
         |> fun stream -> new StreamReader(stream)
         |> fun sr -> sr.ReadToEnd()
 

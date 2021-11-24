@@ -7,7 +7,9 @@
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishTrimmed>true</PublishTrimmed>
-    <Version>0.5.0.1</Version>
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <Version>0.6.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Content Include=".config\dotnet-tools.json" />
@@ -18,16 +20,17 @@
     <Content Include="Data\MessageData.json" />
     <Content Include="Data\PushData.json" />
     <Content Include="Data\UserData.json" />
+    <EmbeddedResource Label="HelpText" Include="Resources\Help.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Types.fs" />
+    <Compile Include="Resources.fs" />
     <Compile Include="VariableAccess.fs" />
     <Compile Include="Utilities.fs" />
     <Compile Include="JsonExtensions.fs" />
     <Compile Include="HttpService.fs" />
-    <EmbeddedResource Label="HelpText" Include="Resources\Help.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <Compile Include="Commands/SystemCommands.fs" />
     <Compile Include="Commands/ChatCommands.fs" />
     <Compile Include="Commands/DeviceCommands.fs" />
@@ -38,5 +41,18 @@
     <Compile Include="CommandTypes.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="6.0.1" />
+    <PackageReference Include="FSharp.Data" Version="4.2.5" />
+    <PackageReference Include="FsHttp" Version="6.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
   <Import Project=".paket\Paket.Restore.targets" />
 </Project>

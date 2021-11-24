@@ -1,4 +1,4 @@
+FSharp.Core
 FSharp.Data
 Newtonsoft.Json
-FSharp.Core
-SchlenkR.FsHttp
+FsHttp

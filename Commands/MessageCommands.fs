@@ -1,5 +1,7 @@
 ﻿namespace Pushbullet
 
+open Resources
+
 module MessageCommands =
 
     type SendMessageCommand = SendMessageCommand of device:string * number:string * body:string
@@ -12,8 +14,8 @@ module MessageCommands =
         {| Data = {| Target_Device_Iden = device; Addresses = [number]; Message = body |} |}
         |> fun json -> HttpService.PostRequest Texts json ""
         |> MessageResponse.Parse
-        |> fun r -> $"[{r.Iden}] Message sent!"
+        |> fun r -> $"[{r.Iden}] {MessageSent.ResourceString}"
 
     let delete (DeleteMessageCommand id) = 
         {| Iden = id |}
-        |> fun json -> HttpService.PostRequest Texts json "Message deleted!"
+        |> fun json -> HttpService.PostRequest Texts json MessageDeleted.ResourceString

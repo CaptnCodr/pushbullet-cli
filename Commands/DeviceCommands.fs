@@ -1,6 +1,7 @@
 namespace Pushbullet
 
 open System
+open Resources
 open Utilities
 
 module DeviceCommands =
@@ -31,4 +32,4 @@ module DeviceCommands =
         |> fun a -> if a.Length > index then a.[index].Iden else String.Empty
 
     let delete (DeleteDeviceCommand id) =
-        HttpService.DeleteRequest $"{Devices}/{id}" "Device deleted!"
+        HttpService.DeleteRequest $"{Devices}/{id}" DeviceDeleted.ResourceString

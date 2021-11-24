@@ -1,6 +1,7 @@
 namespace Pushbullet
 
 open System
+open Resources
 open Utilities
 
 module ChatCommands =
@@ -20,11 +21,11 @@ module ChatCommands =
         |> String.concat Environment.NewLine
 
     let delete (DeleteChatCommand id)=
-        HttpService.DeleteRequest $"{Chats}/{id}" "Chat deleted!"
+        HttpService.DeleteRequest $"{Chats}/{id}" ChatDeleted.ResourceString
 
     let update (UpdateChatCommand(id, status)) =
-        let message = if status then "Chat muted." else "Chat unmuted."
+        let message = if status then ChatMuted.ResourceString else ChatUnmuted.ResourceString
         HttpService.PostRequest $"{Chats}/{id}" {| Muted = status |} message
 
     let create (CreateChatCommand email) =
-        HttpService.PostRequest Chats {| Email = email |} "Chat created!"
+        HttpService.PostRequest Chats {| Email = email |} ChatCreated.ResourceString

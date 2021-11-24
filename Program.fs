@@ -1,7 +1,9 @@
 namespace Pushbullet
 
+open System
 open CommandTypes
 open Patterns
+open Resources
 
 module Program =
 
@@ -42,10 +44,10 @@ module Program =
         | DeleteSubscription d -> SubscriptionCommands.delete d
 
         | Error e -> e.GetMessage()
-        | Other s -> $"Command '{s}' not found!\n\nUse:\npb help | -h \nto show commands."
+        | Other s -> System.String.Format(Info_CommandNotFound.ResourceString, s)
 
     let toOption x =
-        if System.String.IsNullOrWhiteSpace x then None else Some x
+        if String.IsNullOrWhiteSpace x then None else Some x
 
     let getLinkParams args =
         ((args |> Array.tryItem 0).Value, args |> Array.tryItem 1, args |> Array.tryItem 2)
@@ -55,11 +57,17 @@ module Program =
        | (true, int) -> Some int
        | _ -> None
 
+    let (|Positive|Negative|Neither|) x =
+        match x with 
+        | "true" | "1" | "mute" -> Positive
+        | "false" | "0" | "unmute" -> Negative
+        | _ -> Neither
+
     let valueToBool value = 
         match value with
-        | "true" | "1" | "mute" -> Some true
-        | "false" | "0" | "unmute" -> Some false
-        | _ -> None
+        | Positive -> Some true
+        | Negative -> Some false
+        | Neither -> None
 
     let getDeviceFromIndexOrDeviceId device =
         match device with
@@ -137,12 +145,12 @@ module Program =
             Error NoParametersGiven
 
     [<EntryPoint>]
-    let main ([<System.ParamArray>] argv: string[]): int =
+    let main ([<ParamArray>] argv: string[]): int =
 
         let command = argv |> findCommand
 
         if command.IsSetKeyCommand || SystemCommands.getKey() <> ""
         then printfn $"{command |> dispatchCommand}"
-        else printfn "You have to set your API key with:\n\">pb key o.Abc12345xyz\""
+        else printf $"{Info_SetupKey.ResourceString}"
 
         0
