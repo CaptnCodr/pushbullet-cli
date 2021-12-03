@@ -11,7 +11,7 @@ module Program =
     let dispatchCommand command =
         match command with
         | GetKey -> SystemCommands.getKey()
-        | SetKey k -> SystemCommands.setKey k
+        | SetKey k -> k |> SystemCommands.setKey
         | DeleteKey -> SystemCommands.deleteKey()
         | GetProfile -> SystemCommands.getProfile()
         | GetLimits -> SystemCommands.getLimits()
@@ -19,26 +19,26 @@ module Program =
         | GetHelp -> SystemCommands.getHelp()
         | GetVersion -> SystemCommands.getVersion()
 
-        | PushText p -> PushCommands.pushText p
-        | PushNote n -> PushCommands.pushNote n
-        | PushLink l -> PushCommands.pushLink l
-        | PushClip c -> PushCommands.pushClip c
-        | ListPushes l -> PushCommands.list l
-        | GetPush p -> PushCommands.getSinglePush p
-        | DeletePush p -> PushCommands.delete p
+        | PushText p -> p |> PushCommands.pushText
+        | PushNote n -> n |> PushCommands.pushNote
+        | PushLink l -> l |> PushCommands.pushLink
+        | PushClip c -> c |> PushCommands.pushClip
+        | ListPushes l -> l |> PushCommands.list
+        | GetPush p -> p |> PushCommands.getSinglePush
+        | DeletePush p -> p |> PushCommands.delete
 
-        | SendMessage m -> MessageCommands.create m
-        | DeleteMessage m -> MessageCommands.delete m
+        | SendMessage m -> m |> MessageCommands.create
+        | DeleteMessage m -> m |> MessageCommands.delete
 
         | ListDevices -> DeviceCommands.list()
-        | GetDeviceInfo s -> DeviceCommands.getDeviceInfo s
-        | GetDevice i -> DeviceCommands.getDeviceId i
-        | DeleteDevice d -> DeviceCommands.delete d
+        | GetDeviceInfo s -> s |> DeviceCommands.getDeviceInfo
+        | GetDevice i -> i |> DeviceCommands.getDeviceId
+        | DeleteDevice d -> d |> DeviceCommands.delete
 
         | ListChats -> ChatCommands.list()
-        | UpdateChat c -> ChatCommands.update c
-        | CreateChat c -> ChatCommands.create c
-        | DeleteChat c -> ChatCommands.delete c
+        | UpdateChat c -> c |> ChatCommands.update
+        | CreateChat c -> c |> ChatCommands.create
+        | DeleteChat c -> c |> ChatCommands.delete
 
         | ListSubscriptions -> SubscriptionCommands.list()
         | GetChannelInfo t -> SubscriptionCommands.channelInfo t
