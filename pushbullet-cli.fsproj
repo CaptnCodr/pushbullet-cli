@@ -37,7 +37,6 @@
     <Compile Include="Commands/MessageCommands.fs" />
     <Compile Include="Commands/PushCommands.fs" />
     <Compile Include="Commands/SubscriptionCommands.fs" />
-    <Compile Include="Patterns.fs" />
     <Compile Include="CommandTypes.fs" />
     <Compile Include="Arguments.fs" />
     <Compile Include="Program.fs" />

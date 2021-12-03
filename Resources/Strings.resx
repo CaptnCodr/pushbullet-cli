@@ -127,6 +127,108 @@
 Use following to show commands:
 'pb help' or 'pb -h'</value>
   </data>
+  <data name="CliArguments_Key" xml:space="preserve">
+    <value>Set API key with argument. Show API key without argument.</value>
+  </data>
+  <data name="CliArguments_Profile" xml:space="preserve">
+    <value>Get profile of configured API key.</value>
+  </data>
+  <data name="CliArguments_Limits" xml:space="preserve">
+    <value>Get rate limits.</value>
+  </data>
+  <data name="CliArguments_Grants" xml:space="preserve">
+    <value>Show grants that have access to your Pushbullet account.</value>
+  </data>
+  <data name="CliArguments_PushInfo" xml:space="preserve">
+    <value>Show information of the given push id.</value>
+  </data>
+  <data name="CliArguments_Push" xml:space="preserve">
+    <value>Push text or note. Use push [device / -d] to push to a specific device.</value>
+  </data>
+  <data name="CliArguments_Link" xml:space="preserve">
+    <value>Push link. Use link [device / -d] to push link to a specific device.</value>
+  </data>
+  <data name="CliArguments_Pushes" xml:space="preserve">
+    <value>List [number] of pushes or else last push.</value>
+  </data>
+  <data name="CliArguments_Clip" xml:space="preserve">
+    <value>Pushes a clip.</value>
+  </data>
+  <data name="CliArguments_Sms" xml:space="preserve">
+    <value>Send sms to eligible device.</value>
+  </data>
+  <data name="CliArguments_Device" xml:space="preserve">
+    <value>Shows information about a device. Select with identifier or index shown in the [devices / -ds] command.</value>
+  </data>
+  <data name="CliArguments_Devices" xml:space="preserve">
+    <value>Lists devices of current account. Including identifiers and indexes to identify.</value>
+  </data>
+  <data name="CliArguments_Chat" xml:space="preserve">
+    <value>Create or update chat.</value>
+  </data>
+  <data name="CliArguments_Chats" xml:space="preserve">
+    <value>List chats of current account.</value>
+  </data>
+  <data name="CliArguments_Delete" xml:space="preserve">
+    <value>Delete an object.</value>
+  </data>
+  <data name="CliArguments_Subscriptions" xml:space="preserve">
+    <value>List subscriptions with channel tag of current account.</value>
+  </data>
+  <data name="CliArguments_ChannelInfo" xml:space="preserve">
+    <value>Show information about a specific channel with channel tag as shown in [subscriptions / subs / -s].</value>
+  </data>
+  <data name="CliArguments_Help" xml:space="preserve">
+    <value>Show this help.</value>
+  </data>
+  <data name="CliArguments_Version" xml:space="preserve">
+    <value>Shows the actual pushbullet-cli version.</value>
+  </data>
+  <data name="PushArgs_Device" xml:space="preserve">
+    <value>To which device should be pushed.</value>
+  </data>
+  <data name="PushArgs_Text" xml:space="preserve">
+    <value>Push text which should be pushed.</value>
+  </data>
+  <data name="PushArgs_Note" xml:space="preserve">
+    <value>Note to push with title and message.</value>
+  </data>
+  <data name="LinkArgs_Device" xml:space="preserve">
+    <value>To which device should be pushed the link/url.</value>
+  </data>
+  <data name="LinkArgs_Url" xml:space="preserve">
+    <value>Link for this push.</value>
+  </data>
+  <data name="LinkArgs_Title" xml:space="preserve">
+    <value>Title for this push.</value>
+  </data>
+  <data name="LinkArgs_Body" xml:space="preserve">
+    <value>Body text for this push.</value>
+  </data>
+  <data name="ChatArgs_Update" xml:space="preserve">
+    <value>Update chat with a mute flag.</value>
+  </data>
+  <data name="ChatArgs_Create" xml:space="preserve">
+    <value>Create new chat with given email address.</value>
+  </data>
+  <data name="DeleteArgs_Push" xml:space="preserve">
+    <value>Delete the specified push.</value>
+  </data>
+  <data name="DeleteArgs_Chat" xml:space="preserve">
+    <value>Delete the specified chat.</value>
+  </data>
+  <data name="DeleteArgs_Device" xml:space="preserve">
+    <value>Delete the specified device.</value>
+  </data>
+  <data name="DeleteArgs_Subscription" xml:space="preserve">
+    <value>Delete the specified subscription.</value>
+  </data>
+  <data name="DeleteArgs_Sms" xml:space="preserve">
+    <value>Delete the specified sms.</value>
+  </data>
+  <data name="DeleteArgs_Key" xml:space="preserve">
+    <value>Delete the configured key.</value>
+  </data>
   <data name="KeyRemoved" xml:space="preserve">
     <value>Key deleted!</value>
   </data>

@@ -1,8 +1,19 @@
 ﻿namespace Pushbullet
 
 open Argu
+open Resources
 
 module Arguments =
+
+    type ChatArgs =
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-u")>] Update of id: string * status: string
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-c")>] Create of email: string
+
+        interface IArgParserTemplate with
+            member this.Usage =
+                match this with 
+                | Update _ -> ChatArgs_Update.ResourceString
+                | Create _ -> ChatArgs_Create.ResourceString
 
     type PushArgs =
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-d")>] Device of deviceId: string
@@ -10,23 +21,25 @@ module Arguments =
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-n")>] Note of title: string * body: string
         
         interface IArgParserTemplate with
-
             member this.Usage =
                 match this with 
-                | Device _ -> "Specification of the device for a push."
-                | Text _ -> "Specification of the push text."
-                | Note _ -> "The note to push with title and message."
+                | Device _ -> PushArgs_Device.ResourceString
+                | Text _ -> PushArgs_Text.ResourceString
+                | Note _ -> PushArgs_Note.ResourceString
 
-    type ChatArgs =
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-u")>] Update of id: string * status: string
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-c")>] Create of email: string
-
+    type LinkArgs =
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-d")>] Device of deviceId: string
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-u");Mandatory>] Url of link: string
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-t");EqualsAssignment>] Title of title: string option
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-b");EqualsAssignment>] Body of body: string option
+        
         interface IArgParserTemplate with
-
             member this.Usage =
                 match this with 
-                | Update _ -> "Update specified chat with a mute flag."
-                | Create _ -> "Create new chat with given email address."
+                | Device _ -> LinkArgs_Device.ResourceString
+                | Url _ -> LinkArgs_Url.ResourceString
+                | Title _ -> LinkArgs_Title.ResourceString
+                | Body _ -> LinkArgs_Body.ResourceString
 
     type DeleteArgs =
         | [<CliPrefix(CliPrefix.None); AltCommandLine("-p")>] Push of id: string
@@ -37,61 +50,72 @@ module Arguments =
         | [<CliPrefix(CliPrefix.None); AltCommandLine("-k")>] Key
         
         interface IArgParserTemplate with
-
             member this.Usage =
                 match this with 
-                | Push _ -> "Delete specified push."
-                | Chat _ -> "Delete specified chat."
-                | Device _ -> "Delete specified device."
-                | Subscription _ -> "Delete specified subscription."
-                | Sms _ -> "Delete specified sms."
-                | Key -> "Delete the configured key."
+                | Push _ -> DeleteArgs_Push.ResourceString
+                | Chat _ -> DeleteArgs_Chat.ResourceString
+                | Device _ -> DeleteArgs_Device.ResourceString
+                | Subscription _ -> DeleteArgs_Subscription.ResourceString
+                | Sms _ -> DeleteArgs_Sms.ResourceString
+                | Key -> DeleteArgs_Key.ResourceString
 
     [<DisableHelpFlags>]
     type CliArguments =
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-k")>] Key of key:string option
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-k");EqualsAssignment>] Key of key: string option
         | [<CliPrefix(CliPrefix.None);CustomCommandLine("me");AltCommandLine("-i")>] Profile
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-x")>] Limits
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-g")>] Grants
-
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-pi")>] PushInfo of pushid:string
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-p", "text")>] Push of ParseResults<PushArgs>
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-cl")>] Clip of string
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-ps")>] Pushes of number:int option
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-m")>] Sms of device: string * number: string * body: string
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-d")>] Device of string
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-ds")>] Devices
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-del")>] Delete of ParseResults<DeleteArgs>
-
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-cs")>] Chats
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-cc")>] Chat of ParseResults<ChatArgs>
-                
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-s", "subs")>] Subscriptions
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-ci")>] ChannelInfo of tag:string
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-h");>] Help
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-v");>] Version
+        
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-cs")>] Chats
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-c")>] Chat of ParseResults<ChatArgs>
+        
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-d")>] Device of string
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-ds")>] Devices
+
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-m")>] Sms of device: string * number: string * body: string
+
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-pi")>] PushInfo of pushid: string
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-p", "text", "-t")>] Push of ParseResults<PushArgs>
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-l", "url", "-u")>] Link of ParseResults<LinkArgs>
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-cl")>] Clip of string
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-ps");EqualsAssignment>] Pushes of number: int option
+        
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-s", "subs")>] Subscriptions
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-ci")>] ChannelInfo of tag:string
+
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-del")>] Delete of ParseResults<DeleteArgs>
 
         interface IArgParserTemplate with
 
             member this.Usage = 
                 match this with
-                | Key _ -> "Set API key with argument. Show API key without argument."
-                | Profile -> "Get profile of configured API key."
-                | Limits -> "Get rate limits."
-                | Grants -> "Get grants that have access to your PB account."
-                | PushInfo _ -> "Gets information of the given push id."
-                | Push _ -> "Push text or note. Use push [device / -d] to push to a specific device."
-                | Pushes _ -> "List [number] of pushes or else last push."
-                | Clip _ -> "Pushes a clip."
-                | Sms _ -> "Send sms to eligible device."
-                | Device _ -> "Shows information about a device. Select with identifier or index shown in the [devices / -ds] command."
-                | Devices -> "Lists devices of current account. Including identifiers and indexes to identify."
-                | Chat _ -> "Create or update chat."
-                | Chats -> "List chats of current account."
-                | Delete _ -> "Delete an object"
-                | Subscriptions -> "List subscriptions with channel tag of current account."
-                | ChannelInfo _ -> "Show information about a specific channel with channel tag as shown in [subscriptions / subs / -s]."
-                | Help -> "Display this help."
-                | Version -> "Shows the actual pushbullet-cli version."
+                | Key _ -> CliArguments_Key.ResourceString
+                | Profile -> CliArguments_Profile.ResourceString
+                | Limits -> CliArguments_Limits.ResourceString
+                | Grants -> CliArguments_Grants.ResourceString
+                | Help -> CliArguments_Help.ResourceString
+                | Version -> CliArguments_Version.ResourceString
+
+                | Chat _ -> CliArguments_Chat.ResourceString
+                | Chats -> CliArguments_Chats.ResourceString
+
+                | Device _ -> CliArguments_Device.ResourceString
+                | Devices -> CliArguments_Devices.ResourceString
+
+                | Sms _ -> CliArguments_Sms.ResourceString
+
+
+                | PushInfo _ -> CliArguments_PushInfo.ResourceString
+                | Push _ -> CliArguments_Push.ResourceString
+                | Link _ -> CliArguments_Link.ResourceString
+                | Clip _ -> CliArguments_Clip.ResourceString
+                | Pushes _ -> CliArguments_Pushes.ResourceString
+
+                | Subscriptions -> CliArguments_Subscriptions.ResourceString
+                | ChannelInfo _ -> CliArguments_ChannelInfo.ResourceString
+
+                | Delete _ -> CliArguments_Delete.ResourceString
 
 
