@@ -55,8 +55,7 @@ module Program =
        | (true, int) -> Some int
        | _ -> None
 
-    let (|Positive|Negative|Neither|) x =
-        match x with 
+    let (|Positive|Negative|Neither|) = function
         | "true" | "1" | "mute" -> Positive
         | "false" | "0" | "unmute" -> Negative
         | _ -> Neither
@@ -87,10 +86,12 @@ module Program =
             let deviceResult = subCommand.TryGetResult(PushArgs.Device)
             let dev = if deviceResult.IsSome then deviceResult.Value |> getDeviceFromIndexOrDeviceId |> toOption else None
 
-            match subCommand.GetAllResults() with 
-            | [ Text t ] -> (t, dev) |> PushCommands.PushTextCommand |> PushText
-            | [ Note (title, body) ] -> (title |> toOption, body |> toOption, dev) |> PushCommands.PushNoteCommand |> PushNote
-            | _ -> Other $"{subCommand.Parser.PrintUsage()}"
+            if subCommand.Contains(Text) then
+                (subCommand.GetResult(Text), dev) |> PushCommands.PushTextCommand |> PushText
+            else if subCommand.Contains(Note) then
+                let (title, body) = subCommand.GetResult(Note)
+                (title |> toOption, body |> toOption, dev) |> PushCommands.PushNoteCommand |> PushNote
+            else Other $"{subCommand.Parser.PrintUsage()}"
 
         | [ Link subCommand ] ->
             let deviceResult = subCommand.TryGetResult(LinkArgs.Device)
@@ -128,8 +129,8 @@ module Program =
 
         | [ Subscriptions ] -> ListSubscriptions
         | [ ChannelInfo arg ] -> arg |> SubscriptionCommands.GetChannelInfoCommand |> GetChannelInfo
-        | [ Help ] -> Other $"{parser.PrintUsage()}"
         | [ Version ] -> GetVersion
+        | [ Help ] -> Other $"{parser.PrintUsage()}"
         | _ -> Other $"{parser.PrintUsage()}"
 
 

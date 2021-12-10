@@ -23,9 +23,9 @@ module Arguments =
         interface IArgParserTemplate with
             member this.Usage =
                 match this with 
-                | Device _ -> PushArgs_Device.ResourceString
                 | Text _ -> PushArgs_Text.ResourceString
                 | Note _ -> PushArgs_Note.ResourceString
+                | Device _ -> PushArgs_Device.ResourceString
 
     type LinkArgs =
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-d")>] Device of deviceId: string
@@ -61,18 +61,8 @@ module Arguments =
 
     [<DisableHelpFlags>]
     type CliArguments =
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-k");EqualsAssignment>] Key of key: string option
-        | [<CliPrefix(CliPrefix.None);CustomCommandLine("me");AltCommandLine("-i")>] Profile
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-x")>] Limits
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-g")>] Grants
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-h");>] Help
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-v");>] Version
-        
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-cs")>] Chats
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-c")>] Chat of ParseResults<ChatArgs>
-        
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-d")>] Device of string
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-ds")>] Devices
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-c")>] Chat of ParseResults<ChatArgs>        
 
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-m")>] Sms of device: string * number: string * body: string
 
@@ -81,14 +71,23 @@ module Arguments =
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-l", "url", "-u")>] Link of ParseResults<LinkArgs>
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-cl")>] Clip of string
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-ps");EqualsAssignment>] Pushes of number: int option
+
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-d")>] Device of string
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-ds")>] Devices
         
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-s", "subs")>] Subscriptions
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-ci")>] ChannelInfo of tag:string
 
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-del")>] Delete of ParseResults<DeleteArgs>
+        
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-k");EqualsAssignment>] Key of key: string option
+        | [<CliPrefix(CliPrefix.None);CustomCommandLine("me");AltCommandLine("-i")>] Profile
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-x")>] Limits
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-g")>] Grants
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-h");>] Help
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-v");>] Version
 
         interface IArgParserTemplate with
-
             member this.Usage = 
                 match this with
                 | Key _ -> CliArguments_Key.ResourceString
@@ -117,5 +116,3 @@ module Arguments =
                 | ChannelInfo _ -> CliArguments_ChannelInfo.ResourceString
 
                 | Delete _ -> CliArguments_Delete.ResourceString
-
-

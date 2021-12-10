@@ -33,7 +33,7 @@ module SystemCommands =
         let response = HttpService.GetResponse "users/me" 
         match response with 
         | HttpService.Ok r ->
-            $"API-Limit: {r.Limit},\nRemaining: {r.Remaining},\nReset at:  {(r.Reset |> decimal |> unixTimestampToDateTime)}"
+            $"API-Limit: {r.Limit}\nRemaining: {r.Remaining}\nReset at:  {(r.Reset |> decimal |> unixTimestampToDateTime)}"
         | HttpService.Error s -> s
 
     let listGrants () =

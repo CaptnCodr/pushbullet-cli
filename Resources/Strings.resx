@@ -179,7 +179,7 @@ Use following to show commands:
     <value>Show information about a specific channel with channel tag as shown in [subscriptions / subs / -s].</value>
   </data>
   <data name="CliArguments_Help" xml:space="preserve">
-    <value>Show this help.</value>
+    <value>Shows this help.</value>
   </data>
   <data name="CliArguments_Version" xml:space="preserve">
     <value>Shows the actual pushbullet-cli version.</value>
