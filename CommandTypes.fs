@@ -24,7 +24,6 @@ module CommandTypes =
         | GetProfile
         | GetLimits
         | ListGrants
-        | GetHelp
         | GetVersion
 
         // Push commands

@@ -1,7 +1,6 @@
 namespace Pushbullet
 
 open System
-open System.IO
 open System.Reflection
 open Resources
 open Utilities
@@ -32,8 +31,7 @@ module SystemCommands =
     let getLimits () =
         let response = HttpService.GetResponse "users/me" 
         match response with 
-        | HttpService.Ok r ->
-            $"API-Limit: {r.Limit},\nRemaining: {r.Remaining},\nReset at:  {(r.Reset |> decimal |> unixTimestampToDateTime)}"
+        | HttpService.Ok r -> $"API-Limit: {r.Limit}\nRemaining: {r.Remaining}\nReset at:  {(r.Reset |> decimal |> unixTimestampToDateTime)}"
         | HttpService.Error s -> s
 
     let listGrants () =
@@ -42,11 +40,6 @@ module SystemCommands =
         |> fun r -> r.Grants 
         |> Array.map (fun grant -> $"[{grant.Iden}] {grant.Client.Name}, created: {grant.Created |> unixTimestampToDateTime}, modified: {grant.Modified |> unixTimestampToDateTime}")
         |> String.concat Environment.NewLine
-
-    let getHelp () =
-        Assembly.GetExecutingAssembly().GetManifestResourceStream(HelpFile)
-        |> fun stream -> new StreamReader(stream)
-        |> fun sr -> sr.ReadToEnd()
 
     let getVersion () =
         Assembly.GetExecutingAssembly().GetName().Version |> string

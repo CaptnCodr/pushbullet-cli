@@ -4,3 +4,4 @@ nuget FSharp.Core
 nuget FSharp.Data
 nuget Newtonsoft.Json
 nuget FsHttp
+nuget Argu
