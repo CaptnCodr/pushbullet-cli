@@ -20,15 +20,9 @@ module SubscriptionCommands =
         |> String.concat Environment.NewLine
 
     let channelInfo (GetChannelInfoCommand tag) =
-        let formatInfo (info: ChannelInfoResponse.Root) =
-            if info.RecentPushes.Length > 0 then
-                $"[{info.Iden}]:\nTag: {info.Tag}\nSubscribers: {info.SubscriberCount}\nName: {info.Name}\nDescription: {info.Description}\nRecent push: {info.RecentPushes.[0].Created |> unixTimestampToDateTime}"
-            else 
-                $"[{info.Iden}]:\nTag: {info.Tag}\nSubscribers: {info.SubscriberCount}\nName: {info.Name}\nDescription: {info.Description}"
-
         HttpService.GetRequest "channel-info" [("tag", tag)]
         |> ChannelInfoResponse.Parse
-        |> formatInfo
+        |> fun info ->  $"""[{info.Iden}]:{"\n"}Tag: {info.Tag}{"\n"}Subscribers: {info.SubscriberCount}{"\n"}Name: {info.Name}{"\n"}Description: {info.Description}{if info.RecentPushes.Length > 0 then $"\nRecent push: {info.RecentPushes.[0].Created |> unixTimestampToDateTime}" else "" }"""
 
     let delete (DeleteSubscriptionCommand id) =
         HttpService.DeleteRequest $"{Subscriptions}/{id}" SubscriptionDeleted.ResourceString

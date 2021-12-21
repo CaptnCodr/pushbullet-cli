@@ -62,23 +62,23 @@ module Arguments =
     [<DisableHelpFlags>]
     type CliArguments =
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-cs")>] Chats
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-c")>] Chat of ParseResults<ChatArgs>        
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-c")>] Chat of ParseResults<ChatArgs>
 
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-m")>] Sms of device: string * number: string * body: string
 
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-pi")>] PushInfo of pushid: string
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-p", "text", "-t")>] Push of ParseResults<PushArgs>
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-l", "url", "-u")>] Link of ParseResults<LinkArgs>
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-cl")>] Clip of string
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-cl")>] Clip of json: string
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-ps");EqualsAssignment>] Pushes of number: int option
 
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-d")>] Device of string
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-d")>] Device of deviceid: string
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-ds")>] Devices
         
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-s", "subs")>] Subscriptions
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-ci")>] ChannelInfo of tag:string
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-ci")>] ChannelInfo of tag: string
 
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-del")>] Delete of ParseResults<DeleteArgs>
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-del", "-r")>] Delete of ParseResults<DeleteArgs>
         
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-k");EqualsAssignment>] Key of key: string option
         | [<CliPrefix(CliPrefix.None);CustomCommandLine("me");AltCommandLine("-i")>] Profile

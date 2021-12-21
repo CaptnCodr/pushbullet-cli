@@ -18,7 +18,7 @@ First of all, create your API key from [Pushbullet](http://pushbullet.com) and s
 
 `> pb key <API-KEY>`
 
-Get API-Key:
+Get configured API-Key:
 
 `> pb key`
 
@@ -50,27 +50,35 @@ Get API-Key:
 
 <br />
 
+#### 2.2.4 Get actual pushbullet-cli version:
+
+`> pb version` or
+
+`> pb -v`
+
+<br />
+
 ### 2.3 `push` / `text` / `link` / `url`
 
 #### 2.3.1 Then you're able to push text to your devices (different writing styles):
 
-`> pb push "Hello world!"`
+`> pb push -t "Hello world!"`
 
-`> pb -p http://pushbullet.com`
+`> pb url http://pushbullet.com`
 
-`> pb text "Hello world!"`
+`> pb text -t "Hello world!"`
 
 `> pb -t "Hello world!"`
 
 or
 
-`> pb link http://pushbullet.com "Title of link" "Description of Link"`
+`> pb link -u http://pushbullet.com -t "Title of link" -b "Description of Link"`
 
-`> pb -l http://pushbullet.com "Title of link" "Description of Link"`
+`> pb -l url http://pushbullet.com -t "Title of link" body "Description of Link"`
 
-`> pb url http://pushbullet.com "Title of link" "Description of Link"`
+`> pb -u -u http://pushbullet.com title "Title of link" -b "Description of Link"`
 
-`> pb -u http://pushbullet.com "Title of link" "Description of Link"`
+`> pb -u url http://pushbullet.com title "Title of link" body "Description of Link"`
 
 <br />
 
@@ -84,30 +92,32 @@ or
 
 #### 2.3.2 You can drop arguments by pass an empty string like:
 
-`> pb url http://pushbullet.com "" "Description of Link"`
+`> pb link url http://pushbullet.com -b "Description of Link"`
 
-`> pb -u http://pushbullet.com "" "Description of Link"`
+`> pb url -u http://pushbullet.com body "Description of Link"`
+
+`> pb -l -u http://pushbullet.com body "Description of Link"`
 
 <br />
 
 #### 2.3.3 Push to specific device (`-d` / `device`):
 (2.4.2 return devices with indexes and device_iden)
 
-`> pb push device 0 "Hello world!"`
+`> pb push device 0 -t "Hello world!"`
 
-`> pb -p -d 1 http://pushbullet.com`
+`> pb -p -d 1 -t http://pushbullet.com`
 
 `> pb text device 0 "Hello world!"`
 
-`> pb -t -d 1 "Hello world!"`
+`> pb -t -d 1 title "Hello world!"`
 
-`> pb push device uy123456abcd "Hello world!"`
+`> pb push device uy123456abcd -t "Hello world!"`
 
 or
 
-`> pb link -d 0 http://pushbullet.com "Title of link" "Description of Link"`
+`> pb link -d 0 -u http://pushbullet.com -t "Title of link" -b "Description of Link"`
 
-`> pb url device 1 http://pushbullet.com "Title of link" "Description of Link"`
+`> pb url device 1 url http://pushbullet.com title "Title of link" body "Description of Link"`
 
 ( ... etc.)
 
@@ -179,7 +189,7 @@ Note: device id / device index AND mobile number must be set.
 
 ### 2.5 `delete`
 
-#### 2.5.1 Delete configured api key:
+#### 2.5.1 Delete configured API-Key:
 
 `> pb delete key` or
 

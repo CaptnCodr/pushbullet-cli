@@ -16,7 +16,6 @@ module Program =
         | GetProfile -> SystemCommands.getProfile()
         | GetLimits -> SystemCommands.getLimits()
         | ListGrants -> SystemCommands.listGrants()
-        | GetHelp -> SystemCommands.getHelp()
         | GetVersion -> SystemCommands.getVersion()
 
         | PushText p -> p |> PushCommands.pushText
@@ -48,7 +47,9 @@ module Program =
         | Other s -> s// System.String.Format(Info_CommandNotFound.ResourceString, s)
 
     let toOption x =
-        if String.IsNullOrWhiteSpace x then None else Some x
+        match x with 
+        | null | "" -> None 
+        | _ -> Some x
 
     let (|Int|_|) str =
        match System.Int32.TryParse(str: string) with
@@ -71,38 +72,46 @@ module Program =
         | _ -> device
 
     let resultToValue (cmd: Option<string option>) = 
-        if cmd.IsSome then cmd.Value else None
+        cmd |> Option.bind id
 
     let runCommands (parser: ArgumentParser<CliArguments>) (args: string array) =
         let parsingResult = parser.Parse args
 
         match parsingResult.GetAllResults() with 
-        | [ Key arg ] -> if arg.IsSome then arg.Value |> SystemCommands.SetKeyCommand |> SetKey else GetKey
+        | [ Key arg ] -> 
+            match arg with 
+            | Some a -> a |> SystemCommands.SetKeyCommand |> SetKey 
+            | None -> GetKey
         | [ Profile ] -> GetProfile
         | [ Limits ] -> GetLimits
         | [ Grants ] -> ListGrants
         | [ PushInfo arg ] -> arg |> PushCommands.GetPushCommand |> GetPush
         | [ Push subCommand ] -> 
-            let deviceResult = subCommand.TryGetResult(PushArgs.Device)
-            let dev = if deviceResult.IsSome then deviceResult.Value |> getDeviceFromIndexOrDeviceId |> toOption else None
+            let deviceId =  match subCommand.TryGetResult(PushArgs.Device) with 
+                            | Some v -> v |> getDeviceFromIndexOrDeviceId |> toOption
+                            | None -> None
 
             if subCommand.Contains(Text) then
-                (subCommand.GetResult(Text), dev) |> PushCommands.PushTextCommand |> PushText
+                (subCommand.GetResult(Text), deviceId) |> PushCommands.PushTextCommand |> PushText
             else if subCommand.Contains(Note) then
                 let (title, body) = subCommand.GetResult(Note)
-                (title |> toOption, body |> toOption, dev) |> PushCommands.PushNoteCommand |> PushNote
+                (title |> toOption, body |> toOption, deviceId) |> PushCommands.PushNoteCommand |> PushNote
             else Other $"{subCommand.Parser.PrintUsage()}"
 
         | [ Link subCommand ] ->
-            let deviceResult = subCommand.TryGetResult(LinkArgs.Device)
-            let dev = if deviceResult.IsSome then deviceResult.Value |> getDeviceFromIndexOrDeviceId |> toOption else None
+            let deviceId =  match subCommand.TryGetResult(LinkArgs.Device) with 
+                            | Some v -> v |> getDeviceFromIndexOrDeviceId |> toOption
+                            | None -> None
+
             if subCommand.Contains(Url) then
-                (subCommand.GetResult(Url), subCommand.TryGetResult(Title) |> resultToValue, subCommand.TryGetResult(Body) |> resultToValue, dev) |> PushCommands.PushLinkCommand |> PushLink
+                (subCommand.GetResult(Url), subCommand.TryGetResult(Title) |> resultToValue, subCommand.TryGetResult(Body) |> resultToValue, deviceId) |> PushCommands.PushLinkCommand |> PushLink
             else
                 Other $"{subCommand.Parser.PrintUsage()}"
 
-        | [ Pushes arg ] -> if arg.IsNone then 0 |> PushCommands.ListPushesCommand |> ListPushes else arg.Value |> PushCommands.ListPushesCommand |> ListPushes 
-
+        | [ Pushes arg ] -> 
+            match arg with
+            | Some v -> v |> PushCommands.ListPushesCommand |> ListPushes 
+            | None -> 0 |> PushCommands.ListPushesCommand |> ListPushes
         | [ Delete subCommand ] -> 
             match subCommand.GetAllResults() with 
             | [ DeleteArgs.Push p ] -> p |> PushCommands.DeletePushCommand |> DeletePush
@@ -132,7 +141,6 @@ module Program =
         | [ Version ] -> GetVersion
         | [ Help ] -> Other $"{parser.PrintUsage()}"
         | _ -> Other $"{parser.PrintUsage()}"
-
 
     [<EntryPoint>]
     let main ([<ParamArray>] argv: string[]): int =

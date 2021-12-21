@@ -20,9 +20,6 @@
     <Content Include="Data\MessageData.json" />
     <Content Include="Data\PushData.json" />
     <Content Include="Data\UserData.json" />
-    <EmbeddedResource Label="HelpText" Include="Resources\Help.md">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Types.fs" />

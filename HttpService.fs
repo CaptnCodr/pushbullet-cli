@@ -18,7 +18,8 @@ module HttpService =
     let BaseUrl = "https://api.pushbullet.com/v2"
 
     let private formatException (stream: Stream) =
-        new StreamReader(stream) |> fun r -> r.ReadToEnd() 
+        new StreamReader(stream) 
+        |> fun r -> r.ReadToEnd() 
         |> ErrorResponse.Parse
         |> fun e -> $"{e.ErrorCode}: {e.Error.Message} {e.Error.Cat}"
 
