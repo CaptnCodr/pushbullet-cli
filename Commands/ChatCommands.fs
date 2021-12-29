@@ -21,11 +21,10 @@ module ChatCommands =
         |> String.concat Environment.NewLine
 
     let delete (DeleteChatCommand id)=
-        HttpService.DeleteRequest $"{Chats}/{id}" ChatDeleted.ResourceString
+        HttpService.DeleteRequest $"{Chats}/{id}" ChatDeleted
 
     let update (UpdateChatCommand(id, status)) =
-        let message = if status then ChatMuted.ResourceString else ChatUnmuted.ResourceString
-        HttpService.PostRequest $"{Chats}/{id}" {| Muted = status |} message
+        HttpService.PostRequest $"{Chats}/{id}" {| Muted = status |} [ChatUnmuted;ChatMuted].[status |> Convert.ToInt32]
 
     let create (CreateChatCommand email) =
-        HttpService.PostRequest Chats {| Email = email |} ChatCreated.ResourceString
+        HttpService.PostRequest Chats {| Email = email |} ChatCreated

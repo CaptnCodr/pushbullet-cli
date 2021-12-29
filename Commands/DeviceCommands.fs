@@ -29,7 +29,8 @@ module DeviceCommands =
         HttpService.GetListRequest Devices
         |> DataResponse.Parse
         |> fun r -> r.Devices
-        |> fun a -> if a.Length > index then a.[index].Iden else String.Empty
+        |> fun a -> a |> Array.tryItem index 
+        |> function | Some v -> v.Iden | None -> ""
 
     let delete (DeleteDeviceCommand id) =
-        HttpService.DeleteRequest $"{Devices}/{id}" DeviceDeleted.ResourceString
+        HttpService.DeleteRequest $"{Devices}/{id}" DeviceDeleted

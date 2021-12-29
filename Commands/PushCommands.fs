@@ -36,19 +36,19 @@ module PushCommands =
         |> fun p -> $"[{p.Iden}]:\nreceiver: {p.ReceiverEmail}\ncreated: {p.Created |> unixTimestampToDateTime}\nmodified: {p.Modified |> unixTimestampToDateTime}\ntarget device: {p.TargetDeviceIden}\ntype: {p.Type}\ntitle: {p.Title}\nbody: {p.Body}\nurl: {p.Url}"
         
     let delete (DeletePushCommand id) =
-        HttpService.DeleteRequest $"{Pushes}/{id}" PushDeleted.ResourceString
+        HttpService.DeleteRequest $"{Pushes}/{id}" PushDeleted
 
-    let push (message: string) (json: 't) =
+    let push (message: ResourceTypes) (json: 't) =
         HttpService.PostRequest "pushes" json message
 
     let pushText (PushTextCommand (body, device)) =
-        {| Type = "note"; Body = body; Device_iden = device |} |> push PushSent.ResourceString
+        {| Type = "note"; Body = body; Device_iden = device |} |> push PushSent
 
     let pushNote (PushNoteCommand (title, body, device)) =
-        {| Type = "note"; Title = title; Body = body; Device_iden = device |} |> push PushSent.ResourceString
+        {| Type = "note"; Title = title; Body = body; Device_iden = device |} |> push PushSent
 
     let pushLink (PushLinkCommand (url, title, body, device)) =
-        {| Type = "link"; Url = url; Title = title; Body = body; Device_iden = device |} |> push LinkSent.ResourceString
+        {| Type = "link"; Url = url; Title = title; Body = body; Device_iden = device |} |> push LinkSent
 
     let pushClip (PushClipCommand body) =
-        HttpService.PostRequest "ephemerals" {| Push = {| Body = body; Type = "clip" |}; Type = "push" |} ClipSent.ResourceString
+        HttpService.PostRequest "ephemerals" {| Push = {| Body = body; Type = "clip" |}; Type = "push" |} ClipSent

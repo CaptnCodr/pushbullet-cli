@@ -74,6 +74,7 @@ module Resources =
         | Errors_NotEnoughArguments
         | Errors_ParameterInvalid 
         | Errors_NoParametersGiven
+        | Empty
 
         member this.ResourceString = 
             this.ToString() 

@@ -80,7 +80,7 @@ module Arguments =
 
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-del", "-r")>] Delete of ParseResults<DeleteArgs>
         
-        | [<CliPrefix(CliPrefix.None);AltCommandLine("-k");EqualsAssignment>] Key of key: string option
+        | [<CliPrefix(CliPrefix.None);AltCommandLine("-k")>] Key of key: string option
         | [<CliPrefix(CliPrefix.None);CustomCommandLine("me");AltCommandLine("-i")>] Profile
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-x")>] Limits
         | [<CliPrefix(CliPrefix.None);AltCommandLine("-g")>] Grants

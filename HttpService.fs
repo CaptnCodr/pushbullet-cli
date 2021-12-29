@@ -6,6 +6,7 @@ open FsHttp
 open FsHttp.DslCE
 open Newtonsoft.Json
 open FSharp.Data
+open Resources
 
 module HttpService =
 
@@ -36,12 +37,12 @@ module HttpService =
         | Choice1Of2 r -> r |> Response.toString 16000
         | Choice2Of2 e -> e |> Response.toStream |> formatException
 
-    let private chooseResponseWithMessage (successMessage: string) (response: Choice<Domain.Response, Domain.Response>) =
+    let private chooseResponseWithMessage (successMessage: ResourceTypes) (response: Choice<Domain.Response, Domain.Response>) =
         match response with
         | Choice1Of2 r -> 
-            match successMessage with
+            match successMessage.ResourceString with
             | "" -> r |> Response.toString 16000
-            | _ -> successMessage
+            | _ -> successMessage.ResourceString
         | Choice2Of2 e -> e |> Response.toStream |> formatException
         
     let private chooseHeaders (response: Choice<Domain.Response, Domain.Response>) =
@@ -60,7 +61,7 @@ module HttpService =
         
     let GetListRequest (path: string) : string = GetRequest path [("active", "true")]
 
-    let PostRequest (path: string) (record: 't) (successMessage: string) =
+    let PostRequest (path: string) (record: 't) (successMessage: ResourceTypes) =
         http {
             POST $"{BaseUrl}/{path}"
             header ("Access-Token") (VariableAccess.getSystemKey())
@@ -69,7 +70,7 @@ module HttpService =
             ContentType ("application/json")
         } |> examineResponse |> chooseResponseWithMessage successMessage
 
-    let DeleteRequest (path: string) (successMessage: string) =
+    let DeleteRequest (path: string) (successMessage: ResourceTypes) =
         http {
             DELETE $"{BaseUrl}/{path}"
             header ("Access-Token") (VariableAccess.getSystemKey())

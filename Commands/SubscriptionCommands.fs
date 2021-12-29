@@ -25,4 +25,4 @@ module SubscriptionCommands =
         |> fun info ->  $"""[{info.Iden}]:{"\n"}Tag: {info.Tag}{"\n"}Subscribers: {info.SubscriberCount}{"\n"}Name: {info.Name}{"\n"}Description: {info.Description}{if info.RecentPushes.Length > 0 then $"\nRecent push: {info.RecentPushes.[0].Created |> unixTimestampToDateTime}" else "" }"""
 
     let delete (DeleteSubscriptionCommand id) =
-        HttpService.DeleteRequest $"{Subscriptions}/{id}" SubscriptionDeleted.ResourceString
+        HttpService.DeleteRequest $"{Subscriptions}/{id}" SubscriptionDeleted
