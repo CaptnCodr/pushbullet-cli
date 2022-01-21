@@ -6,9 +6,6 @@ open Resources
 open Utilities
 
 module SystemCommands =
-    
-    [<Literal>]
-    let HelpFile = "pushbullet-cli.Resources.Help.md"
 
     type SetKeyCommand = SetKeyCommand of string
 
