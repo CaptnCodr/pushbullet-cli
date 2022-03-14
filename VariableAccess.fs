@@ -10,7 +10,7 @@ module VariableAccess =
     let getSystemKey () =
         (Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User) : string)
         |> Option.ofObj 
-        |> Option.defaultWith (fun () -> "")
+        |> Option.defaultValue ""
 
     let setSystemKey key =
         Environment.SetEnvironmentVariable(PushbulletKey, key, EnvironmentVariableTarget.User)
