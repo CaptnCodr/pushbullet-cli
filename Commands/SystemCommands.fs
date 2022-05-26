@@ -23,19 +23,21 @@ module SystemCommands =
     let getProfile () =
         HttpService.GetRequest "users/me" []
         |> UserResponse.Parse
-        |> fun user -> $"[{user.Iden}]:\nname: {user.Name}\nemail: {user.Email}\ncreated: {user.Created |> unixTimestampToDateTime}\nmodified: {user.Modified |> unixTimestampToDateTime}"
+        |> fun user -> 
+            GetProfileOutput.FormattedString(user.Iden, user.Name, user.Email, user.Created |> unixTimestampToDateTime, user.Modified |> unixTimestampToDateTime)
 
     let getLimits () =
         let response = HttpService.GetResponse "users/me" 
         match response with 
-        | HttpService.Ok r -> $"API-Limit: {r.Limit}\nRemaining: {r.Remaining}\nReset at:  {(r.Reset |> decimal |> unixTimestampToDateTime)}"
+        | HttpService.Ok r -> 
+            GetLimitsOutput.FormattedString(r.Limit, r.Remaining, (r.Reset |> decimal |> unixTimestampToDateTime))
         | HttpService.Error s -> s
 
     let listGrants () =
         HttpService.GetListRequest "grants"
         |> DataResponse.Parse
         |> fun r -> r.Grants 
-        |> Array.map (fun grant -> $"[{grant.Iden}] {grant.Client.Name}, created: {grant.Created |> unixTimestampToDateTime}, modified: {grant.Modified |> unixTimestampToDateTime}")
+        |> Array.map (fun grant -> ListGrantsOutput.FormattedString(grant.Iden, grant.Client.Name, grant.Created |> unixTimestampToDateTime, grant.Modified |> unixTimestampToDateTime))
         |> String.concat Environment.NewLine
 
     let getVersion () =

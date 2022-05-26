@@ -14,7 +14,7 @@ module MessageCommands =
         {| Data = {| Target_Device_Iden = device; Addresses = [number]; Message = body |} |}
         |> fun json -> HttpService.PostRequest Texts json Empty
         |> MessageResponse.Parse
-        |> fun r -> $"[{r.Iden}] {MessageSent.ResourceString}"
+        |> fun r -> CreateMessageOutput.FormattedString(r.Iden, MessageSent)
 
     let delete (DeleteMessageCommand id) = 
         HttpService.PostRequest Texts {| Iden = id |} MessageDeleted

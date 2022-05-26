@@ -17,13 +17,13 @@ module DeviceCommands =
         HttpService.GetListRequest Devices
         |> DataResponse.Parse
         |> fun r -> r.Devices
-        |> Array.indexed |> Array.map (fun (i, e) -> $"{i} [{e.Iden}] {e.Nickname}")
+        |> Array.indexed |> Array.map (fun (i, e) -> DeviceListOutput.FormattedString(i, e.Iden, e.Nickname))
         |> String.concat Environment.NewLine
 
     let getDeviceInfo (GetDeviceInfoCommand iden) =
         HttpService.GetRequest $"{Devices}/{iden}" []
         |> DeviceResponse.Parse
-        |> fun d -> $"[{d.Iden}]:\nname: {d.Nickname}\ndevice: {d.Manufacturer} {d.Model}\napp version: {d.AppVersion}\ncreated: {d.Created |> unixTimestampToDateTime}\nmodified: {d.Modified |> unixTimestampToDateTime}"
+        |> fun d -> GetDeviceOutput.FormattedString(d.Iden, d.Nickname, d.Manufacturer, d.Model, d.AppVersion, d.Created |> unixTimestampToDateTime, d.Modified |> unixTimestampToDateTime)
 
     let getDeviceId (GetDeviceCommand index) =
         HttpService.GetListRequest Devices

@@ -20,9 +20,9 @@ module PushCommands =
     let list (ListPushesCommand limit) =
         let formatPush (p: DataResponse.Push) =
             if p.Type.Equals "link" then
-                $"[{p.Iden} at {p.Created |> unixTimestampToDateTime}] ({p.Type}) {p.Title}{Environment.NewLine}     URL: {p.Url.Value}{Environment.NewLine}     {p.Body}"
+                ListLinkPushOutput.FormattedString(p.Iden, p.Created |> unixTimestampToDateTime, p.Type, p.Title, p.Url.Value, p.Body)
             else
-                $"[{p.Iden} at {p.Created |> unixTimestampToDateTime}] ({p.Type}) {p.Title} {p.Body}"
+                ListTextPushOutput.FormattedString(p.Iden, p.Created |> unixTimestampToDateTime, p.Type, p.Title, p.Body)
 
         HttpService.GetRequest Pushes [("limit", $"{limit}"); ("active", "true")]
         |> DataResponse.Parse
@@ -33,7 +33,7 @@ module PushCommands =
     let getSinglePush (GetPushCommand id) =
         HttpService.GetRequest $"{Pushes}/{id}" []
         |> PushResponse.Parse
-        |> fun p -> $"[{p.Iden}]:\nreceiver: {p.ReceiverEmail}\ncreated: {p.Created |> unixTimestampToDateTime}\nmodified: {p.Modified |> unixTimestampToDateTime}\ntarget device: {p.TargetDeviceIden}\ntype: {p.Type}\ntitle: {p.Title}\nbody: {p.Body}\nurl: {p.Url}"
+        |> fun p -> GetSinglePushOutput.FormattedString(p.Iden, p.ReceiverEmail, p.Created |> unixTimestampToDateTime, p.Modified |> unixTimestampToDateTime, p.TargetDeviceIden, p.Type, p.Title, p.Body, p.Url)
         
     let delete (DeletePushCommand id) =
         HttpService.DeleteRequest $"{Pushes}/{id}" PushDeleted

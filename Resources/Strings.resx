@@ -235,6 +235,31 @@ Use following to show commands:
   <data name="KeySet" xml:space="preserve">
     <value>Key set!</value>
   </data>
+  
+  <data name="GetProfileOutput" xml:space="preserve">
+    <value>[{0}]:
+name: {1}
+email: {2}
+created: {3}
+modified: {4}</value>
+  </data>
+  <data name="GetLimitsOutput" xml:space="preserve">
+    <value>API-Limit: {0}
+Remaining: {1}
+Reset at:  {2}</value>
+  </data>
+  <data name="ListGrantsOutput" xml:space="preserve">
+    <value>[{0}]: 
+{1}
+created: {2} 
+modified: {3}</value>
+  </data>
+
+  <data name="ChatListOutput" xml:space="preserve">
+    <value>[{0}] with: {1} per {2} 
+created at {3} 
+modified at {4}</value>
+  </data>
   <data name="ChatCreated" xml:space="preserve">
     <value>Chat created!</value>
   </data>
@@ -247,14 +272,48 @@ Use following to show commands:
   <data name="ChatDeleted" xml:space="preserve">
     <value>Chat deleted!</value>
   </data>
+  <data name="DeviceListOutput" xml:space="preserve">
+    <value>{0} [{1}] {2}</value>
+  </data>
+  <data name="GetDeviceOutput" xml:space="preserve">
+    <value>[{0}]:
+name: {1}
+device: {2} {3}
+app version: {4}
+created: {5}
+modified: {6}</value>
+  </data>
   <data name="DeviceDeleted" xml:space="preserve">
     <value>Device deleted!</value>
+  </data>
+  <data name="CreateMessageOutput" xml:space="preserve">
+    <value>[{0}] {1}</value>
   </data>
   <data name="MessageSent" xml:space="preserve">
     <value>Message sent!</value>
   </data>
   <data name="MessageDeleted" xml:space="preserve">
     <value>Message deleted!</value>
+  </data>
+  
+  <data name="ListLinkPushOutput" xml:space="preserve">
+    <value>[{0} at {1}] ({2}) {3}
+     URL: {4}
+     {5}</value>
+  </data>
+  <data name="ListTextPushOutput" xml:space="preserve">
+    <value>[{0} at {1}] ({2}) {3} {4}</value>
+  </data>
+  <data name="GetSinglePushOutput" xml:space="preserve">
+    <value>[{0}]:
+receiver: {1}
+created: {2}
+modified: {3}
+target device: {4}
+type: {5}
+title: {6}
+body: {7}
+url: {8}</value>
   </data>
   <data name="PushSent" xml:space="preserve">
     <value>Push sent!</value>
@@ -267,6 +326,9 @@ Use following to show commands:
   </data>
   <data name="ClipSent" xml:space="preserve">
     <value>Clip sent!</value>
+  </data>
+  <data name="ListSubscriptionOutput" xml:space="preserve">
+    <value>(Tag: {0}) {2}: {3}</value>
   </data>
   <data name="SubscriptionDeleted" xml:space="preserve">
     <value>Subscription deleted!!</value>

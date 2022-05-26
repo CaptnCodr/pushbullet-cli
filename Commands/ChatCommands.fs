@@ -17,7 +17,7 @@ module ChatCommands =
         HttpService.GetListRequest Chats
         |> DataResponse.Parse
         |> fun r -> r.Chats
-        |> Array.map (fun c -> $"[{c.Iden}] with: {c.With.Email} per {c.With.Type} created at {c.Created |> unixTimestampToDateTime}, modified at {c.Modified |> unixTimestampToDateTime}")
+        |> Array.map (fun c -> ChatListOutput.FormattedString(c.Iden, c.With.Email, c.With.Type, c.Created |> unixTimestampToDateTime, c.Modified |> unixTimestampToDateTime))
         |> String.concat Environment.NewLine
 
     let delete (DeleteChatCommand id)=

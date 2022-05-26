@@ -2,6 +2,7 @@
 
 open System.Reflection
 open System.Resources
+open System
 
 module Resources =
 
@@ -54,21 +55,33 @@ module Resources =
         | KeySet
         | KeyRemoved
 
+        | GetProfileOutput
+        | GetLimitsOutput
+        | ListGrantsOutput
+
+        | ChatListOutput
         | ChatCreated
         | ChatMuted
         | ChatUnmuted
         | ChatDeleted
 
+        | DeviceListOutput
+        | GetDeviceOutput
         | DeviceDeleted
 
+        | CreateMessageOutput
         | MessageSent
         | MessageDeleted
 
+        | ListLinkPushOutput
+        | ListTextPushOutput
+        | GetSinglePushOutput
         | PushSent
         | LinkSent
         | ClipSent
         | PushDeleted
 
+        | ListSubscriptionOutput
         | SubscriptionDeleted
 
         | Errors_NotEnoughArguments
@@ -79,3 +92,6 @@ module Resources =
         member this.ResourceString = 
             this.ToString() 
             |> ResourceManager(ResourceFile, Assembly.GetExecutingAssembly()).GetString
+
+        member this.FormattedString ([<ParamArray>] args) =
+            (this.ResourceString, args) |> String.Format
