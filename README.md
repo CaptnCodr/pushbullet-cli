@@ -1,265 +1,94 @@
 # Pushbullet CLI
 
-## 1. Setup
+## 0. Setup
 
 Set application's path in system's environment "Path" variables.
 
-## 2. Usings
+## 1. Using
 
-### 2.0 Get help to the commands
+##### Command tree of all (sub-) commands and parameters:
 
-`> pb help`
+```
+> pb [command] [subcommand] [parameter]
 
-`> pb -h`
+[ key ]
++--[ key ]
 
-### 2.1 `key`
+[ push ]
++--[ device ]
+|  +--[ deviceid ]
++--[ text ]
+|  +--[ body ]
++--[ note ]
+   +--[ title ][ body ]
 
-First of all, create your API key from [Pushbullet](http://pushbullet.com) and set it using:
+[ pushinfo ]
++--[ pushid ]
 
-`> pb key <API-KEY>`
+[ pushes ]
++--[ number ]
 
-Get configured API-Key:
+[ link ]
++--[ device ]
+|  +--[ deviceid ]
++--[ url ]
+|  +--[ link ]
++--[ title ]
+|  +--[ title ]
++--[ body ]
+   +--[ body ]
 
-`> pb key`
+[ device ]
++--[ deviceid ]
 
+[ devices ]
+
+[ chat ]
++--[ update ]
+|  +--[ id ]
+|  +--[ status ]
++--[ create ]
+   +--[ email ]
+
+[ chats ]
+
+[ sms ]
++--[ device ]
++--[ number ]
++--[ body ]
+
+[ clip ]
++--[ json ]
+
+[ subscriptions ]
+
+[ channelinfo ]
++--[ tag ]
+
+[ delete ]
++--[ push ]
+|  +--[ id ]
++--[ chat ]
+|  +--[ id ]
++--[ device ]
+|  +--[ id ]
++--[ subscription ]
+|  +--[ id ]
++--[ sms ]
+|  +--[ id ]
++--[ key ]
+
+[ profile ]
+
+[ limits ]
+
+[ grants ]
+
+[ version ]
+
+[ help ]
+```
 <br />
 
-### 2.2 Meta data
-
-#### 2.2.1 Get your push limits:
-
-`> pb limits` or
-
-`> pb -x`
-
-<br />
-
-#### 2.2.2 Get your profile data:
-
-`> pb me` or
-
-`> pb -i`
-
-<br />
-
-#### 2.2.3 Get grants that have access to your pushbullet account:
-
-`> pb grants` or
-
-`> pb -g`
-
-<br />
-
-#### 2.2.4 Get actual pushbullet-cli version:
-
-`> pb version` or
-
-`> pb -v`
-
-<br />
-
-### 2.3 `push` / `text` / `link` / `url`
-
-#### 2.3.1 Then you're able to push text to your devices (different writing styles):
-
-`> pb push -t "Hello world!"`
-
-`> pb url http://pushbullet.com`
-
-`> pb text -t "Hello world!"`
-
-`> pb -t "Hello world!"`
-
-or
-
-`> pb link -u http://pushbullet.com -t "Title of link" -b "Description of Link"`
-
-`> pb -l url http://pushbullet.com -t "Title of link" body "Description of Link"`
-
-`> pb -u -u http://pushbullet.com title "Title of link" -b "Description of Link"`
-
-`> pb -u url http://pushbullet.com title "Title of link" body "Description of Link"`
-
-<br />
-
-#### 2.3.2 Push a clip
-
-`> pb clip http://pushbullet.com`
-
-`> pb -cl http://pushbullet.com`
-
-<br />
-
-#### 2.3.2 You can drop arguments by pass an empty string like:
-
-`> pb link url http://pushbullet.com -b "Description of Link"`
-
-`> pb url -u http://pushbullet.com body "Description of Link"`
-
-`> pb -l -u http://pushbullet.com body "Description of Link"`
-
-<br />
-
-#### 2.3.3 Push to specific device (`-d` / `device`):
-(2.4.2 return devices with indexes and device_iden)
-
-`> pb push device 0 -t "Hello world!"`
-
-`> pb -p -d 1 -t http://pushbullet.com`
-
-`> pb text device 0 "Hello world!"`
-
-`> pb -t -d 1 title "Hello world!"`
-
-`> pb push device uy123456abcd -t "Hello world!"`
-
-or
-
-`> pb link -d 0 -u http://pushbullet.com -t "Title of link" -b "Description of Link"`
-
-`> pb url device 1 url http://pushbullet.com title "Title of link" body "Description of Link"`
-
-( ... etc.)
-
-<br />
-
-#### 2.3.4 Send sms
-(2.4.2 return devices with indexes and device_iden)
-
-`> pb sms <INDEX> +123456789 "Hello"` or
-
-`> pb -m <DEVICE-ID> +12984672654 "Hello there!"`
-
-Note: device id / device index AND mobile number must be set.
-
-<br />
-
-### 2.4 List things
-
-#### 2.4.1 Show your last 3 pushes:
-
-`> pb pushes 3` or
-
-`> pb -ps` (retuns last push)
-
-<br />
-
-#### 2.4.2 Show more about one push:
-
-`> pb pushinfo <PUSH-ID>` or
-
-`> pb -pi <PUSH-ID>`
-
-<br />
-
-#### 2.4.3 Show all your devices:
-
-`> pb devices` or
-
-`> pb -ds`
-
-<br />
-
-#### 2.4.4 Information about device:
-(2.4.3 return devices with indexes and device_iden)
-
-`> pb device <DEVICE-ID>` or
-
-`> pb -d <INDEX>`
-
-<br />
-
-#### 2.4.5 Show all your chats:
-
-`> pb chats` or
-
-`> pb -cs`
-
-<br />
-
-#### 2.4.6 Show all your subscriptions:
-
-`> pb subscriptions` or
-
-`> pb subs` or
-
-`> pb -s`
-
-<br />
-
-### 2.5 `delete`
-
-#### 2.5.1 Delete configured API-Key:
-
-`> pb delete key` or
-
-`> pb -del -k`
-
-`> pb remove -k`
-
-`> pb -r -k`
-
-<br />
-
-#### 2.5.2 Delete specific push with different writing styles:
-
-`> pb -del push <PUSH-ID>` or
-
-`> pb delete -p <PUSH-ID>` or
-
-`> pb -r -p <PUSH-ID>`
-
-<br />
-
-#### 2.5.3 Delete device:
-
-`> pb delete device <DEVICE-ID>` or
-
-`> pb -del -d <DEVICE-ID>`
-
-<br />
-
-#### 2.5.4 Delete chat:
-
-`> pb delete chat <CHAT-ID>` or
-
-`> pb -r -c <CHAT-ID>`
-
-<br />
-
-#### 2.5.5 Delete subscription:
-
-`> pb delete subscription <SUBSCRIPTION-ID>` or
-
-`> pb remove -s <SUBSCRIPTION-ID>`
-
-<br/>
-
-#### 2.5.6 Delete texts / sms:
-
-`> pb delete sms <SMS-ID>` or
-
-`> pb -d -m <SMS-ID>`
-
-`SMS-ID` will be shown, when a text will be sent.
-
-<br />
-
-### 2.6 `chat`
-
-#### 2.6.1 Create a new chat:
-
-`> pb chat someone@example.com` or
-
-`> pb -c someone@example.com`
-
-<br />
-
-#### 2.6.2 Mute / unmute a chat:
-
-MUTE possibilities: `mute` / `true` / `1` <br />
-UNMUTE possibilities: `unmute` / `false` / `0`
-
-`> pb chat <CHAT-ID> mute`
-
-`> pb -c <CHAT-ID> false`
+Almost all functions are wrapped here.
+See API at: https://docs.pushbullet.com/
