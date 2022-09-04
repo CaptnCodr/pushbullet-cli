@@ -9,86 +9,85 @@ Set application's path in system's environment "Path" variables.
 ##### Command tree of all (sub-) commands and parameters:
 
 ```
-> pb [command] [subcommand] [parameter]
+> pb [command | alias] [subcommand | alias] [parameter]
 
-[ key ]
+[ key | -k ]
 +--[ key ]
 
-[ push ]
-+--[ device ]
+[ push | -p | text | -t ]
++--[ device | -d ]
 |  +--[ deviceid ]
-+--[ text ]
++--[ text | -t ]
 |  +--[ body ]
-+--[ note ]
++--[ note | -n ]
    +--[ title ][ body ]
 
-[ pushinfo ]
+[ pushinfo | -pi ]
 +--[ pushid ]
 
-[ pushes ]
+[ pushes | -ps ]
 +--[ number ]
 
-[ link ]
-+--[ device ]
+[ link | -l | url | -u ]
++--[ device | -d ]
 |  +--[ deviceid ]
-+--[ url ]
++--[ url | -u ]
 |  +--[ link ]
-+--[ title ]
++--[ title | -t ]
 |  +--[ title ]
-+--[ body ]
++--[ body | -b ]
    +--[ body ]
 
-[ device ]
+[ device | -d ]
 +--[ deviceid ]
 
-[ devices ]
+[ devices | -ds ]
 
-[ chat ]
-+--[ update ]
+[ chat | -c ]
++--[ update | -u ]
 |  +--[ id ]
 |  +--[ status ]
-+--[ create ]
++--[ create | -c ]
    +--[ email ]
 
-[ chats ]
+[ chats | -cs ]
 
-[ sms ]
+[ sms | -m ]
 +--[ device ]
 +--[ number ]
 +--[ body ]
 
-[ clip ]
+[ clip | -cl ]
 +--[ json ]
 
-[ subscriptions ]
+[ subscriptions | -s | subs ]
 
-[ channelinfo ]
+[ channelinfo | -ci ]
 +--[ tag ]
 
-[ delete ]
-+--[ push ]
+[ delete | -del | -r ]
++--[ push | -p ]
 |  +--[ id ]
-+--[ chat ]
++--[ chat | -c ]
 |  +--[ id ]
-+--[ device ]
++--[ device | -d ]
 |  +--[ id ]
-+--[ subscription ]
++--[ subscription | -s ]
 |  +--[ id ]
-+--[ sms ]
++--[ sms | -m ]
 |  +--[ id ]
-+--[ key ]
++--[ key | -k ]
 
-[ profile ]
+[ profile | -me | -i ]
 
-[ limits ]
+[ limits | -x ]
 
-[ grants ]
+[ grants | -g ]
 
-[ version ]
+[ version | -v ]
 
-[ help ]
+[ help | h ]
 ```
-<br />
 
-Almost all functions are wrapped here.
+Almost all functions are wrapped here.<br>
 See API at: https://docs.pushbullet.com/
