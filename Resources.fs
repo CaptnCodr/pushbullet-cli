@@ -1,8 +1,6 @@
 ﻿namespace Pushbullet
 
-open System.Reflection
-open System.Resources
-open System
+open Extensions.ResourceExt
 
 module Resources =
 
@@ -90,8 +88,7 @@ module Resources =
         | Empty
 
         member this.ResourceString = 
-            this.ToString() 
-            |> ResourceManager(ResourceFile, Assembly.GetExecutingAssembly()).GetString
+            ResourceFile |> resourceManager |> getResourceString this
 
-        member this.FormattedString ([<ParamArray>] args) =
-            (this.ResourceString, args) |> String.Format
+        member this.FormattedString ([<System.ParamArray>] args) =
+            ResourceFile |> resourceManager |> getFormattedString this args

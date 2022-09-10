@@ -20,6 +20,10 @@
     <Content Include="Data\MessageData.json" />
     <Content Include="Data\PushData.json" />
     <Content Include="Data\UserData.json" />
+    <Compile Include="paket-files\CaptnCodr\FSharpExtensions\ResourceExtension.fs">
+      <Paket>True</Paket>
+      <Link>ResourceExtension.fs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Types.fs" />
@@ -36,6 +40,11 @@
     <Compile Include="Commands/SubscriptionCommands.fs" />
     <Compile Include="Arguments.fs" />
     <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="paket.dependencies" />
+    <None Include="paket.references" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Strings.resx">
