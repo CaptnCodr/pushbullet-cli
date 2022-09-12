@@ -1,8 +1,11 @@
 ﻿namespace Pushbullet
 
+open FSharp.Data
 open Resources
 
 module MessageCommands =
+
+    type MessageResponse = JsonProvider<"./../Data/MessageData.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
     type SendMessageCommand = SendMessageCommand of device:string * number:string * body:string
     type DeleteMessageCommand = DeleteMessageCommand of string

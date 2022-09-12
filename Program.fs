@@ -99,6 +99,7 @@ module Program =
 
             | [ Subscriptions ] -> SubscriptionCommands.list()
             | [ ChannelInfo arg ] -> arg |> SubscriptionCommands.GetChannelInfoCommand |> SubscriptionCommands.channelInfo
+
             | [ Version ] -> SystemCommands.getVersion()
             | [ Help ] -> parser.PrintUsage()
             | _ -> parser.PrintUsage()

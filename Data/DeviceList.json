@@ -1,0 +1,24 @@
+﻿{
+  "devices": [
+    {
+      "active": true,
+      "iden": "ujyLNXNNKHAsjAqrGprm7F",
+      "created": 1517606592.7437692,
+      "modified": 1602059680.272744,
+      "type": "android",
+      "kind": "android",
+      "nickname": "Google Pixel 2 XL",
+      "generated_nickname": true,
+      "manufacturer": "Google",
+      "model": "Pixel 2 XL",
+      "app_version": 256,
+      "fingerprint": "{\"android_id\":\"df288a04679159b8\"}",
+      "push_token": "dlSM39vFJsY:APA91bFtUEytMe6U8OAgoj_yX66JzWaboop6_wzk5_Y-E5_QidUpHa305L5F9FSkSYtkFUyCh0jdg9kkoKHU9jX2wMHmthaitMVn3zwCYi4ZInQ8idZzZeR1pcgaULoX6v-ghHqmg4Em",
+      "pushable": true,
+      "has_sms": true,
+      "has_mms": true,
+      "icon": "phone",
+      "remote_files": "enabled"
+    }
+  ]
+}

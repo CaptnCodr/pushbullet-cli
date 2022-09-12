@@ -328,7 +328,7 @@ url: {8}</value>
     <value>Clip sent!</value>
   </data>
   <data name="ListSubscriptionOutput" xml:space="preserve">
-    <value>(Tag: {0}) {2}: {3}</value>
+    <value>(Tag: {0}) {1}: {2}</value>
   </data>
   <data name="SubscriptionDeleted" xml:space="preserve">
     <value>Subscription deleted!!</value>

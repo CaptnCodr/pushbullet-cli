@@ -1,0 +1,16 @@
+﻿{
+  "grants": [
+    {
+      "active": true,
+      "iden": "ujyLNXMMKHAsae798FWNlB",
+      "created": 1498629785.357725,
+      "modified": 1498629785.357732,
+      "client": {
+        "iden": "afprOCaEgjoH8nBG",
+        "name": "IFTTT",
+        "image_url": "https://ifttt.com/images/channels/ifttt_med.png",
+        "website_url": "https://ifttt.com/"
+      }
+    }
+  ]
+}

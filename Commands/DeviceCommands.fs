@@ -1,10 +1,14 @@
 namespace Pushbullet
 
 open System
+open FSharp.Data
 open Resources
 open Utilities
 
 module DeviceCommands =
+
+    type DeviceResponse = JsonProvider<"./../Data/DeviceData.json", ResolutionFolder=__SOURCE_DIRECTORY__>
+    type DeviceListResponse = JsonProvider<"./../Data/DeviceList.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
     type GetDeviceInfoCommand = GetDeviceInfoCommand of string
     type GetDeviceCommand = GetDeviceCommand of int
@@ -15,7 +19,7 @@ module DeviceCommands =
 
     let list () =
         HttpService.GetListRequest Devices
-        |> DataResponse.Parse
+        |> DeviceListResponse.Parse
         |> fun r -> r.Devices
         |> Array.indexed |> Array.map (fun (i, e) -> DeviceListOutput.FormattedString(i, e.Iden, e.Nickname))
         |> String.concat Environment.NewLine
@@ -27,7 +31,7 @@ module DeviceCommands =
 
     let getDeviceId (GetDeviceCommand index) =
         HttpService.GetListRequest Devices
-        |> DataResponse.Parse
+        |> DeviceListResponse.Parse
         |> fun r -> r.Devices
         |> fun a -> a |> Array.tryItem index 
         |> function | Some v -> v.Iden | None -> ""

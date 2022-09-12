@@ -9,6 +9,8 @@ open Resources
 
 module HttpService =
 
+    type ErrorResponse = JsonProvider<"./Data/Error.json", ResolutionFolder=__SOURCE_DIRECTORY__>
+
     type Response = 
         | Ok of HeaderResponse 
         | Error of string

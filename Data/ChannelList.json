@@ -1,0 +1,15 @@
+﻿{
+  "channels": [
+    {
+      "active": true,
+      "iden": "ujyLNXNNKHAsjxpWWG3Scc",
+      "created": 1602053805.470995,
+      "modified": 1602053817.308609,
+      "tag": "someupdates",
+      "name": "Updates Blogs",
+      "description": "News Blog",
+      "image_url": "https://static.pushbullet.com/channel/e50caad721f94100e9e433707fe1e5d75579c1c08da0ef7ca501342775456f9c",
+      "feed_url": "http://feeds.feedburner.com/GoogleAppsUpdates"
+    }
+  ]
+}

@@ -2,10 +2,14 @@ namespace Pushbullet
 
 open System
 open System.Reflection
+open FSharp.Data
 open Resources
 open Utilities
 
 module SystemCommands =
+
+    type UserResponse = JsonProvider<"./../Data/UserData.json", ResolutionFolder=__SOURCE_DIRECTORY__>
+    type GrantListResponse = JsonProvider<"./../Data/GrantList.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
     type SetKeyCommand = SetKeyCommand of string
 
@@ -35,7 +39,7 @@ module SystemCommands =
 
     let listGrants () =
         HttpService.GetListRequest "grants"
-        |> DataResponse.Parse
+        |> GrantListResponse.Parse
         |> fun r -> r.Grants 
         |> Array.map (fun grant -> ListGrantsOutput.FormattedString(grant.Iden, grant.Client.Name, grant.Created |> unixTimestampToDateTime, grant.Modified |> unixTimestampToDateTime))
         |> String.concat Environment.NewLine

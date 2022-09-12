@@ -14,11 +14,16 @@
   <ItemGroup>
     <Content Include=".config\dotnet-tools.json" />
     <Content Include="Data\ChannelInfoData.json" />
-    <Content Include="Data\DataLists.json" />
+    <Content Include="Data\ChannelList.json" />
+    <Content Include="Data\ChatList.json" />
     <Content Include="Data\DeviceData.json" />
+    <Content Include="Data\DeviceList.json" />
+    <Content Include="Data\GrantList.json" />
     <Content Include="Data\Error.json" />
     <Content Include="Data\MessageData.json" />
     <Content Include="Data\PushData.json" />
+    <Content Include="Data\PushList.json" />
+    <Content Include="Data\SubscriptionList.json" />
     <Content Include="Data\UserData.json" />
     <Compile Include="paket-files\CaptnCodr\FSharpExtensions\ResourceExtension.fs">
       <Paket>True</Paket>
@@ -27,7 +32,6 @@
     <Compile Include="Resources\Resources.fs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Types.fs" />
     <Compile Include="VariableAccess.fs" />
     <Compile Include="Utilities.fs" />
     <Compile Include="JsonExtensions.fs" />

@@ -1,0 +1,31 @@
+﻿{
+  "pushes": [
+    {
+      "active": true,
+      "iden": "ujyLNXNNKHAsx2872c8f90bd54a56c5de32a29d2476192dcdda711a87a70d3660b24e2de7d8a0x",
+      "created": 1623434265.0817869,
+      "modified": 1623434287.193124,
+      "type": "link",
+      "dismissed": true,
+      "direction": "incoming",
+      "sender_name": "Updates",
+      "channel_iden": "ujC6iBB9Ae4sjggOWtArW8",
+      "title": "Update App 1.3.2134",
+      "body": "The Update appeared first time in Version 1.3.2134",
+      "url": "https://www.pushbullet.com"
+    },
+    {
+      "active": true,
+      "iden": "ujyLNXNNKHAsx2872c8f90bd54a56c5de32a29d2476192dcdda711a87a70d3660b24e2de7d8a0y",
+      "created": 1623434265.0817869,
+      "modified": 1623434287.193124,
+      "type": "note",
+      "dismissed": true,
+      "direction": "incoming",
+      "sender_name": "Updates",
+      "channel_iden": "ujC6iBB9Ae4sjggOWtArW8",
+      "title": "Update App 1.3.2134",
+      "body": "The Update appeared first time in Version 1.3.2134"
+    }
+  ]
+}

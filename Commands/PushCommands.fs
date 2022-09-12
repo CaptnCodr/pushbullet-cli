@@ -1,10 +1,14 @@
 namespace Pushbullet
 
 open Resources
+open FSharp.Data
 open System
 open Utilities
 
 module PushCommands =
+
+    type PushResponse = JsonProvider<"./../Data/PushData.json", ResolutionFolder=__SOURCE_DIRECTORY__>
+    type PushListResponse = JsonProvider<"./../Data/PushList.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
     type PushTextCommand = PushTextCommand of body:string * deviceid:string option
     type PushNoteCommand = PushNoteCommand of title:string option * body:string option * deviceid:string option
@@ -18,14 +22,14 @@ module PushCommands =
     let private Pushes = "pushes"
 
     let list (ListPushesCommand limit) =
-        let formatPush (p: DataResponse.Push) =
+        let formatPush (p: PushListResponse.Push) =
             if p.Type.Equals "link" then
                 ListLinkPushOutput.FormattedString(p.Iden, p.Created |> unixTimestampToDateTime, p.Type, p.Title, p.Url.Value, p.Body)
             else
                 ListTextPushOutput.FormattedString(p.Iden, p.Created |> unixTimestampToDateTime, p.Type, p.Title, p.Body)
 
-        HttpService.GetRequest Pushes [("limit", $"{limit}"); ("active", "true")]
-        |> DataResponse.Parse
+        HttpService.GetRequest Pushes [("limit", limit); ("active", true)]
+        |> PushListResponse.Parse
         |> fun r -> r.Pushes
         |> Array.map formatPush
         |> String.concat Environment.NewLine

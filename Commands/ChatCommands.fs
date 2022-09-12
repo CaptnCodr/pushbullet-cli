@@ -1,10 +1,13 @@
 namespace Pushbullet
 
 open System
+open FSharp.Data
 open Resources
 open Utilities
 
 module ChatCommands =
+
+    type ChatListResponse = JsonProvider<"./../Data/ChatList.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
     type UpdateChatCommand = UpdateChatCommand of id:string * status:bool
     type CreateChatCommand = CreateChatCommand of string
@@ -15,7 +18,7 @@ module ChatCommands =
 
     let list () =
         HttpService.GetListRequest Chats
-        |> DataResponse.Parse
+        |> ChatListResponse.Parse
         |> fun r -> r.Chats
         |> Array.map (fun c -> ChatListOutput.FormattedString(c.Iden, c.With.Email, c.With.Type, c.Created |> unixTimestampToDateTime, c.Modified |> unixTimestampToDateTime))
         |> String.concat Environment.NewLine

@@ -1,10 +1,14 @@
 namespace Pushbullet
 
 open System
+open FSharp.Data
 open Resources
 open Utilities
 
 module SubscriptionCommands =
+
+    type ChannelInfoResponse = JsonProvider<"./../Data/ChannelInfoData.json", ResolutionFolder=__SOURCE_DIRECTORY__>
+    type SubscriptionListResponse = JsonProvider<"./../Data/SubscriptionList.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
     type GetChannelInfoCommand = GetChannelInfoCommand of string
     type DeleteSubscriptionCommand = DeleteSubscriptionCommand of string
@@ -14,7 +18,7 @@ module SubscriptionCommands =
     
     let list () =
         HttpService.GetListRequest Subscriptions
-        |> DataResponse.Parse
+        |> SubscriptionListResponse.Parse
         |> fun r -> r.Subscriptions
         |> Array.map (fun s -> ListSubscriptionOutput.FormattedString(s.Channel.Tag, s.Channel.Name, s.Channel.Description))
         |> String.concat Environment.NewLine

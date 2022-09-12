@@ -1,0 +1,16 @@
+﻿{
+  "chats": [
+    {
+      "active": true,
+      "iden": "ujyLNXNNKHAgjCvQXStZ2f",
+      "created": 1623435698.445598,
+      "modified": 1623435698.445601,
+      "with": {
+        "type": "email",
+        "email": "some.guy@gmail.com",
+        "email_normalized": "some.guy@gmail.com",
+        "image_url": "https://static.pushbullet.com/missing-image/f7b418-43"
+      }
+    }
+  ]
+}

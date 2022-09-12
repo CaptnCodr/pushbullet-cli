@@ -1,0 +1,17 @@
+﻿{
+  "subscriptions": [
+    {
+      "active": true,
+      "iden": "ujyLNXMMKHAsjC7PaM45HU",
+      "created": 1592028168.57686,
+      "modified": 1605836129.777086,
+      "channel": {
+        "iden": "ujC6iGG9Ae4sjCjjWQtKBE",
+        "tag": "am-1945824678",
+        "name": "Updates",
+        "description": "Subscribe to this Updates",
+        "image_url": "https://static.pushbullet.com/channel/02aa03b2dd3cb5c2bd804fb7e0a31a3ace30a88e7ac2e53bf06c50fbe5da56cc"
+      }
+    }
+  ]
+}
