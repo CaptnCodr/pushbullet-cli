@@ -3,7 +3,6 @@
 open System.IO
 open System.Net
 open FsHttp
-open FsHttp.DslCE
 open Newtonsoft.Json
 open FSharp.Data
 open Resources

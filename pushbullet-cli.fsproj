@@ -53,8 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="6.0.1" />
-    <PackageReference Include="FSharp.Data" Version="4.2.5" />
-    <PackageReference Include="FsHttp" Version="6.0.1" />
+    <PackageReference Include="FSharp.Data" Version="5.0.2" />
+    <PackageReference Include="FsHttp" Version="9.1.2" />
     <PackageReference Include="Argu" Version="6.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
