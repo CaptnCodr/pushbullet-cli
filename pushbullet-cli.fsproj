@@ -22,12 +22,12 @@
     <Content Include="Data\UserData.json" />
     <Compile Include="paket-files\CaptnCodr\FSharpExtensions\ResourceExtension.fs">
       <Paket>True</Paket>
-      <Link>ResourceExtension.fs</Link>
+      <Link>Resources/ResourceExtension.fs</Link>
     </Compile>
+    <Compile Include="Resources\Resources.fs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Types.fs" />
-    <Compile Include="Resources.fs" />
     <Compile Include="VariableAccess.fs" />
     <Compile Include="Utilities.fs" />
     <Compile Include="JsonExtensions.fs" />

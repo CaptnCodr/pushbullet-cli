@@ -3,7 +3,6 @@
 open System.IO
 open System.Net
 open FsHttp
-open FsHttp.DslCE
 open Newtonsoft.Json
 open FSharp.Data
 open Resources
@@ -34,14 +33,14 @@ module HttpService =
 
     let private chooseGetResponse (response: Choice<Domain.Response, Domain.Response>) =
         match response with
-        | Choice1Of2 r -> r |> Response.toString 16000
+        | Choice1Of2 r -> r |> Response.toText
         | Choice2Of2 e -> e |> Response.toStream |> formatException
 
     let private chooseResponseWithMessage (successMessage: ResourceTypes) (response: Choice<Domain.Response, Domain.Response>) =
         match response with
         | Choice1Of2 r -> 
             match successMessage.ResourceString with
-            | "" -> r |> Response.toString 16000
+            | "" -> r |> Response.toText
             | _ -> successMessage.ResourceString
         | Choice2Of2 e -> e |> Response.toStream |> formatException
         
@@ -52,12 +51,12 @@ module HttpService =
                                             Reset = (h.GetValues("X-Ratelimit-Reset") |> Seq.head) }) |> Ok
         | Choice2Of2 e -> e |> Response.toStream |> formatException |> Error
 
-    let GetRequest (path: string) (query': (string * string) list) : string =
+    let GetRequest (path: string) (query': (string * obj) list) : string =
         http {
             GET $"{BaseUrl}/{path}"
             query query'
             header ("Access-Token") (VariableAccess.getSystemKey())
-        } |> (examineResponse >> chooseGetResponse)
+        } |> Request.send |> (examineResponse >> chooseGetResponse)
         
     let GetListRequest (path: string) : string = GetRequest path [("active", "true")]
 
@@ -68,16 +67,16 @@ module HttpService =
             body
             json (record |> toJson)
             ContentType ("application/json")
-        } |> examineResponse |> chooseResponseWithMessage successMessage
+        } |> Request.send |> examineResponse |> chooseResponseWithMessage successMessage
 
     let DeleteRequest (path: string) (successMessage: ResourceTypes) =
         http {
             DELETE $"{BaseUrl}/{path}"
             header ("Access-Token") (VariableAccess.getSystemKey())
-        } |> examineResponse |> chooseResponseWithMessage successMessage
+        } |> Request.send |> examineResponse |> chooseResponseWithMessage successMessage
 
     let GetResponse (path: string) =
         http {
             GET $"{BaseUrl}/{path}"
             header ("Access-Token") (VariableAccess.getSystemKey())
-        } |> (examineResponse >> chooseHeaders)
+        } |> Request.send |> (examineResponse >> chooseHeaders)
