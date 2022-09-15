@@ -3,7 +3,7 @@ namespace Pushbullet
 open System
 open FSharp.Data
 open Resources
-open Utilities
+open Extensions.DateTimeExtension
 
 module ChatCommands =
 
@@ -20,7 +20,7 @@ module ChatCommands =
         HttpService.GetListRequest Chats
         |> ChatListResponse.Parse
         |> fun r -> r.Chats
-        |> Array.map (fun c -> ChatListOutput.FormattedString(c.Iden, c.With.Email, c.With.Type, c.Created |> unixTimestampToDateTime, c.Modified |> unixTimestampToDateTime))
+        |> Array.map (fun c -> ChatListOutput.FormattedString(c.Iden, c.With.Email, c.With.Type, c.Created.ofUnixTimeToDateTime, c.Modified.ofUnixTimeToDateTime))
         |> String.concat Environment.NewLine
 
     let delete (DeleteChatCommand id)=

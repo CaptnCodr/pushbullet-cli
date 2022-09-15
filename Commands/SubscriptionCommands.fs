@@ -3,7 +3,7 @@ namespace Pushbullet
 open System
 open FSharp.Data
 open Resources
-open Utilities
+open Extensions.DateTimeExtension
 
 module SubscriptionCommands =
 
@@ -26,7 +26,7 @@ module SubscriptionCommands =
     let channelInfo (GetChannelInfoCommand tag) =
         HttpService.GetRequest "channel-info" [("tag", tag)]
         |> ChannelInfoResponse.Parse
-        |> fun info -> $"""[{info.Iden}]:{"\n"}Tag: {info.Tag}{"\n"}Subscribers: {info.SubscriberCount}{"\n"}Name: {info.Name}{"\n"}Description: {info.Description}{if info.RecentPushes.Length > 0 then $"\nRecent push: {info.RecentPushes.[0].Created |> unixTimestampToDateTime}" else "" }"""
+        |> fun info -> $"""[{info.Iden}]:{"\n"}Tag: {info.Tag}{"\n"}Subscribers: {info.SubscriberCount}{"\n"}Name: {info.Name}{"\n"}Description: {info.Description}{if info.RecentPushes.Length > 0 then $"\nRecent push: {info.RecentPushes.[0].Created.ofUnixTimeToDateTime}" else "" }"""
 
     let delete (DeleteSubscriptionCommand id) =
         HttpService.DeleteRequest $"{Subscriptions}/{id}" SubscriptionDeleted

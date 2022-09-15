@@ -2,6 +2,7 @@ source https://api.nuget.org/v3/index.json
 framework: net6.0
 
 github CaptnCodr/FSharpExtensions:main ResourceExtension.fs
+github CaptnCodr/FSharpExtensions:main DateTimeExtension.fs
 
 nuget FSharp.Core
 nuget FSharp.Data

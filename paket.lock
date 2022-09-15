@@ -4,14 +4,14 @@ NUGET
     Argu (6.1.1)
       FSharp.Core (>= 4.3.2)
       System.Configuration.ConfigurationManager (>= 4.4)
-    FSharp.Core (6.0.5)
+    FSharp.Core (6.0.6)
     FSharp.Data (5.0.2)
       FSharp.Core (>= 5.0.1)
     FsHttp (9.1.2)
       FSharp.Core (>= 5.0)
     Microsoft.Win32.SystemEvents (6.0.1)
     Newtonsoft.Json (13.0.1)
-    System.Configuration.ConfigurationManager (6.0)
+    System.Configuration.ConfigurationManager (6.0.1)
       System.Security.Cryptography.ProtectedData (>= 6.0)
       System.Security.Permissions (>= 6.0)
     System.Drawing.Common (6.0)
@@ -25,4 +25,5 @@ NUGET
       System.Drawing.Common (>= 6.0)
 GITHUB
   remote: CaptnCodr/FSharpExtensions
-    ResourceExtension.fs (d5e119b4036c3c96aaf886467df3c6e5399790fd)
+    DateTimeExtension.fs (69d59606ebf56406174e10ad121c979d4c469f75)
+    ResourceExtension.fs (69d59606ebf56406174e10ad121c979d4c469f75)

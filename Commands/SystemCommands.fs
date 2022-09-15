@@ -4,7 +4,7 @@ open System
 open System.Reflection
 open FSharp.Data
 open Resources
-open Utilities
+open Extensions.DateTimeExtension
 
 module SystemCommands =
 
@@ -28,20 +28,20 @@ module SystemCommands =
         HttpService.GetRequest "users/me" []
         |> UserResponse.Parse
         |> fun user -> 
-            GetProfileOutput.FormattedString(user.Iden, user.Name, user.Email, user.Created |> unixTimestampToDateTime, user.Modified |> unixTimestampToDateTime)
+            GetProfileOutput.FormattedString(user.Iden, user.Name, user.Email, user.Created.ofUnixTimeToDateTime, user.Modified.ofUnixTimeToDateTime)
 
     let getLimits () =
         let response = HttpService.GetResponse "users/me" 
         match response with 
         | HttpService.Ok r -> 
-            GetLimitsOutput.FormattedString(r.Limit, r.Remaining, (r.Reset |> decimal |> unixTimestampToDateTime))
+            GetLimitsOutput.FormattedString(r.Limit, r.Remaining, (r.Reset |> decimal |> ofUnixTime))
         | HttpService.Error s -> s
 
     let listGrants () =
         HttpService.GetListRequest "grants"
         |> GrantListResponse.Parse
         |> fun r -> r.Grants 
-        |> Array.map (fun grant -> ListGrantsOutput.FormattedString(grant.Iden, grant.Client.Name, grant.Created |> unixTimestampToDateTime, grant.Modified |> unixTimestampToDateTime))
+        |> Array.map (fun grant -> ListGrantsOutput.FormattedString(grant.Iden, grant.Client.Name, grant.Created.ofUnixTimeToDateTime, grant.Modified.ofUnixTimeToDateTime))
         |> String.concat Environment.NewLine
 
     let getVersion () =

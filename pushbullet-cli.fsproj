@@ -25,6 +25,10 @@
     <Content Include="Data\PushList.json" />
     <Content Include="Data\SubscriptionList.json" />
     <Content Include="Data\UserData.json" />
+    <Compile Include="paket-files\CaptnCodr\FSharpExtensions\DateTimeExtension.fs">
+      <Paket>True</Paket>
+      <Link>DateTimeExtension.fs</Link>
+    </Compile>
     <Compile Include="paket-files\CaptnCodr\FSharpExtensions\ResourceExtension.fs">
       <Paket>True</Paket>
       <Link>Resources/ResourceExtension.fs</Link>
@@ -33,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="VariableAccess.fs" />
-    <Compile Include="Utilities.fs" />
     <Compile Include="JsonExtensions.fs" />
     <Compile Include="HttpService.fs" />
     <Compile Include="Commands/SystemCommands.fs" />
@@ -56,7 +59,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharp.Core" Version="6.0.1" />
+    <PackageReference Include="FSharp.Core" Version="6.0.6" />
     <PackageReference Include="FSharp.Data" Version="5.0.2" />
     <PackageReference Include="FsHttp" Version="9.1.2" />
     <PackageReference Include="Argu" Version="6.1.1" />

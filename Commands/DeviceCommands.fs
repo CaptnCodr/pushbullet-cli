@@ -3,7 +3,7 @@ namespace Pushbullet
 open System
 open FSharp.Data
 open Resources
-open Utilities
+open Extensions.DateTimeExtension
 
 module DeviceCommands =
 
@@ -27,7 +27,7 @@ module DeviceCommands =
     let getDeviceInfo (GetDeviceInfoCommand iden) =
         HttpService.GetRequest $"{Devices}/{iden}" []
         |> DeviceResponse.Parse
-        |> fun d -> GetDeviceOutput.FormattedString(d.Iden, d.Nickname, d.Manufacturer, d.Model, d.AppVersion, d.Created |> unixTimestampToDateTime, d.Modified |> unixTimestampToDateTime)
+        |> fun d -> GetDeviceOutput.FormattedString(d.Iden, d.Nickname, d.Manufacturer, d.Model, d.AppVersion, d.Created.ofUnixTimeToDateTime, d.Modified.ofUnixTimeToDateTime)
 
     let getDeviceId (GetDeviceCommand index) =
         HttpService.GetListRequest Devices

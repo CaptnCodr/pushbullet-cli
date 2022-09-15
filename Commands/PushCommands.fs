@@ -3,7 +3,7 @@ namespace Pushbullet
 open Resources
 open FSharp.Data
 open System
-open Utilities
+open Extensions.DateTimeExtension
 
 module PushCommands =
 
@@ -24,9 +24,9 @@ module PushCommands =
     let list (ListPushesCommand limit) =
         let formatPush (p: PushListResponse.Push) =
             if p.Type.Equals "link" then
-                ListLinkPushOutput.FormattedString(p.Iden, p.Created |> unixTimestampToDateTime, p.Type, p.Title, p.Url.Value, p.Body)
+                ListLinkPushOutput.FormattedString(p.Iden, p.Created.ofUnixTimeToDateTime, p.Type, p.Title, p.Url.Value, p.Body)
             else
-                ListTextPushOutput.FormattedString(p.Iden, p.Created |> unixTimestampToDateTime, p.Type, p.Title, p.Body)
+                ListTextPushOutput.FormattedString(p.Iden, p.Created.ofUnixTimeToDateTime, p.Type, p.Title, p.Body)
 
         HttpService.GetRequest Pushes [("limit", limit); ("active", true)]
         |> PushListResponse.Parse
@@ -37,7 +37,7 @@ module PushCommands =
     let getSinglePush (GetPushCommand id) =
         HttpService.GetRequest $"{Pushes}/{id}" []
         |> PushResponse.Parse
-        |> fun p -> GetSinglePushOutput.FormattedString(p.Iden, p.ReceiverEmail, p.Created |> unixTimestampToDateTime, p.Modified |> unixTimestampToDateTime, p.TargetDeviceIden, p.Type, p.Title, p.Body, p.Url)
+        |> fun p -> GetSinglePushOutput.FormattedString(p.Iden, p.ReceiverEmail, p.Created.ofUnixTimeToDateTime, p.Modified.ofUnixTimeToDateTime, p.TargetDeviceIden, p.Type, p.Title, p.Body, p.Url)
         
     let delete (DeletePushCommand id) =
         HttpService.DeleteRequest $"{Pushes}/{id}" PushDeleted
