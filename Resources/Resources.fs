@@ -83,12 +83,11 @@ module Resources =
         | SubscriptionDeleted
 
         | Errors_NotEnoughArguments
-        | Errors_ParameterInvalid 
+        | Errors_ParameterInvalid
         | Errors_NoParametersGiven
         | Empty
 
-        member this.ResourceString = 
-            ResourceFile |> resourceManager |> getResourceString this
+        member this.ResourceString = ResourceFile |> resourceManager |> getResourceString this
 
-        member this.FormattedString ([<System.ParamArray>] args) =
+        member this.FormattedString([<System.ParamArray>] args) =
             ResourceFile |> resourceManager |> getFormattedString this args

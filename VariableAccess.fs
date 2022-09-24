@@ -3,13 +3,13 @@
 open System
 
 module VariableAccess =
-    
+
     [<Literal>]
     let PushbulletKey = "PUSHBULLET_KEY"
-    
+
     let getSystemKey () =
-        (Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User) : string)
-        |> Option.ofObj 
+        (Environment.GetEnvironmentVariable(PushbulletKey, EnvironmentVariableTarget.User): string)
+        |> Option.ofObj
         |> Option.defaultValue ""
 
     let setSystemKey key =

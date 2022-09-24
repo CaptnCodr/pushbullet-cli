@@ -65,5 +65,10 @@
     <PackageReference Include="Argu" Version="6.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties />
+    </VisualStudio>
+  </ProjectExtensions>
   <Import Project=".paket\Paket.Restore.targets" />
 </Project>

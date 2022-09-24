@@ -45,7 +45,9 @@ module JsonExtensions =
         inherit DefaultContractResolver()
         override _.ResolvePropertyName(propertyName: string) = propertyName.ToLower()
 
-    let GetSettings() =
-        JsonSerializerSettings(NullValueHandling = NullValueHandling.Ignore, 
-            ContractResolver = (LowercaseContractResolver() :> IContractResolver), 
-            Converters = [| OptionConverter() |])
+    let GetSettings () =
+        JsonSerializerSettings(
+            NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = (LowercaseContractResolver() :> IContractResolver),
+            Converters = [| OptionConverter() |]
+        )

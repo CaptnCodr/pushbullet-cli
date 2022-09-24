@@ -9,7 +9,7 @@ module ChatCommands =
 
     type ChatListResponse = JsonProvider<"./../Data/ChatList.json", ResolutionFolder=__SOURCE_DIRECTORY__>
 
-    type UpdateChatCommand = UpdateChatCommand of id:string * status:bool
+    type UpdateChatCommand = UpdateChatCommand of id: string * status: bool
     type CreateChatCommand = CreateChatCommand of string
     type DeleteChatCommand = DeleteChatCommand of string
 
@@ -20,14 +20,24 @@ module ChatCommands =
         HttpService.GetListRequest Chats
         |> ChatListResponse.Parse
         |> fun r -> r.Chats
-        |> Array.map (fun c -> ChatListOutput.FormattedString(c.Iden, c.With.Email, c.With.Type, c.Created.ofUnixTimeToDateTime, c.Modified.ofUnixTimeToDateTime))
+        |> Array.map (fun c ->
+            ChatListOutput.FormattedString(
+                c.Iden,
+                c.With.Email,
+                c.With.Type,
+                c.Created.ofUnixTimeToDateTime,
+                c.Modified.ofUnixTimeToDateTime
+            ))
         |> String.concat Environment.NewLine
 
-    let delete (DeleteChatCommand id)=
+    let delete (DeleteChatCommand id) =
         HttpService.DeleteRequest $"{Chats}/{id}" ChatDeleted
 
-    let update (UpdateChatCommand(id, status)) =
-        HttpService.PostRequest $"{Chats}/{id}" {| Muted = status |} [ChatUnmuted;ChatMuted].[status |> Convert.ToInt32]
+    let update (UpdateChatCommand (id, status)) =
+        HttpService.PostRequest
+            $"{Chats}/{id}"
+            {| Muted = status |}
+            [ ChatUnmuted; ChatMuted ].[status |> Convert.ToInt32]
 
     let create (CreateChatCommand email) =
         HttpService.PostRequest Chats {| Email = email |} ChatCreated
