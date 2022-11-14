@@ -33,7 +33,7 @@ module ChatCommands =
     let delete (DeleteChatCommand id) =
         HttpService.DeleteRequest $"{Chats}/{id}" ChatDeleted
 
-    let update (UpdateChatCommand (id, status)) =
+    let update (UpdateChatCommand(id, status)) =
         HttpService.PostRequest
             $"{Chats}/{id}"
             {| Muted = status |}
