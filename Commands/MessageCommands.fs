@@ -13,7 +13,7 @@ module MessageCommands =
     [<Literal>]
     let private Texts = "texts"
 
-    let create (SendMessageCommand (device, number, body)) =
+    let create (SendMessageCommand(device, number, body)) =
         {| Data =
             {| Target_Device_Iden = device
                Addresses = [ number ]

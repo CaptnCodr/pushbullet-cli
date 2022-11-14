@@ -66,20 +66,20 @@ module PushCommands =
     let push (message: ResourceTypes) (json: 't) =
         HttpService.PostRequest "pushes" json message
 
-    let pushText (PushTextCommand (body, device)) =
+    let pushText (PushTextCommand(body, device)) =
         {| Type = "note"
            Body = body
            Device_iden = device |}
         |> push PushSent
 
-    let pushNote (PushNoteCommand (title, body, device)) =
+    let pushNote (PushNoteCommand(title, body, device)) =
         {| Type = "note"
            Title = title
            Body = body
            Device_iden = device |}
         |> push PushSent
 
-    let pushLink (PushLinkCommand (url, title, body, device)) =
+    let pushLink (PushLinkCommand(url, title, body, device)) =
         {| Type = "link"
            Url = url
            Title = title

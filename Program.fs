@@ -105,7 +105,7 @@ module Program =
                 | _ -> subCommand.Parser.PrintUsage()
 
             | [ Clip arg ] -> arg |> PushCommands.PushClipCommand |> PushCommands.pushClip
-            | [ Sms (device, number, body) ] ->
+            | [ Sms(device, number, body) ] ->
                 (device |> getDeviceFromIndexOrDeviceId, number, body)
                 |> MessageCommands.SendMessageCommand
                 |> MessageCommands.create
@@ -118,7 +118,7 @@ module Program =
             | [ Chat subCommand ] ->
                 match subCommand.GetAllResults() with
                 | [ Create c ] -> c |> ChatCommands.CreateChatCommand |> ChatCommands.create
-                | [ Update (id, status) ] ->
+                | [ Update(id, status) ] ->
                     match status |> valueToBool with
                     | Some b -> (id, b) |> ChatCommands.UpdateChatCommand |> ChatCommands.update
                     | None -> Errors_ParameterInvalid.ResourceString
