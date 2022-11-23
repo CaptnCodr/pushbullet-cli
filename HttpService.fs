@@ -3,9 +3,9 @@
 open System.IO
 open System.Net
 open FsHttp
-open Newtonsoft.Json
 open FSharp.Data
 open Resources
+open Serialization
 
 module HttpService =
 
@@ -30,7 +30,7 @@ module HttpService =
         |> fun e -> $"{e.ErrorCode}: {e.Error.Message} {e.Error.Cat}"
 
     let toJson value =
-        (value, JsonExtensions.GetSettings()) |> JsonConvert.SerializeObject
+        value |> serialize
 
     let private examineResponse (response: Domain.Response) =
         match response.statusCode with

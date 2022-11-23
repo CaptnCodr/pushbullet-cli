@@ -3,6 +3,6 @@ File: DateTimeExtension.fs .
 
 FSharp.Core
 FSharp.Data
-Newtonsoft.Json
+FSharp.SystemTextJson
 FsHttp
 Argu

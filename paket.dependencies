@@ -6,6 +6,6 @@ github CaptnCodr/FSharpExtensions:main DateTimeExtension.fs
 
 nuget FSharp.Core
 nuget FSharp.Data
-nuget Newtonsoft.Json
-nuget FsHttp
+nuget FSharp.SystemTextJson
+nuget FsHttp ~> 10.0.0-preview3
 nuget Argu
