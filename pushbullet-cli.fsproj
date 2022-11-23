@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="VariableAccess.fs" />
-    <Compile Include="JsonExtensions.fs" />
+    <Compile Include="Serialization.fs" />
     <Compile Include="HttpService.fs" />
     <Compile Include="Commands/SystemCommands.fs" />
     <Compile Include="Commands/ChatCommands.fs" />
