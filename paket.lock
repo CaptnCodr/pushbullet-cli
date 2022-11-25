@@ -10,7 +10,7 @@ NUGET
     FSharp.SystemTextJson (1.0.6)
       FSharp.Core (>= 4.7)
       System.Text.Json (>= 6.0)
-    FsHttp (10.0.0-preview3)
+    FsHttp (10.0)
       FSharp.Core (>= 5.0)
     Microsoft.Win32.SystemEvents (7.0)
     System.Configuration.ConfigurationManager (7.0)
