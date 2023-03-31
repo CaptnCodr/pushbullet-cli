@@ -29,8 +29,7 @@ module HttpService =
         |> ErrorResponse.Parse
         |> fun e -> $"{e.ErrorCode}: {e.Error.Message} {e.Error.Cat}"
 
-    let toJson value =
-        value |> serialize
+    let toJson value = value |> serialize
 
     let private examineResponse (response: Domain.Response) =
         match response.statusCode with
