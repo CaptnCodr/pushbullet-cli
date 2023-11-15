@@ -45,7 +45,7 @@ module SystemCommands =
     let listGrants () =
         HttpService.GetListRequest "grants"
         |> GrantListResponse.Parse
-        |> fun r -> r.Grants
+        |> _.Grants
         |> Array.map (fun grant ->
             ListGrantsOutput.FormattedString(
                 grant.Iden,

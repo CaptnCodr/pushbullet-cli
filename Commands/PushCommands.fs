@@ -38,9 +38,9 @@ module PushCommands =
             else
                 ListTextPushOutput.FormattedString(p.Iden, p.Created.ofUnixTimeToDateTime, p.Type, p.Title, p.Body)
 
-        HttpService.GetRequest Pushes [ ("limit", limit); ("active", true) ]
+        HttpService.GetRequest Pushes [ ("limit", $"{limit}"); ("active", $"{true}") ]
         |> PushListResponse.Parse
-        |> fun r -> r.Pushes
+        |> _.Pushes
         |> Array.map formatPush
         |> String.concat Environment.NewLine
 

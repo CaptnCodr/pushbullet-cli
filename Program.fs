@@ -101,7 +101,7 @@ module Program =
                     |> SubscriptionCommands.DeleteSubscriptionCommand
                     |> SubscriptionCommands.delete
                 | [ DeleteArgs.Sms s ] -> s |> MessageCommands.DeleteMessageCommand |> MessageCommands.delete
-                | [ DeleteArgs.Key _ ] -> SystemCommands.deleteKey ()
+                | [ DeleteArgs.Key ] -> SystemCommands.deleteKey ()
                 | _ -> subCommand.Parser.PrintUsage()
 
             | [ Clip arg ] -> arg |> PushCommands.PushClipCommand |> PushCommands.pushClip

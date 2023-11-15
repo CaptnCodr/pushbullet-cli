@@ -20,7 +20,7 @@ module DeviceCommands =
     let list () =
         HttpService.GetListRequest Devices
         |> DeviceListResponse.Parse
-        |> fun r -> r.Devices
+        |> _.Devices
         |> Array.indexed
         |> Array.map (fun (i, e) -> DeviceListOutput.FormattedString(i, e.Iden, e.Nickname))
         |> String.concat Environment.NewLine
@@ -42,7 +42,7 @@ module DeviceCommands =
     let getDeviceId (GetDeviceCommand index) =
         HttpService.GetListRequest Devices
         |> DeviceListResponse.Parse
-        |> fun r -> r.Devices
+        |> _.Devices
         |> fun a -> a |> Array.tryItem index
         |> function
             | Some v -> v.Iden

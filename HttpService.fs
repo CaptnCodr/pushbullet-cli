@@ -25,7 +25,7 @@ module HttpService =
 
     let private formatException (stream: Stream) =
         new StreamReader(stream)
-        |> fun r -> r.ReadToEnd()
+        |> _.ReadToEnd()
         |> ErrorResponse.Parse
         |> fun e -> $"{e.ErrorCode}: {e.Error.Message} {e.Error.Cat}"
 
@@ -63,7 +63,7 @@ module HttpService =
             |> Ok
         | Choice2Of2 e -> e |> Response.toStream |> formatException |> Error
 
-    let GetRequest (path: string) (query': (string * obj) list) : string =
+    let GetRequest (path: string) (query': (string * string) list) : string =
         http {
             GET $"{BaseUrl}/{path}"
             query query'

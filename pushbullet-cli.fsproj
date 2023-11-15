@@ -3,13 +3,13 @@
   <PropertyGroup>
     <AssemblyName>pb</AssemblyName>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishTrimmed>true</PublishTrimmed>
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-    <Version>0.7.0.0</Version>
+    <Version>0.8.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Content Include=".config\dotnet-tools.json" />
