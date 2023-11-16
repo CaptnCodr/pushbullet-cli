@@ -21,7 +21,7 @@ module SubscriptionCommands =
     let list () =
         HttpService.GetListRequest Subscriptions
         |> SubscriptionListResponse.Parse
-        |> fun r -> r.Subscriptions
+        |> _.Subscriptions
         |> Array.map (fun s ->
             ListSubscriptionOutput.FormattedString(s.Channel.Tag, s.Channel.Name, s.Channel.Description))
         |> String.concat Environment.NewLine

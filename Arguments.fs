@@ -105,7 +105,6 @@ module Arguments =
 
                 | Sms _ -> CliArguments_Sms.ResourceString
 
-
                 | PushInfo _ -> CliArguments_PushInfo.ResourceString
                 | Push _ -> CliArguments_Push.ResourceString
                 | Link _ -> CliArguments_Link.ResourceString

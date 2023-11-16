@@ -19,7 +19,7 @@ module ChatCommands =
     let list () =
         HttpService.GetListRequest Chats
         |> ChatListResponse.Parse
-        |> fun r -> r.Chats
+        |> _.Chats
         |> Array.map (fun c ->
             ChatListOutput.FormattedString(
                 c.Iden,
